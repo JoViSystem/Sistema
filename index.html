@@ -6,47 +6,45 @@
   <title>JoVi POS Avanzado</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-black font-sans flex">
+<body class="bg-gray-100 text-black font-sans">
 
-  <!-- SIDEBAR DE NAVEGACIÓN -->
-  <aside class="w-64 bg-white shadow h-screen p-4 fixed">
-    <h2 class="text-2xl font-bold mb-6">JoVi POS</h2>
-    <nav class="flex flex-col space-y-2 text-lg">
-      <button onclick="showSection('ventas')" class="text-left py-2 px-3 rounded hover:bg-gray-200" id="nav-ventas">Ventas</button>
-      <button onclick="showSection('productos')" class="text-left py-2 px-3 rounded hover:bg-gray-200" id="nav-productos">Productos</button>
-      <button onclick="showSection('clientes')" class="text-left py-2 px-3 rounded hover:bg-gray-200" id="nav-clientes">Clientes</button>
-      <button onclick="showSection('creditos')" class="text-left py-2 px-3 rounded hover:bg-gray-200" id="nav-creditos">Créditos</button>
-      <button onclick="showSection('inventario')" class="text-left py-2 px-3 rounded hover:bg-gray-200" id="nav-inventario">Inventario</button>
-      <button onclick="showSection('configuraciones')" class="text-left py-2 px-3 rounded hover:bg-gray-200" id="nav-configuraciones">Configuraciones</button>
-      <button onclick="showSection('reportes')" class="text-left py-2 px-3 rounded hover:bg-gray-200" id="nav-reportes">Reportes</button>
+  <!-- LOGIN -->
+  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center">
+    <h1 class="text-4xl font-bold mb-4">Iniciar Sesión - JoVi POS</h1>
+    <div class="bg-white p-6 rounded shadow-md w-80">
+      <input id="user" type="text" placeholder="Usuario" class="w-full mb-3 p-2 border rounded">
+      <input id="pass" type="password" placeholder="Contraseña" class="w-full mb-3 p-2 border rounded">
+      <button onclick="login()" class="w-full bg-black text-white py-2 rounded hover:bg-gray-800">Entrar</button>
+      <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Usuario o contraseña incorrecta</p>
+    </div>
+  </section>
+
+  <!-- SISTEMA POS -->
+  <section id="pos-section" class="hidden">
+    <!-- NAVEGACIÓN HORIZONTAL -->
+    <nav class="bg-white shadow p-4 flex space-x-4 justify-center">
+      <button onclick="showSection('ventas')" id="nav-ventas" class="py-2 px-4 rounded hover:bg-gray-200">Ventas</button>
+      <button onclick="showSection('productos')" id="nav-productos" class="py-2 px-4 rounded hover:bg-gray-200">Productos</button>
+      <button onclick="showSection('clientes')" id="nav-clientes" class="py-2 px-4 rounded hover:bg-gray-200">Clientes</button>
+      <button onclick="showSection('creditos')" id="nav-creditos" class="py-2 px-4 rounded hover:bg-gray-200">Créditos</button>
+      <button onclick="showSection('inventario')" id="nav-inventario" class="py-2 px-4 rounded hover:bg-gray-200">Inventario</button>
+      <button onclick="showSection('configuraciones')" id="nav-configuraciones" class="py-2 px-4 rounded hover:bg-gray-200">Configuraciones</button>
+      <button onclick="showSection('reportes')" id="nav-reportes" class="py-2 px-4 rounded hover:bg-gray-200">Reportes</button>
+      <span class="ml-auto text-sm text-gray-600" id="vendedor-info"></span>
     </nav>
-  </aside>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="ml-64 flex-1 p-6">
-    <!-- Sección Ventas -->
-    <section id="ventas" class="section">
-      <!-- LOGIN y POS existente -->
-      <div id="login-section" class="min-h-screen flex flex-col justify-center items-center">
-        <h1 class="text-4xl font-bold mb-4">Iniciar Sesión</h1>
-        <div class="bg-white p-6 rounded shadow-md w-80">
-          <input id="user" type="text" placeholder="Usuario" class="w-full mb-3 p-2 border rounded">
-          <input id="pass" type="password" placeholder="Contraseña" class="w-full mb-3 p-2 border rounded">
-          <button onclick="login()" class="w-full bg-black text-white py-2 rounded hover:bg-gray-800">Entrar</button>
-          <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Usuario o contraseña incorrecta</p>
-        </div>
-      </div>
-      <div id="pos-section" class="hidden">
-        <header class="bg-[#00BFFF] text-white p-4 mb-6 rounded shadow">
-          <h1 class="text-3xl font-bold">Ventas</h1>
-          <p id="vendedor-info" class="text-sm"></p>
-        </header>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="p-6">
+      <!-- Sección Ventas -->
+      <section id="ventas" class="section">
+        <h2 class="text-3xl font-bold mb-4">Ventas</h2>
+        <!-- Inventario y carrito (POS) -->
         <div>
-          <h2 class="text-2xl font-bold mb-2">Inventario</h2>
+          <h3 class="text-2xl font-bold mb-2">Inventario</h3>
           <div id="product-list" class="grid md:grid-cols-3 gap-4"></div>
         </div>
-        <div class="mt-10">
-          <h2 class="text-2xl font-bold mb-2">🛒 Carrito</h2>
+        <div class="mt-6">
+          <h3 class="text-2xl font-bold mb-2">🛒 Carrito</h3>
           <ul id="cart-items" class="bg-white p-4 rounded shadow mb-4"></ul>
           <p class="text-xl font-semibold">Total: $<span id="total">0.00</span></p>
           <label class="block mt-4">Método de pago:</label>
@@ -63,59 +61,136 @@
           <div class="mt-4">
             <button onclick="checkout()" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Finalizar Venta</button>
             <button onclick="imprimirTicket(lastVenta)" class="ml-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Imprimir Ticket</button>
+            <button onclick="verReporte()" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Ver Reporte</button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Sección Productos -->
-    <section id="productos" class="section hidden">
-      <h2 class="text-3xl font-bold mb-4">Gestión de Productos</h2>
-      <!-- Aquí iría CRUD de productos -->
-      <div id="product-crud" class="bg-white p-4 rounded shadow">
-        <!-- Formulario y lista -->
-      </div>
-    </section>
+      <!-- Sección Productos -->
+      <section id="productos" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4">Gestión de Productos</h2>
+        <!-- CRUD de productos -->
+        <div id="product-crud" class="bg-white p-4 rounded shadow"></div>
+      </section>
 
-    <!-- Sección Clientes -->
-    <section id="clientes" class="section hidden">
-      <h2 class="text-3xl font-bold mb-4">Clientes</h2>
-      <!-- Aquí iría lista de clientes -->
-      <div id="client-list" class="bg-white p-4 rounded shadow"></div>
-    </section>
+      <!-- Sección Clientes -->
+      <section id="clientes" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4">Clientes</h2>
+        <div id="client-list" class="bg-white p-4 rounded shadow"></div>
+      </section>
 
-    <!-- Sección Créditos -->
-    <section id="creditos" class="section hidden">
-      <h2 class="text-3xl font-bold mb-4">Créditos</h2>
-      <!-- Aquí iría gestión de créditos -->
-    </section>
+      <!-- Sección Créditos -->
+      <section id="creditos" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4">Créditos</h2>
+        <div class="bg-white p-4 rounded shadow"></div>
+      </section>
 
-    <!-- Sección Inventario -->
-    <section id="inventario" class="section hidden">
-      <h2 class="text-3xl font-bold mb-4">Inventario</h2>
-      <!-- Aquí iría control detallado de stock -->
-    </section>
+      <!-- Sección Inventario -->
+      <section id="inventario" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4">Inventario</h2>
+        <div class="bg-white p-4 rounded shadow"></div>
+      </section>
 
-    <!-- Sección Configuraciones -->
-    <section id="configuraciones" class="section hidden">
-      <h2 class="text-3xl font-bold mb-4">Configuraciones</h2>
-      <!-- Ajustes del sistema -->
-    </section>
+      <!-- Sección Configuraciones -->
+      <section id="configuraciones" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4">Configuraciones</h2>
+        <div class="bg-white p-4 rounded shadow"></div>
+      </section>
 
-    <!-- Sección Reportes -->
-    <section id="reportes" class="section hidden">
-      <h2 class="text-3xl font-bold mb-4">Reportes</h2>
-      <div id="reporte" class="bg-white p-4 rounded shadow text-sm"></div>
-    </section>
-  </main>
+      <!-- Sección Reportes -->
+      <section id="reportes" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4">Reportes</h2>
+        <div id="reporte" class="bg-white p-4 rounded shadow text-sm"></div>
+      </section>
+    </main>
+  </section>
 
   <script>
-    // Navegación entre secciones
+    let lastVenta = null;
+    const usuarios = [
+      { usuario: 'admin', pass: '1234' },
+      { usuario: 'vendedor1', pass: 'ventas' }
+    ];
+    let vendedor = '';
+    let productos = [
+      { nombre: 'Monitor 19"', precio: 120, stock: 5 },
+      { nombre: 'Caja Registradora', precio: 90, stock: 3 },
+      { nombre: 'Printer 58mm', precio: 45, stock: 10 },
+      { nombre: 'CPU Completo', precio: 250, stock: 2 },
+      { nombre: 'Sistema de Facturación', precio: 130, stock: 4 },
+    ];
+    let cart = [];
+    let total = 0;
+
+    function login() {
+      const u = document.getElementById('user').value;
+      const p = document.getElementById('pass').value;
+      const found = usuarios.find(x => x.usuario === u && x.pass === p);
+      if (found) {
+        vendedor = u;
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('pos-section').classList.remove('hidden');
+        document.getElementById('vendedor-info').textContent = `Sesión: ${vendedor}`;
+        showSection('ventas');
+        cargarProductos();
+      } else {
+        document.getElementById('login-error').classList.remove('hidden');
+      }
+    }
+
     function showSection(id) {
       document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
-    // Datos modelo, login, ventas, imprimir mantienen su lógica previa...
+
+    function cargarProductos() {
+      const cont = document.getElementById('product-list'); cont.innerHTML = '';
+      productos.forEach((prod,i)=>{
+        cont.innerHTML += `<div class="bg-white p-4 rounded shadow">
+          <h3 class="font-bold">${prod.nombre}</h3>
+          <p>$${prod.precio} | Stock: ${prod.stock}</p>
+          <button onclick="addToCart(${i})" class="mt-2 bg-green-500 text-white px-2 py-1 rounded">Agregar</button>
+        </div>`;
+      });
+    }
+
+    function addToCart(i) {
+      if(productos[i].stock<=0){alert('Sin stock');return;} productos[i].stock--; cart.push({...productos[i]}); total+=productos[i].precio;
+      lastVenta = {vendedor, fecha: new Date().toLocaleString(), metodo: document.getElementById('metodo-pago').value, total, productos: [...cart]};
+      updateCart(); cargarProductos();
+    }
+
+    function updateCart() {
+      const ul = document.getElementById('cart-items'); ul.innerHTML=''; cart.forEach(c=>ul.innerHTML+=`<li class="flex justify-between py-1">${c.nombre} - $${c.precio}</li>`);
+      document.getElementById('total').textContent = total.toFixed(2);
+    }
+
+    document.getElementById('metodo-pago').addEventListener('change',e=>{
+      document.getElementById('efectivo-box').classList.toggle('hidden', e.target.value!=='Efectivo');
+    });
+    document.getElementById('efectivo-recibido').addEventListener('input',e=>{
+      const r=parseFloat(e.target.value)||0; const cambio = r-total; document.getElementById('cambio').textContent = cambio>=0?cambio.toFixed(2):'0.00';
+    });
+
+    function checkout() {
+      if(cart.length===0){alert('Carrito vacío');return;} const metodo = document.getElementById('metodo-pago').value; let rec=parseFloat(document.getElementById('efectivo-recibido').value)||0;
+      if(metodo==='Efectivo' && rec<total){alert('Efectivo insuficiente');return;} const venta=lastVenta;
+      const ventas = JSON.parse(localStorage.getItem('ventas')||'[]'); ventas.push(venta); localStorage.setItem('ventas',JSON.stringify(ventas));
+      imprimirTicket(venta); alert('✅ Venta realizada'); cart=[]; total=0; document.getElementById('efectivo-recibido').value=''; document.getElementById('cambio').textContent='0.00'; updateCart(); cargarProductos();
+    }
+
+    function verReporte() {
+      const data=JSON.parse(localStorage.getItem('ventas')||'[]'); const div=document.getElementById('reporte'); div.innerHTML=''; data.forEach(v=>{
+        div.innerHTML+=`<div class="mb-2 border-b pb-2"><strong>${v.fecha}</strong> - ${v.vendedor} - ${v.metodo} - $${v.total.toFixed(2)}<ul class='ml-4 list-disc'>${v.productos.map(p=>`<li>${p.nombre} - $${p.precio}</li>`).join('')}</ul></div>`;
+      }); document.getElementById('reportes').classList.remove('hidden');
+    }
+
+    function imprimirTicket(v) {
+      const w=window.open('','Ticket','width=300,height=600'); w.document.write(`
+        <html><head><title>Ticket</title><style>body{font-family:monospace;padding:10px}hr{border:1px dashed #000;}ul{list-style:none;padding:0}li{margin:4px 0}.total{font-weight:bold;margin-top:10px}.small{text-align:center;font-size:0.8em;margin-top:20px}</style></head><body>
+        <h2>JoVi System</h2><p><strong>Vend:</strong> ${v.vendedor}</p><p><strong>Fecha:</strong> ${v.fecha}</p><p><strong>Pago:</strong> ${v.metodo}</p><hr><ul>${v.productos.map(p=>`<li>${p.nombre} ... $${p.precio.toFixed(2)}</li>`).join('')}</ul><p class="total">Total: $${v.total.toFixed(2)}</p><hr><p class="small">¡Gracias!</p></body></html>`);
+      w.document.close(); w.focus(); w.print();
+    }
   </script>
 </body>
 </html>
