@@ -1,918 +1,973 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JoVi POS Avanzado y Sin Animaciones</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/feather-icons"></script>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    /* Colores y fuentes base */
-    body {
-      font-family: 'Inter', sans-serif; /* Fuente moderna */
-      background-color: #1A202C; /* Fondo principal oscuro (gray-900 de Tailwind) */
-      color: #E2E8F0; /* Texto claro (gray-200 de Tailwind) */
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 20v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4h-2v4H0v2h4v4h2v-4h4v-2H6zm0 20v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM36 4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 4v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM21 21v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 41v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 1V0h-2v1h-4v2h4v4h2V3h4V1h-4zm36 0V0h-2v1h-4v2h4v4h2V3h4V1h-4zM21 51v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      background-size: 60px 60px;
-      background-attachment: fixed;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JoVi POS Avanzado y Dinámico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Colores y fuentes base */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1A202C; /* Fondo principal oscuro */
+            color: #E2E8F0; /* Texto claro */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2348BB78' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 20v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4h-2v4H0v2h4v4h2v-4h4v-2H6zm0 20v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM36 4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 4v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM21 21v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 41v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 1V0h-2v1h-4v2h4v4h2V3h4V1h-4zm36 0V0h-2v1h-4v2h4v4h2V3h4V1h-4zM21 51v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 60px 60px;
+            background-attachment: fixed;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
 
-    /* Ocultar secciones por defecto */
-    .section {
-      display: none;
-    }
+        /* Ocultar secciones por defecto */
+        .section {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
 
-    /* Clase para mostrar la sección activa (sin animación) */
-    .section.is-active {
-        display: block;
-    }
+        /* Clase para mostrar la sección activa con animación */
+        .section.is-active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fade-in 0.3s ease-in-out forwards;
+        }
 
-    /* Transiciones suaves para elementos interactivos (sin animaciones complejas) */
-    .interactive-element {
-        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, color 0.15s ease-in-out;
-    }
+        /* Animaciones */
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    /* Estilos para scrollbars personalizados */
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-slide-in-left {
+            animation: slide-in-left 0.4s ease-out forwards;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #2D3748; /* gray-800 */
-      border-radius: 10px;
-    }
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-slide-in-right {
+            animation: slide-in-right 0.4s ease-out forwards;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #4A5568; /* gray-600 */
-      border-radius: 10px;
-    }
+        @keyframes slide-in-bottom {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-in-bottom {
+            animation: slide-in-bottom 0.4s ease-out forwards;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #5A6A78; /* Un poco más claro al pasar el ratón */
-    }
-  </style>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            20%, 60% { transform: rotate(-5deg); }
+            40%, 80% { transform: rotate(5deg); }
+        }
+        .animate-wiggle {
+            animation: wiggle 1s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-bounce {
+            animation: bounce 1s infinite ease-in-out;
+        }
+
+        /* Transiciones suaves para elementos interactivos */
+        .interactive-element {
+            transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, color 0.15s ease-in-out, transform 0.1s ease-out;
+        }
+        .interactive-element:hover {
+            transform: translateY(-2px); /* Pequeño levantamiento en hover */
+        }
+        .interactive-element:active {
+            transform: translateY(0); /* Vuelve a la posición normal al hacer clic */
+        }
+        .interactive-element:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(74, 222, 128, 0.5); /* Anillo de enfoque verde */
+        }
+
+        /* Estilos para scrollbars personalizados */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #2D3748; /* gray-800 */
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #48BB78; /* emerald-500 */
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #68D391; /* emerald-300 */
+        }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gray-900 text-gray-200 font-inter">
 
-  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-gray-200">
-    <i class="fas fa-microchip text-8xl mb-6 text-emerald-400"></i> 
-    <h1 class="text-5xl font-extrabold text-white mb-8">JoVi POS</h1>
-    <div class="bg-gray-800 p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-700">
-      <div class="mb-5">
-        <label for="user" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
-            <i data-feather="user" class="mr-3 text-emerald-400"></i>Usuario
-        </label>
-        <input id="user" type="text" placeholder="admin" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-      </div>
-      <div class="mb-7">
-        <label for="pass" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
-            <i data-feather="lock" class="mr-3 text-emerald-400"></i>Contraseña
-        </label>
-        <input id="pass" type="password" placeholder="••••••" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
-      </div>
-      <button id="btnLogin" class="w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
-        <i data-feather="log-in" class="mr-3 w-6 h-6"></i>Iniciar Sesión
-      </button>
-      <p id="login-error" class="text-red-400 text-sm mt-5 hidden text-center">Usuario o contraseña incorrecta</p>
-      <p class="mt-6 text-right">
-        <a href="#" id="forgot-password" class="text-emerald-400 text-sm hover:underline">¿Olvidaste la contraseña?</a>
-      </p>
-    </div>
-  </section>
-
-  <section id="pos-section" class="hidden min-h-screen flex flex-col">
-
-    <nav class="bg-gray-800 shadow-lg p-4 flex items-center sticky top-0 z-20 select-none border-b border-gray-700">
-      <div class="flex items-center space-x-4">
-        <i class="fas fa-microchip text-3xl text-emerald-400"></i>
-        <span class="text-2xl font-bold text-white">JoVi POS</span>
-      </div>
-      <div class="flex-grow flex justify-center space-x-3 mx-8">
-        <button onclick="showSection('ventas')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F1 - Ventas">
-            <i data-feather="shopping-cart" class="mr-2"></i>Ventas
-        </button>
-        <button onclick="showSection('productos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F2 - Productos">
-            <i data-feather="box" class="mr-2"></i>Productos
-        </button>
-        <button onclick="showSection('clientes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F3 - Clientes">
-            <i data-feather="users" class="mr-2"></i>Clientes
-        </button>
-        <button onclick="showSection('creditos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F4 - Créditos">
-            <i data-feather="credit-card" class="mr-2"></i>Créditos
-        </button>
-        <button onclick="showSection('inventario')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F5 - Inventario">
-            <i data-feather="database" class="mr-2"></i>Inventario
-        </button>
-        <button onclick="showSection('configuraciones')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F6 - Configuraciones">
-            <i data-feather="settings" class="mr-2"></i>Configuraciones
-        </button>
-        <button onclick="showSection('reportes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F7 - Reportes">
-            <i data-feather="bar-chart-2" class="mr-2"></i>Reportes
-        </button>
-      </div>
-      <span class="ml-auto text-base text-gray-400 flex items-center p-2 rounded-lg bg-gray-700">
-          <i data-feather="user-check" class="inline-block mr-2 text-emerald-400 w-5 h-5"></i>Vendedor: <strong id="vendedor-info" class="text-white ml-1"></strong>
-      </span>
-    </nav>
-
-    <main class="p-8 flex-grow">
-
-      <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto">
-        <label for="busqueda-producto" class="block text-4xl font-extrabold mb-4 text-center text-emerald-400 flex items-center justify-center">
-            <i data-feather="search" class="mr-4 w-10 h-10"></i>Buscar producto
-        </label>
-        <div class="relative">
-          <input id="busqueda-producto" type="text" placeholder="Escribe para buscar por nombre o código..." class="w-full p-5 pl-14 border-4 border-emerald-500 rounded-xl shadow-lg text-2xl bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" oninput="buscarProductos()" autocomplete="off" />
-          <i data-feather="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6"></i>
+    <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-gray-200">
+        <i class="fas fa-store text-8xl mb-6 text-emerald-400 animate-pulse"></i>
+        <h1 class="text-5xl font-extrabold text-white mb-8 tracking-tight">JoVi POS</h1>
+        <div class="bg-gray-800 p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-700 animate-fade-in">
+            <div class="mb-5">
+                <label for="user" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
+                    <i data-feather="user" class="mr-3 text-emerald-400"></i>Usuario
+                </label>
+                <input id="user" type="text" placeholder="admin" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            </div>
+            <div class="mb-7">
+                <label for="pass" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
+                    <i data-feather="lock" class="mr-3 text-emerald-400"></i>Contraseña
+                </label>
+                <input id="pass" type="password" placeholder="••••••" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            </div>
+            <button id="btnLogin" class="w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
+                <i data-feather="log-in" class="mr-3 w-6 h-6"></i>Acceder
+            </button>
+            <p id="login-error" class="text-red-400 text-sm mt-5 hidden text-center">Usuario o contraseña incorrecta</p>
+            <p class="mt-6 text-right">
+                <a href="#" id="forgot-password" class="text-emerald-400 text-sm hover:underline">¿Olvidaste la contraseña?</a>
+            </p>
         </div>
-        <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded-lg max-h-56 overflow-y-auto mt-3 shadow-md z-10 relative"></div>
-      </div>
+    </section>
 
-      <section id="ventas" class="section">
-        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
-            <i data-feather="shopping-cart" class="mr-3 w-8 h-8"></i>Gestión de Ventas
-        </h2>
+    <section id="pos-section" class="hidden min-h-screen flex flex-col">
 
-        <div class="grid lg:grid-cols-3 gap-8">
+        <nav class="bg-gray-800 shadow-lg p-4 flex items-center sticky top-0 z-20 select-none border-b border-gray-700">
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-cash-register text-3xl text-emerald-400"></i>
+                <span class="text-2xl font-bold text-white tracking-tight">JoVi POS</span>
+            </div>
+            <div class="flex-grow flex justify-center space-x-3 mx-8">
+                <button onclick="showSection('ventas')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F1 - Ventas">
+                    <i data-feather="shopping-cart" class="mr-2"></i><span class="hidden sm:inline">Ventas</span>
+                </button>
+                <button onclick="showSection('productos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F2 - Productos">
+                    <i data-feather="package" class="mr-2"></i><span class="hidden sm:inline">Productos</span>
+                </button>
+                <button onclick="showSection('clientes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F3 - Clientes">
+                    <i data-feather="users" class="mr-2"></i><span class="hidden sm:inline">Clientes</span>
+                </button>
+                <button onclick="showSection('creditos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F4 - Créditos">
+                    <i data-feather="credit-card" class="mr-2"></i><span class="hidden sm:inline">Créditos</span>
+                </button>
+                <button onclick="showSection('inventario')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F5 - Inventario">
+                    <i data-feather="list" class="mr-2"></i><span class="hidden sm:inline">Inventario</span>
+                </button>
+                <button onclick="showSection('configuraciones')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F6 - Configuraciones">
+                    <i data-feather="settings" class="mr-2"></i><span class="hidden sm:inline">Config.</span>
+                </button>
+                <button onclick="showSection('reportes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F7 - Reportes">
+                    <i data-feather="bar-chart-2" class="mr-2"></i><span class="hidden sm:inline">Reportes</span>
+                </button>
+            </div>
+            <span class="ml-auto text-base text-gray-400 flex items-center p-2 rounded-lg bg-gray-700">
+                <i data-feather="user-check" class="inline-block mr-2 text-emerald-400 w-5 h-5"></i><span class="hidden sm:inline">Vendedor:</span> <strong id="vendedor-info" class="text-white ml-1"></strong>
+            </span>
+        </nav>
 
-          <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
-            <h3 class="font-semibold text-xl mb-4 text-gray-300">Productos Rápidos</h3>
-            <div id="botones-rapidos" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <main class="p-8 flex-grow">
+
+            <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto animate-fade-in">
+                <label for="busqueda-producto" class="block text-4xl font-extrabold mb-4 text-center text-emerald-400 flex items-center justify-center">
+                    <i data-feather="search" class="mr-4 w-10 h-10 animate-wiggle"></i>Buscar producto
+                </label>
+                <div class="relative">
+                    <input id="busqueda-producto" type="text" placeholder="Escribe para buscar por nombre o código..." class="w-full p-5 pl-14 border-4 border-emerald-500 rounded-xl shadow-lg text-2xl bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" oninput="buscarProductos()" autocomplete="off" />
+                    <i data-feather="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6"></i>
                 </div>
-          </div>
-
-          <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 lg:col-span-2">
-            <h3 class="font-semibold text-xl mb-4 text-gray-300">Carrito de Compras</h3>
-            <div class="overflow-x-auto max-h-[500px] custom-scrollbar">
-                <table class="w-full text-left border-collapse text-gray-200">
-                  <thead class="bg-gray-700">
-                    <tr>
-                      <th class="p-3 text-sm font-medium">Producto</th>
-                      <th class="p-3 text-sm font-medium w-24">Cantidad</th>
-                      <th class="p-3 text-sm font-medium w-28 text-right">Precio Unitario</th>
-                      <th class="p-3 text-sm font-medium w-28 text-right">Subtotal</th>
-                      <th class="p-3 text-sm font-medium w-20 text-center">Descuento (%)</th>
-                      <th class="p-3 text-sm font-medium w-16 text-center">Acción</th>
-                    </tr>
-                  </thead>
-                  <tbody id="carrito-items">
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="mt-6 border-t border-gray-700 pt-4 flex flex-col items-end">
-              <div class="flex items-center mb-3">
-                <label class="font-semibold text-gray-300 text-lg mr-4">Descuento Global (%):</label>
-                <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-28 p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-lg text-center" oninput="aplicarDescuentoGlobal()" />
-              </div>
-              <p class="text-3xl font-extrabold text-white">Total: <span class="text-emerald-400">$<span id="total-venta">0.00</span></span></p>
-            </div>
-          </div>
-
-          <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
-            <h3 class="font-semibold text-xl mb-4 text-gray-300">Opciones de Pago</h3>
-            <label class="block mb-2 text-gray-300 text-base">Método de Pago:</label>
-            <select id="metodo-pago" class="w-full p-3 border border-gray-600 rounded-lg mb-4 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" onchange="cambiarMetodoPago()">
-              <option value="Efectivo">Efectivo</option>
-              <option value="Tarjeta">Tarjeta</option>
-              <option value="Transferencia">Transferencia</option>
-            </select>
-
-            <div id="efectivo-section" class="mb-4">
-              <label class="block mb-2 text-gray-300 text-base">Efectivo Recibido:</label>
-              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-3 border border-gray-600 rounded-lg mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" oninput="calcularCambio()" />
-              <p class="text-gray-300 text-base">Cambio: <span class="font-bold text-emerald-400">$<span id="cambio">0.00</span></span></p>
+                <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded-lg max-h-56 overflow-y-auto mt-3 shadow-md z-10 relative"></div>
             </div>
 
-            <button onclick="finalizarVenta()" class="mt-6 w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
-              <i data-feather="check-circle" class="mr-3 w-6 h-6"></i>Finalizar Venta
-            </button>
+            <section id="ventas" class="section">
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="shopping-cart" class="mr-3 w-8 h-8 animate-bounce"></i>Gestión de Ventas
+                </h2>
 
-            <h3 class="font-semibold text-xl mt-10 mb-4 text-gray-300">Caja Chica</h3>
-            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-3 border border-gray-600 rounded-lg mb-3 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" />
-            <select id="tipo-caja" class="w-full p-3 border border-gray-600 rounded-lg mb-3 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base">
-              <option value="entrada">Entrada</option>
-              <option value="salida">Salida</option>
-            </select>
-            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-600 active:bg-gray-500 interactive-element flex justify-center items-center text-base">
-              <i data-feather="plus-circle" class="mr-3 w-5 h-5"></i>Registrar Movimiento
-            </button>
-            <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border border-gray-600 rounded-lg p-3 bg-gray-800 text-sm text-gray-300 custom-scrollbar"></ul>
-          </div>
+                <div class="grid lg:grid-cols-3 gap-8">
 
-        </div>
-      </section>
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 animate-slide-in-left">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="zap" class="mr-2 text-yellow-400"></i>Productos Rápidos</h3>
+                        <div id="botones-rapidos" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            </div>
+                    </div>
 
-      <section id="productos" class="section">
-        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
-            <i data-feather="box" class="mr-3 w-8 h-8"></i>Gestión de Productos
-        </h2>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8">
-          <div class="space-y-4">
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Producto</label>
-            <input id="prod-nombre" placeholder="Ej: Camisa algodón" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            
-            <label class="block text-sm text-gray-300 flex items-center"><i class="fas fa-barcode mr-2 text-emerald-400 w-5 h-5"></i>Código del Producto</label>
-            <input id="prod-codigo" placeholder="Ej: CAMS001" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="list" class="mr-2 text-emerald-400 w-5 h-5"></i>Categoría</label>
-            <input id="prod-categoria" placeholder="Ej: Ropa, Electrónica" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 lg:col-span-2 animate-slide-in-bottom">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="list" class="mr-2 text-blue-400"></i>Carrito de Compras</h3>
+                        <div class="overflow-x-auto max-h-[500px] custom-scrollbar">
+                            <table class="w-full text-left border-collapse text-gray-200">
+                                <thead class="bg-gray-700">
+                                    <tr>
+                                        <th class="p-3 text-sm font-medium flex items-center"><i data-feather="tag" class="mr-2 text-gray-400"></i>Producto</th>
+                                        <th class="p-3 text-sm font-medium w-24 flex items-center justify-center"><i data-feather="hash" class="mr-2 text-gray-400"></i>Cant.</th>
+                                        <th class="p-3 text-sm font-medium w-28 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-2 text-gray-400"></i>Precio Unitario</th>
+                                        <th class="p-3 text-sm font-medium w-28 text-right flex items-center justify-end"><i data-feather="arrow-right" class="mr-2 text-gray-400"></i>Subtotal</th>
+                                        <th class="p-3 text-sm font-medium w-20 text-center flex items-center justify-center"><i data-feather="percent" class="mr-2 text-gray-400"></i>Desc.</th>
+                                        <th class="p-3 text-sm font-medium w-16 text-center"><i data-feather="x" class="text-gray-400"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="carrito-items">
+                                    </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-6 border-t border-gray-700 pt-4 flex flex-col items-end">
+                            <div class="flex items-center mb-3">
+                                <label class="font-semibold text-gray-300 text-lg mr-4 flex items-center"><i data-feather="minus-circle" class="mr-2 text-red-400"></i>Descuento Global (%):</label>
+                                <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-28 p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-lg text-center" oninput="aplicarDescuentoGlobal()" />
+                            </div>
+                            <p class="text-3xl font-extrabold text-white flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 animate-pulse"></i>Total: <span class="text-emerald-400">$<span id="total-venta">0.00</span></span></p>
+                        </div>
+                    </div>
 
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="truck" class="mr-2 text-emerald-400 w-5 h-5"></i>Proveedor</label>
-            <input id="prod-proveedor" placeholder="Ej: Distribuidora XYZ" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 animate-slide-in-right">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-green-400"></i>Opciones de Pago</h3>
+                        <label class="block mb-2 text-gray-300 text-base flex items-center"><i data-feather="credit-card" class="mr-2 text-blue-300"></i>Método de Pago:</label>
+                        <select id="metodo-pago" class="w-full p-3 border border-gray-600 rounded-lg mb-4 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" onchange="cambiarMetodoPago()">
+                            <option value="Efectivo"><i data-feather="dollar-sign" class="mr-2"></i>Efectivo</option>
+                            <option value="Tarjeta"><i data-feather="credit-card" class="mr-2"></i>Tarjeta</option>
+                            <option value="Transferencia"><i data-feather="send" class="mr-2"></i>Transferencia</option>
+                        </select>
 
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="edit" class="mr-2 text-emerald-400 w-5 h-5"></i>Unidad de Medida</label> <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-            
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Costo ($)</label>
-            <input id="prod-precio-costo" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
-            
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Venta ($)</label>
-            <input id="prod-precio-venta" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
-            
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="layers" class="mr-2 text-emerald-400 w-5 h-5"></i>Stock Disponible</label>
-            <input id="prod-stock" placeholder="0" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
+                        <div id="efectivo-section" class="mb-4">
+                            <label class="block mb-2 text-gray-300 text-base flex items-center"><i data-feather="arrow-down-left" class="mr-2 text-yellow-300"></i>Efectivo Recibido:</label>
+                            <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-3 border border-gray-600 rounded-lg mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" oninput="calcularCambio()" />
+                            <p class="text-gray-300 text-base flex items-center"><i data-feather="arrow-up-right" class="mr-2 text-green-300"></i>Cambio: <span class="font-bold text-emerald-400">$<span id="cambio">0.00</span></span></p>
+                        </div>
 
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="alert-triangle" class="mr-2 text-emerald-400 w-5 h-5"></i>Stock Mínimo para Alerta</label>
-            <input id="prod-stock-minimo" placeholder="5" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
+                        <button onclick="finalizarVenta()" class="mt-6 w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
+                            <i data-feather="check-circle" class="mr-3 w-6 h-6"></i>Finalizar Venta
+                        </button>
 
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="align-left" class="mr-2 text-emerald-400 w-5 h-5"></i>Descripción</label>
-            <textarea id="prod-descripcion" placeholder="Detalles adicionales del producto..." rows="3" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element resize-y"></textarea>
-            
-            <button onclick="saveProduct()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
-              <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Producto
-            </button>
-          </div>
-          <div class="overflow-auto max-h-[700px] custom-scrollbar"> 
-            <table class="w-full bg-gray-800 rounded-lg shadow text-base">
-              <thead class="bg-gray-700 text-gray-200 sticky top-0">
-                <tr>
-                  <th class="p-3 text-left">Nombre</th>
-                  <th class="p-3 text-left">Código</th>
-                  <th class="p-3 text-left">Categoría</th>
-                  <th class="p-3 text-left">Proveedor</th>
-                  <th class="p-3 text-left">Unidad</th>
-                  <th class="p-3 text-right">Costo</th>
-                  <th class="p-3 text-right">Venta</th>
-                  <th class="p-3 text-right">Stock</th>
-                  <th class="p-3 text-right">Min.</th>
-                  <th class="p-3 text-center">Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="prod-table" class="text-gray-300">
-                </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+                        <h3 class="font-semibold text-xl mt-10 mb-4 text-gray-300 flex items-center"><i data-feather="archive" class="mr-2 text-indigo-400"></i>Caja Chica</h3>
+                        <div class="flex space-x-2 mb-3">
+                            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-1/2 p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" />
+                            <select id="tipo-caja" class="w-1/2 p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base">
+                                <option value="entrada">Entrada</option>
+                                <option value="salida">Salida</option>
+                            </select>
+                        </div>
+                        <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-600 active:bg-gray-500 interactive-element flex justify-center items-center text-base">
+                            <i data-feather="plus-circle" class="mr-3 w-5 h-5"></i>Registrar Movimiento
+                        </button>
+                        <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border border-gray-600 rounded-lg p-3 bg-gray-800 text-sm text-gray-300 custom-scrollbar"></ul>
+                    </div>
 
-      <section id="clientes" class="section">
-        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
-            <i data-feather="users" class="mr-3 w-8 h-8"></i>Gestión de Clientes
-        </h2>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8">
-          <div class="space-y-4">
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="user-plus" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Cliente</label>
-            <input id="cli-nombre" placeholder="Ej: Juan Pérez" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="mail" class="mr-2 text-emerald-400 w-5 h-5"></i>Email</label>
-            <input id="cli-email" placeholder="ejemplo@correo.com" type="email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-            
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="phone-call" class="mr-2 text-emerald-400 w-5 h-5"></i>Teléfono</label>
-            <input id="cli-telefono" placeholder="Ej: +123 456 7890" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-            
-            <button onclick="saveClient()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
-              <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Cliente
-            </button>
-          </div>
-          <div class="overflow-auto max-h-[520px] custom-scrollbar">
-            <h3 class="font-semibold text-xl mb-4 text-gray-300">Listado de Clientes</h3>
-            <ul id="client-list" class="bg-gray-800 rounded-lg text-gray-300 divide-y divide-gray-700">
-              </ul>
-          </div>
-        </div>
-      </section>
+                </div>
+            </section>
 
-      <section id="creditos" class="section">
-        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
-            <i data-feather="credit-card" class="mr-3 w-8 h-8"></i>Gestión de Créditos
-        </h2>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
-          <p class="text-gray-400 text-lg">La funcionalidad de gestión de créditos estará disponible en futuras actualizaciones.</p>
-          <div class="mt-6 text-gray-500">
-              <p class="flex items-center mb-2"><i data-feather="info" class="mr-2 w-5 h-5"></i>Aquí se podrán registrar pagos a cuenta, saldos pendientes y el historial crediticio de los clientes.</p>
-              <p class="flex items-center"><i data-feather="dollar-sign" class="mr-2 w-5 h-5"></i>Permitirá llevar un control detallado de las deudas y abonos.</p>
-          </div>
-        </div>
-      </section>
+            <section id="productos" class="section">
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="package" class="mr-3 w-8 h-8 animate-pulse"></i>Gestión de Productos
+                </h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8 animate-slide-in-bottom">
+                    <div class="space-y-4">
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Producto</label>
+                        <input id="prod-nombre" placeholder="Ej: Camisa algodón" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i class="fas fa-barcode mr-2 text-emerald-400 w-5 h-5"></i>Código del Producto</label>
+                        <input id="prod-codigo" placeholder="Ej: CAMS001" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="folder" class="mr-2 text-emerald-400 w-5 h-5"></i>Categoría</label>
+                        <input id="prod-categoria" placeholder="Ej: Ropa, Electrónica" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
 
-      <section id="inventario" class="section">
-        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
-            <i data-feather="database" class="mr-3 w-8 h-8"></i>Reporte de Inventario
-        </h2>
-        <div id="inventory-list" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 h-96 overflow-y-auto text-gray-300 custom-scrollbar">
-          <h3 class="font-semibold text-xl mb-4 text-gray-300">Stock Actual de Productos</h3>
-          <table class="w-full bg-gray-800 rounded-lg text-base">
-            <thead class="bg-gray-700 text-gray-200 sticky top-0">
-              <tr>
-                <th class="p-3 text-left">Nombre</th>
-                <th class="p-3 text-left">Código</th>
-                <th class="p-3 text-left">Categoría</th>
-                <th class="p-3 text-left">Proveedor</th>
-                <th class="p-3 text-left">Unidad</th>
-                <th class="p-3 text-right">Stock</th>
-                <th class="p-3 text-right">Stock Mínimo</th>
-                <th class="p-3 text-right">Precio Venta</th>
-              </tr>
-            </thead>
-            <tbody id="inventory-table" class="text-gray-300">
-              </tbody>
-          </table>
-        </div>
-      </section>
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="truck" class="mr-2 text-emerald-400 w-5 h-5"></i>Proveedor</label>
+                        <input id="prod-proveedor" placeholder="Ej: Distribuidora XYZ" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
 
-      <section id="configuraciones" class="section">
-        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
-            <i data-feather="settings" class="mr-3 w-8 h-8"></i>Configuraciones del Sistema
-        </h2>
-        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
-          <p class="text-gray-400 text-lg">Los ajustes y configuraciones del sistema estarán disponibles aquí.</p>
-          <div class="mt-6 text-gray-500">
-              <p class="flex items-center mb-2"><i data-feather="tool" class="mr-2 w-5 h-5"></i>Opciones para personalizar el comportamiento del POS.</p>
-              <p class="flex items-center"><i data-feather="user-x" class="mr-2 w-5 h-5"></i>Gestión de usuarios y permisos (próximamente).</p>
-          </div>
-        </div>
-      </section>
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="ruler" class="mr-2 text-emerald-400 w-5 h-5"></i>Unidad de Medida</label>
+                        <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Costo ($)</label>
+                        <input id="prod-precio-costo" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Venta ($)</label>
+                        <input id="prod-precio-venta" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="box" class="mr-2 text-emerald-400 w-5 h-5"></i>Stock Disponible</label>
+                        <input id="prod-stock" placeholder="0" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
 
-      <section id="reportes" class="section">
-        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
-            <i data-feather="bar-chart-2" class="mr-3 w-8 h-8"></i>Reportes y Estadísticas
-        </h2>
-        <div id="reporte" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 text-sm h-96 overflow-y-auto text-gray-300 custom-scrollbar">
-          <p class="text-gray-400 text-lg">Esta sección proporcionará informes detallados sobre ventas, inventario y movimientos financieros.</p>
-          <div class="mt-6 text-gray-500">
-              <p class="flex items-center mb-2"><i data-feather="trending-up" class="mr-2 w-5 h-5"></i>Visualiza tus ganancias y tendencias de venta.</p>
-              <p class="flex items-center"><i data-feather="file-text" class="mr-2 w-5 h-5"></i>Genera informes personalizados para tu contabilidad.</p>
-          </div>
-        </div>
-      </section>
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="alert-triangle" class="mr-2 text-emerald-400 w-5 h-5"></i>Stock Mínimo para Alerta</label>
+                        <input id="prod-stock-minimo" placeholder="5" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
 
-    </main>
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="file-text" class="mr-2 text-emerald-400 w-5 h-5"></i>Descripción</label>
+                        <textarea id="prod-descripcion" placeholder="Detalles adicionales del producto..." rows="3" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element resize-y"></textarea>
+                        
+                        <button onclick="saveProduct()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
+                            <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Producto
+                        </button>
+                    </div>
+                    <div class="overflow-auto max-h-[700px] custom-scrollbar"> 
+                        <table class="w-full bg-gray-800 rounded-lg shadow text-base">
+                            <thead class="bg-gray-700 text-gray-200 sticky top-0">
+                                <tr>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="tag" class="mr-2 text-gray-300"></i>Nombre</th>
+                                    <th class="p-3 text-left flex items-center"><i class="fas fa-barcode mr-2 text-gray-300"></i>Código</th>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="folder" class="mr-2 text-gray-300"></i>Categoría</th>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="truck" class="mr-2 text-gray-300"></i>Proveedor</th>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="ruler" class="mr-2 text-gray-300"></i>Unidad</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-2 text-gray-300"></i>Costo</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="tag" class="mr-2 text-gray-300"></i>Venta</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="box" class="mr-2 text-gray-300"></i>Stock</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-2 text-gray-300"></i>Min.</th>
+                                    <th class="p-3 text-center"><i data-feather="settings" class="text-gray-300"></i>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="prod-table" class="text-gray-300">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-  </section>
+            <section id="clientes" class="section">
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="users" class="mr-3 w-8 h-8 animate-pulse"></i>Gestión de Clientes
+                </h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8 animate-slide-in-bottom">
+                    <div class="space-y-4">
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="user-plus" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Cliente</label>
+                        <input id="cli-nombre" placeholder="Ej: Juan Pérez" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="mail" class="mr-2 text-emerald-400 w-5 h-5"></i>Email</label>
+                        <input id="cli-email" placeholder="ejemplo@correo.com" type="email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="phone-call" class="mr-2 text-emerald-400 w-5 h-5"></i>Teléfono</label>
+                        <input id="cli-telefono" placeholder="Ej: +123 456 7890" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        
+                        <button onclick="saveClient()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
+                            <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Cliente
+                        </button>
+                    </div>
+                    <div class="overflow-auto max-h-[520px] custom-scrollbar">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="clipboard" class="mr-2 text-purple-400"></i>Listado de Clientes</h3>
+                        <ul id="client-list" class="bg-gray-800 rounded-lg text-gray-300 divide-y divide-gray-700">
+                            </ul>
+                    </div>
+                </div>
+            </section>
 
-  <script>
-    // --- Variables Globales ---
-    // Datos de acceso válidos
-    const USUARIO_VALIDO = "admin";
-    const CONTRASENA_VALIDA = "12345";
+            <section id="creditos" class="section">
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="credit-card" class="mr-3 w-8 h-8 animate-pulse"></i>Gestión de Créditos
+                </h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                    <p class="text-gray-400 text-lg flex items-center mb-4">
+                        <i data-feather="info" class="mr-3 text-blue-400 w-6 h-6"></i>La funcionalidad de gestión de créditos estará disponible en futuras actualizaciones.
+                    </p>
+                    <div class="mt-6 text-gray-500 space-y-3">
+                        <p class="flex items-center"><i data-feather="clipboard-list" class="mr-3 w-5 h-5 text-gray-500"></i>Aquí se podrán registrar pagos a cuenta, saldos pendientes y el historial crediticio de los clientes.</p>
+                        <p class="flex items-center"><i data-feather="dollar-sign" class="mr-3 w-5 h-5 text-gray-500"></i>Permitirá llevar un control detallado de las deudas y abonos.</p>
+                        <p class="flex items-center"><i data-feather="clock" class="mr-3 w-5 h-5 text-gray-500"></i>Registra la fecha y hora de cada movimiento de crédito.</p>
+                    </div>
+                </div>
+            </section>
 
-    // Elementos login y sistema
-    const loginSection = document.getElementById("login-section");
-    const posSection = document.getElementById("pos-section");
-    const loginError = document.getElementById("login-error");
-    const vendedorInfo = document.getElementById("vendedor-info");
-    const inputUser = document.getElementById("user");
-    const inputPass = document.getElementById("pass");
-    const btnLogin = document.getElementById("btnLogin");
+            <section id="inventario" class="section">
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="database" class="mr-3 w-8 h-8 animate-pulse"></i>Reporte de Inventario
+                </h2>
+                <div id="inventory-list-container" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 h-96 overflow-y-auto text-gray-300 custom-scrollbar animate-fade-in">
+                    <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="box" class="mr-2 text-orange-400"></i>Stock Actual de Productos</h3>
+                    <table class="w-full bg-gray-800 rounded-lg text-base">
+                        <thead class="bg-gray-700 text-gray-200 sticky top-0">
+                            <tr>
+                                <th class="p-3 text-left flex items-center"><i data-feather="tag" class="mr-2 text-gray-300"></i>Nombre</th>
+                                <th class="p-3 text-left flex items-center"><i class="fas fa-barcode mr-2 text-gray-300"></i>Código</th>
+                                <th class="p-3 text-left flex items-center"><i data-feather="folder" class="mr-2 text-gray-300"></i>Categoría</th>
+                                <th class="p-3 text-left flex items-center"><i data-feather="truck" class="mr-2 text-gray-300"></i>Proveedor</th>
+                                <th class="p-3 text-left flex items-center"><i data-feather="ruler" class="mr-2 text-gray-300"></i>Unidad</th>
+                                <th class="p-3 text-right flex items-center justify-end"><i data-feather="box" class="mr-2 text-gray-300"></i>Stock</th>
+                                <th class="p-3 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-2 text-gray-300"></i>Stock Mínimo</th>
+                                <th class="p-3 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-2 text-gray-300"></i>Precio Venta</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table" class="text-gray-300">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
 
-    // Secciones
-    const sections = document.querySelectorAll("section.section");
+            <section id="configuraciones" class="section">
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="settings" class="mr-3 w-8 h-8 animate-pulse"></i>Configuraciones del Sistema
+                </h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                    <p class="text-gray-400 text-lg flex items-center mb-4">
+                        <i data-feather="tool" class="mr-3 text-yellow-400 w-6 h-6"></i>Los ajustes y configuraciones del sistema estarán disponibles aquí.
+                    </p>
+                    <div class="mt-6 text-gray-500 space-y-3">
+                        <p class="flex items-center"><i data-feather="sliders" class="mr-3 w-5 h-5 text-gray-500"></i>Opciones para personalizar el comportamiento del POS.</p>
+                        <p class="flex items-center"><i data-feather="users" class="mr-3 w-5 h-5 text-gray-500"></i>Gestión de usuarios y permisos (próximamente).</p>
+                        <p class="flex items-center"><i data-feather="upload-cloud" class="mr-3 w-5 h-5"></i>Opciones de importación/exportación de datos.</p>
+                    </div>
+                </div>
+            </section>
 
-    // Productos almacenados
-    let productos = JSON.parse(localStorage.getItem("productos")) || [];
+            <section id="reportes" class="section">
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="bar-chart-2" class="mr-3 w-8 h-8 animate-pulse"></i>Reportes y Estadísticas
+                </h2>
+                <div id="reporte-content" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 text-sm h-96 overflow-y-auto text-gray-300 custom-scrollbar animate-fade-in">
+                    <p class="text-gray-400 text-lg flex items-center mb-4">
+                        <i data-feather="trending-up" class="mr-3 text-green-400 w-6 h-6"></i>Esta sección proporcionará informes detallados sobre ventas, inventario y movimientos financieros.
+                    </p>
+                    <div class="mt-6 text-gray-500 space-y-3">
+                        <p class="flex items-center"><i data-feather="dollar-sign" class="mr-3 w-5 h-5 text-gray-500"></i>Visualiza tus ganancias y tendencias de venta.</p>
+                        <p class="flex items-center"><i data-feather="file-text" class="mr-3 w-5 h-5 text-gray-500"></i>Genera informes personalizados para tu contabilidad.</p>
+                        <p class="flex items-center"><i data-feather="pie-chart" class="mr-3 w-5 h-5"></i>Gráficos y resúmenes visuales de tu rendimiento.</p>
+                    </div>
+                </div>
+            </section>
 
-    // Clientes almacenados
-    let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+        </main>
 
-    // Variables para ventas
-    let carrito = [];
-    let descuentoGlobal = 0;
+    </section>
 
-    // Caja chica
-    let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
+    <script>
+        // --- Variables Globales ---
+        const USUARIO_VALIDO = "admin";
+        const CONTRASENA_VALIDA = "12345";
 
-    // --- Funciones del Sistema (ahora en el ámbito global) ---
+        const loginSection = document.getElementById("login-section");
+        const posSection = document.getElementById("pos-section");
+        const loginError = document.getElementById("login-error");
+        const vendedorInfo = document.getElementById("vendedor-info");
+        const inputUser = document.getElementById("user");
+        const inputPass = document.getElementById("pass");
+        const btnLogin = document.getElementById("btnLogin");
 
-    // Mostrar sección deseada
-    function showSection(id) {
-        sections.forEach(sec => {
-            if (sec.id === id) {
-                sec.classList.add("is-active");
+        const sections = document.querySelectorAll("section.section");
+
+        let productos = JSON.parse(localStorage.getItem("productos")) || [];
+        let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+        let carrito = [];
+        let descuentoGlobal = 0;
+        let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
+
+        // --- Funciones del Sistema (en el ámbito global) ---
+
+        function showSection(id) {
+            sections.forEach(sec => {
+                if (sec.id === id) {
+                    sec.classList.add("is-active");
+                } else {
+                    sec.classList.remove("is-active");
+                }
+            });
+            document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
+            feather.replace(); // Asegura que los iconos Feather se rendericen al cambiar de sección
+        }
+
+        function login() {
+            const user = inputUser.value.trim();
+            const pass = inputPass.value.trim();
+            if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
+                loginError.classList.add("hidden");
+                loginSection.classList.add("hidden");
+                posSection.classList.remove("hidden");
+                vendedorInfo.textContent = user;
+                showSection("ventas");
+                inputUser.value = "";
+                inputPass.value = "";
+                feather.replace();
             } else {
-                sec.classList.remove("is-active");
+                loginError.classList.remove("hidden");
             }
-        });
-        // Mostrar campo buscar solo en ventas
-        document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
-        // Asegúrate de que los iconos Feather se rendericen de nuevo al cambiar de sección
-        feather.replace(); 
-    }
-
-    // Manejo login
-    function login() {
-        const user = inputUser.value.trim();
-        const pass = inputPass.value.trim();
-        if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
-            loginError.classList.add("hidden");
-            
-            // Ocultar login y mostrar POS
-            loginSection.classList.add("hidden");
-            posSection.classList.remove("hidden");
-
-            vendedorInfo.textContent = user;
-            showSection("ventas"); // Muestra la sección de ventas por defecto al iniciar sesión
-            inputUser.value = "";
-            inputPass.value = "";
-            feather.replace(); // Asegura que los iconos Feather se rendericen
-        } else {
-            loginError.classList.remove("hidden");
         }
-    }
 
-    // Buscar productos (en ventas)
-    function buscarProductos() {
-        const query = document.getElementById("busqueda-producto").value.trim().toLowerCase();
-        const lista = document.getElementById("lista-resultados");
-        lista.innerHTML = "";
-        if(query.length === 0) return;
-        const resultados = productos.filter(p =>
-            p.nombre.toLowerCase().includes(query) ||
-            p.codigo.toLowerCase().includes(query)
-        );
-        if(resultados.length === 0) {
-            lista.innerHTML = "<p class='p-3 text-gray-500'>No hay resultados</p>";
-            return;
-        }
-        resultados.forEach(p => {
-            const div = document.createElement("div");
-            div.className = "p-3 cursor-pointer hover:bg-emerald-600 hover:text-white rounded-md text-base interactive-element";
-            div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
-            div.onclick = () => agregarAlCarrito(p.codigo);
-            lista.appendChild(div);
-        });
-    }
-
-    // Agregar producto al carrito
-    function agregarAlCarrito(codigo) {
-        const producto = productos.find(p => p.codigo === codigo);
-        if(!producto) return alert("Producto no encontrado");
-        let item = carrito.find(i => i.codigo === codigo);
-        if(item) {
-            if(item.cantidad < producto.stock) {
-                item.cantidad++;
-            } else {
-                alert("No hay suficiente stock para '" + producto.nombre + "'. Máximo disponible: " + producto.stock);
+        function buscarProductos() {
+            const query = document.getElementById("busqueda-producto").value.trim().toLowerCase();
+            const lista = document.getElementById("lista-resultados");
+            lista.innerHTML = "";
+            if(query.length === 0) return;
+            const resultados = productos.filter(p =>
+                p.nombre.toLowerCase().includes(query) ||
+                p.codigo.toLowerCase().includes(query)
+            );
+            if(resultados.length === 0) {
+                lista.innerHTML = "<p class='p-3 text-gray-500'>No hay resultados</p>";
                 return;
             }
-        } else {
-            carrito.push({
-                codigo: producto.codigo,
-                nombre: producto.nombre,
-                precio: producto.precioVenta,
-                cantidad: 1,
-                descuento: 0
+            resultados.forEach(p => {
+                const div = document.createElement("div");
+                div.className = "p-3 cursor-pointer hover:bg-emerald-600 hover:text-white rounded-md text-base interactive-element";
+                div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
+                div.onclick = () => agregarAlCarrito(p.codigo);
+                lista.appendChild(div);
             });
-        }
-        actualizarCarrito();
-        document.getElementById("busqueda-producto").value = "";
-        document.getElementById("lista-resultados").innerHTML = "";
-    }
-
-    // Actualizar carrito en la tabla y total
-    function actualizarCarrito() {
-        const tbody = document.getElementById("carrito-items");
-        tbody.innerHTML = "";
-        let total = 0;
-        if (carrito.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500">El carrito está vacío. Agrega productos.</td></tr>';
+            feather.replace(); // Por si los resultados tienen iconos
         }
 
-        carrito.forEach((item, idx) => {
-            const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
-            total += subtotal;
-            const tr = document.createElement("tr");
-            tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
-            tr.innerHTML = `
-                <td class="p-3">${item.nombre}</td>
-                <td class="p-3 w-24">
-                    <input type="number" min="1" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-                </td>
-                <td class="p-3 w-28 text-right">$${item.precio.toFixed(2)}</td>
-                <td class="p-3 w-28 text-right">$${subtotal.toFixed(2)}</td>
-                <td class="p-3 w-20">
-                    <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-center" />
-                </td>
-                <td class="p-3 w-16 text-center">
-                    <button class="text-red-500 hover:text-red-600 text-xl font-bold interactive-element" data-idx-del="${idx}" title="Eliminar">&times;</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-        document.getElementById("total-venta").textContent = total.toFixed(2);
-
-        // Eventos para inputs cantidad y descuento (delegados para asegurar que siempre funcionen)
-        tbody.querySelectorAll(".cantidad-input").forEach(input => {
-            input.addEventListener("change", e => {
-                const i = parseInt(e.target.dataset.idx);
-                let val = parseInt(e.target.value);
-                if (isNaN(val) || val < 1) val = 1;
-                const productoEnStock = productos.find(p => p.codigo === carrito[i].codigo);
-                if(productoEnStock && val > productoEnStock.stock) { // Asegurarse de que el producto exista en `productos`
-                    alert("No hay suficiente stock para '" + carrito[i].nombre + "'. Máximo disponible: " + productoEnStock.stock);
-                    val = productoEnStock.stock;
-                    e.target.value = val;
+        function agregarAlCarrito(codigo) {
+            const producto = productos.find(p => p.codigo === codigo);
+            if(!producto) return alert("Producto no encontrado");
+            let item = carrito.find(i => i.codigo === codigo);
+            if(item) {
+                if(item.cantidad < producto.stock) {
+                    item.cantidad++;
+                } else {
+                    alert("No hay suficiente stock para '" + producto.nombre + "'. Máximo disponible: " + producto.stock);
+                    return;
                 }
-                carrito[i].cantidad = val;
-                actualizarCarrito();
-            });
-        });
-        tbody.querySelectorAll(".descuento-input").forEach(input => {
-            input.addEventListener("change", e => {
-                const i = parseInt(e.target.dataset.idxDesc);
-                let val = parseFloat(e.target.value);
-                if (isNaN(val) || val < 0) val = 0;
-                if (val > 100) val = 100;
-                carrito[i].descuento = val;
-                actualizarCarrito();
-            });
-        });
-        // Eliminar item (delegado)
-        tbody.querySelectorAll("[data-idx-del]").forEach(el => {
-            el.addEventListener("click", e => {
-                const i = parseInt(e.target.dataset.idxDel);
-                carrito.splice(i, 1);
-                actualizarCarrito();
-            });
-        });
-    }
-
-    // Generar botones rápidos de productos
-    function renderBotonesRapidos() {
-        const container = document.getElementById("botones-rapidos");
-        container.innerHTML = "";
-        const productosLimit = productos.slice(0, 8); // Solo mostrar los primeros 8 productos como rápidos
-        if (productosLimit.length === 0) {
-            container.innerHTML = '<p class="col-span-full text-gray-500 text-center">No hay productos para mostrar en los botones rápidos.</p>';
-            return;
-        }
-        productosLimit.forEach(p => {
-            const button = document.createElement("button");
-            button.className = "bg-gray-700 text-gray-100 py-3 px-2 rounded-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex flex-col items-center justify-center text-sm text-center shadow-md";
-            button.onclick = () => agregarAlCarrito(p.codigo);
-            button.innerHTML = `
-                <i data-feather="plus-square" class="mb-1 w-5 h-5 text-emerald-300"></i>
-                <span class="font-medium">${p.nombre}</span>
-                <span class="text-xs text-gray-400">$${p.precioVenta.toFixed(2)}</span>
-            `;
-            container.appendChild(button);
-        });
-        feather.replace(); // Volver a renderizar iconos después de añadir elementos dinámicamente
-    }
-
-    // Aplicar descuento global (sobre total)
-    function aplicarDescuentoGlobal() {
-        const val = parseFloat(document.getElementById("descuento-global").value);
-        descuentoGlobal = isNaN(val) ? 0 : val;
-        actualizarCarrito();
-    }
-
-    // Cambiar método de pago (mostrar efectivo si aplica)
-    function cambiarMetodoPago() {
-        const metodo = document.getElementById("metodo-pago").value;
-        document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
-        calcularCambio();
-    }
-
-    // Calcular cambio efectivo
-    function calcularCambio() {
-        const efectivo = parseFloat(document.getElementById("efectivo-recibido").value);
-        const total = parseFloat(document.getElementById("total-venta").textContent);
-        let cambio = 0;
-        if(!isNaN(efectivo) && efectivo > total) {
-            cambio = efectivo - total;
-        }
-        document.getElementById("cambio").textContent = cambio.toFixed(2);
-    }
-
-    // Finalizar venta
-    function finalizarVenta() {
-        if(carrito.length === 0) return alert("El carrito está vacío. Agrega productos para finalizar la venta.");
-
-        const totalVenta = parseFloat(document.getElementById("total-venta").textContent);
-        const metodoPago = document.getElementById("metodo-pago").value;
-        let mensaje = `Venta finalizada. Total: $${totalVenta.toFixed(2)}\nMétodo de Pago: ${metodoPago}`;
-        
-        if (metodoPago === "Efectivo") {
-            const efectivoRecibido = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
-            const cambioCalculado = parseFloat(document.getElementById("cambio").textContent) || 0;
-            if (efectivoRecibido < totalVenta) {
-                return alert("El efectivo recibido es insuficiente.");
+            } else {
+                carrito.push({
+                    codigo: producto.codigo,
+                    nombre: producto.nombre,
+                    precio: producto.precioVenta,
+                    cantidad: 1,
+                    descuento: 0
+                });
             }
-            mensaje += `\nEfectivo Recibido: $${efectivoRecibido.toFixed(2)}\nCambio: $${cambioCalculado.toFixed(2)}`;
+            actualizarCarrito();
+            document.getElementById("busqueda-producto").value = "";
+            document.getElementById("lista-resultados").innerHTML = "";
         }
 
-        alert(mensaje);
-        
-        // Actualizar stock de productos
-        carrito.forEach(itemCarrito => {
-            const productoIndex = productos.findIndex(p => p.codigo === itemCarrito.codigo);
-            if (productoIndex !== -1) {
-                productos[productoIndex].stock -= itemCarrito.cantidad;
-                if (productos[productoIndex].stock < 0) productos[productoIndex].stock = 0;
+        function actualizarCarrito() {
+            const tbody = document.getElementById("carrito-items");
+            tbody.innerHTML = "";
+            let total = 0;
+            if (carrito.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500"><i data-feather="shopping-bag" class="inline-block mr-2 text-gray-400"></i>El carrito está vacío. Agrega productos.</td></tr>';
             }
-        });
-        localStorage.setItem("productos", JSON.stringify(productos));
 
-        // Resetear estado
-        carrito = [];
-        actualizarCarrito();
-        document.getElementById("descuento-global").value = 0;
-        document.getElementById("efectivo-recibido").value = "";
-        document.getElementById("cambio").textContent = "0.00";
-        renderProductos();
-        renderInventoryList();
-        renderBotonesRapidos();
-    }
+            carrito.forEach((item, idx) => {
+                const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
+                total += subtotal;
+                const tr = document.createElement("tr");
+                tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
+                tr.innerHTML = `
+                    <td class="p-3">${item.nombre}</td>
+                    <td class="p-3 w-24">
+                        <input type="number" min="1" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                    </td>
+                    <td class="p-3 w-28 text-right">$${item.precio.toFixed(2)}</td>
+                    <td class="p-3 w-28 text-right">$${subtotal.toFixed(2)}</td>
+                    <td class="p-3 w-20">
+                        <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-center" />
+                    </td>
+                    <td class="p-3 w-16 text-center">
+                        <button class="text-red-500 hover:text-red-600 text-xl font-bold interactive-element" data-idx-del="${idx}" title="Eliminar"><i data-feather="trash-2" class="w-5 h-5"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById("total-venta").textContent = total.toFixed(2);
 
-    // Caja chica
-    const listaMovimientos = document.getElementById("movimientos-caja"); // Mover la declaración aquí
-    function agregarCajaChica() {
-        const monto = parseFloat(document.getElementById("monto-caja").value);
-        const tipo = document.getElementById("tipo-caja").value;
-        if(isNaN(monto) || monto <= 0) return alert("Monto inválido. Por favor, introduce un valor positivo.");
-        movimientosCaja.push({monto, tipo, fecha: new Date().toLocaleString()});
-        localStorage.setItem("movimientosCaja", JSON.stringify(movimientosCaja));
-        mostrarMovimientosCaja();
-        document.getElementById("monto-caja").value = "";
-        document.getElementById("tipo-caja").value = "entrada";
-    }
-    function mostrarMovimientosCaja() {
-        listaMovimientos.innerHTML = "";
-        if (movimientosCaja.length === 0) {
-            listaMovimientos.innerHTML = '<li class="p-3 text-center text-gray-500">No hay movimientos registrados.</li>';
-        }
-        movimientosCaja.forEach((m) => {
-            const li = document.createElement("li");
-            li.classList.add("py-2", "px-3", "border-b", "border-gray-700", "last:border-b-0", "flex", "justify-between", "items-center");
-            li.innerHTML = `
-                <span class="${m.tipo === 'entrada' ? 'text-emerald-400' : 'text-red-400'} font-medium">
-                    ${m.tipo === "entrada" ? '<i data-feather="arrow-up-circle" class="inline-block mr-1 w-4 h-4"></i>' : '<i data-feather="arrow-down-circle" class="inline-block mr-1 w-4 h-4"></i>'}
-                    ${m.tipo === "entrada" ? "Entrada" : "Salida"}
-                </span>
-                <span class="font-bold">$${m.monto.toFixed(2)}</span>
-                <span class="text-xs text-gray-500">${m.fecha.split(',')[0]}</span>
-            `;
-            listaMovimientos.appendChild(li);
-        });
-        listaMovimientos.scrollTop = listaMovimientos.scrollHeight;
-        feather.replace();
-    }
-
-    // Gestión productos
-    function saveProduct() {
-        const nombre = document.getElementById("prod-nombre").value.trim();
-        const codigo = document.getElementById("prod-codigo").value.trim();
-        const categoria = document.getElementById("prod-categoria").value.trim();
-        const proveedor = document.getElementById("prod-proveedor").value.trim();
-        const unidad = document.getElementById("prod-unidad").value.trim();
-        const precioCosto = parseFloat(document.getElementById("prod-precio-costo").value);
-        const precioVenta = parseFloat(document.getElementById("prod-precio-venta").value);
-        const stock = parseInt(document.getElementById("prod-stock").value);
-        const stockMinimo = parseInt(document.getElementById("prod-stock-minimo").value);
-        const descripcion = document.getElementById("prod-descripcion").value.trim();
-
-        if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock) || isNaN(stockMinimo) || precioCosto < 0 || precioVenta < 0 || stock < 0 || stockMinimo < 0) {
-            return alert("Por favor, completa todos los campos obligatorios ('Nombre', 'Código', 'Precio Costo', 'Precio Venta', 'Stock Disponible', 'Stock Mínimo') correctamente y asegúrate que los valores numéricos sean válidos.");
+            tbody.querySelectorAll(".cantidad-input").forEach(input => {
+                input.addEventListener("change", e => {
+                    const i = parseInt(e.target.dataset.idx);
+                    let val = parseInt(e.target.value);
+                    if (isNaN(val) || val < 1) val = 1;
+                    const productoEnStock = productos.find(p => p.codigo === carrito[i].codigo);
+                    if(productoEnStock && val > productoEnStock.stock) {
+                        alert("No hay suficiente stock para '" + carrito[i].nombre + "'. Máximo disponible: " + productoEnStock.stock);
+                        val = productoEnStock.stock;
+                        e.target.value = val;
+                    }
+                    carrito[i].cantidad = val;
+                    actualizarCarrito();
+                });
+            });
+            tbody.querySelectorAll(".descuento-input").forEach(input => {
+                input.addEventListener("change", e => {
+                    const i = parseInt(e.target.dataset.idxDesc);
+                    let val = parseFloat(e.target.value);
+                    if (isNaN(val) || val < 0) val = 0;
+                    if (val > 100) val = 100;
+                    carrito[i].descuento = val;
+                    actualizarCarrito();
+                });
+            });
+            tbody.querySelectorAll("[data-idx-del]").forEach(el => {
+                el.addEventListener("click", e => {
+                    const i = parseInt(e.target.dataset.idxDel);
+                    carrito.splice(i, 1);
+                    actualizarCarrito();
+                });
+            });
+            feather.replace(); // Renderizar iconos en los botones de eliminar
         }
 
-        let isNewProduct = true;
-        productos = productos.map(p => {
-            if(p.codigo === codigo) {
-                // Actualizar producto existente
-                p.nombre = nombre;
-                p.categoria = categoria;
-                p.proveedor = proveedor;
-                p.unidad = unidad;
-                p.precioCosto = precioCosto;
-                p.precioVenta = precioVenta;
-                p.stock = stock;
-                p.stockMinimo = stockMinimo;
-                p.descripcion = descripcion;
-                isNewProduct = false;
+        function renderBotonesRapidos() {
+            const container = document.getElementById("botones-rapidos");
+            container.innerHTML = "";
+            const productosLimit = productos.slice(0, 8);
+            if (productosLimit.length === 0) {
+                container.innerHTML = '<p class="col-span-full text-gray-500 text-center"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay productos para mostrar en los botones rápidos.</p>';
+                return;
             }
-            return p;
-        });
-
-        if(isNewProduct) {
-            productos.push({nombre, codigo, categoria, proveedor, unidad, precioCosto, precioVenta, stock, stockMinimo, descripcion});
+            productosLimit.forEach(p => {
+                const button = document.createElement("button");
+                button.className = "bg-gray-700 text-gray-100 py-3 px-2 rounded-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex flex-col items-center justify-center text-sm text-center shadow-md";
+                button.onclick = () => agregarAlCarrito(p.codigo);
+                button.innerHTML = `
+                    <i data-feather="plus-square" class="mb-1 w-5 h-5 text-emerald-300"></i>
+                    <span class="font-medium">${p.nombre}</span>
+                    <span class="text-xs text-gray-400">$${p.precioVenta.toFixed(2)}</span>
+                `;
+                container.appendChild(button);
+            });
+            feather.replace();
         }
 
-        localStorage.setItem("productos", JSON.stringify(productos));
-        limpiarFormProducto();
-        renderProductos();
-        renderInventoryList();
-        renderBotonesRapidos();
-        alert("Producto guardado correctamente.");
-    }
-    function limpiarFormProducto() {
-        document.getElementById("prod-nombre").value = "";
-        document.getElementById("prod-codigo").value = "";
-        document.getElementById("prod-categoria").value = "";
-        document.getElementById("prod-proveedor").value = "";
-        document.getElementById("prod-unidad").value = "";
-        document.getElementById("prod-precio-costo").value = "";
-        document.getElementById("prod-precio-venta").value = "";
-        document.getElementById("prod-stock").value = "";
-        document.getElementById("prod-stock-minimo").value = "";
-        document.getElementById("prod-descripcion").value = "";
-    }
-    function renderProductos() {
-        const tbody = document.getElementById("prod-table");
-        tbody.innerHTML = "";
-        if (productos.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" class="p-4 text-center text-gray-500">No hay productos registrados.</td></tr>';
-            return;
+        function aplicarDescuentoGlobal() {
+            const val = parseFloat(document.getElementById("descuento-global").value);
+            descuentoGlobal = isNaN(val) ? 0 : val;
+            actualizarCarrito();
         }
-        productos.forEach((p, i) => {
-            const tr = document.createElement("tr");
-            tr.classList.add("border-b", "border-gray-700", "hover:bg-gray-700", "interactive-element");
-            tr.innerHTML = `
-                <td class="p-3">${p.nombre}</td>
-                <td class="p-3">${p.codigo}</td>
-                <td class="p-3">${p.categoria || 'N/A'}</td>
-                <td class="p-3">${p.proveedor || 'N/A'}</td>
-                <td class="p-3">${p.unidad || 'N/A'}</td>
-                <td class="p-3 text-right">$${p.precioCosto.toFixed(2)}</td>
-                <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
-                <td class="p-3 text-right">${p.stock}</td>
-                <td class="p-3 text-right">${p.stockMinimo}</td>
-                <td class="p-3 text-center">
-                    <button class="text-blue-400 hover:text-blue-500 mr-2 interactive-element" onclick="editProduct(${i})" title="Editar"><i data-feather="edit"></i></button>
-                    <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteProduct(${i})" title="Eliminar"><i data-feather="trash-2"></i></button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-        feather.replace();
-    }
 
-    function editProduct(index) {
-        const product = productos[index];
-        document.getElementById("prod-nombre").value = product.nombre;
-        document.getElementById("prod-codigo").value = product.codigo;
-        document.getElementById("prod-categoria").value = product.categoria || '';
-        document.getElementById("prod-proveedor").value = product.proveedor || '';
-        document.getElementById("prod-unidad").value = product.unidad || '';
-        document.getElementById("prod-precio-costo").value = product.precioCosto;
-        document.getElementById("prod-precio-venta").value = product.precioVenta;
-        document.getElementById("prod-stock").value = product.stock;
-        document.getElementById("prod-stock-minimo").value = product.stockMinimo;
-        document.getElementById("prod-descripcion").value = product.descripcion || '';
-        
-        deleteProduct(index, false); // Esto es una simplificación, para que el siguiente saveProduct lo reemplace
-    }
+        function cambiarMetodoPago() {
+            const metodo = document.getElementById("metodo-pago").value;
+            document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
+            calcularCambio();
+            feather.replace(); // Por si los iconos en las opciones de select no se renderizan
+        }
 
-    function deleteProduct(index, updateStorage = true) {
-        if(confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+        function calcularCambio() {
+            const efectivo = parseFloat(document.getElementById("efectivo-recibido").value);
+            const total = parseFloat(document.getElementById("total-venta").textContent);
+            let cambio = 0;
+            if(!isNaN(efectivo) && efectivo > total) {
+                cambio = efectivo - total;
+            }
+            document.getElementById("cambio").textContent = cambio.toFixed(2);
+        }
+
+        function finalizarVenta() {
+            if(carrito.length === 0) return alert("El carrito está vacío. Agrega productos para finalizar la venta.");
+
+            const totalVenta = parseFloat(document.getElementById("total-venta").textContent);
+            const metodoPago = document.getElementById("metodo-pago").value;
+            let mensaje = `Venta finalizada. Total: $${totalVenta.toFixed(2)}\nMétodo de Pago: ${metodoPago}`;
+            
+            if (metodoPago === "Efectivo") {
+                const efectivoRecibido = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
+                const cambioCalculado = parseFloat(document.getElementById("cambio").textContent) || 0;
+                if (efectivoRecibido < totalVenta) {
+                    return alert("El efectivo recibido es insuficiente.");
+                }
+                mensaje += `\nEfectivo Recibido: $${efectivoRecibido.toFixed(2)}\nCambio: $${cambioCalculado.toFixed(2)}`;
+            }
+
+            alert(mensaje);
+            
+            carrito.forEach(itemCarrito => {
+                const productoIndex = productos.findIndex(p => p.codigo === itemCarrito.codigo);
+                if (productoIndex !== -1) {
+                    productos[productoIndex].stock -= itemCarrito.cantidad;
+                    if (productos[productoIndex].stock < 0) productos[productoIndex].stock = 0;
+                }
+            });
+            localStorage.setItem("productos", JSON.stringify(productos));
+
+            carrito = [];
+            actualizarCarrito();
+            document.getElementById("descuento-global").value = 0;
+            document.getElementById("efectivo-recibido").value = "";
+            document.getElementById("cambio").textContent = "0.00";
+            renderProductos();
+            renderInventoryList();
+            renderBotonesRapidos();
+        }
+
+        const listaMovimientos = document.getElementById("movimientos-caja");
+        function agregarCajaChica() {
+            const monto = parseFloat(document.getElementById("monto-caja").value);
+            const tipo = document.getElementById("tipo-caja").value;
+            if(isNaN(monto) || monto <= 0) return alert("Monto inválido. Por favor, introduce un valor positivo.");
+            movimientosCaja.push({monto, tipo, fecha: new Date().toLocaleString()});
+            localStorage.setItem("movimientosCaja", JSON.stringify(movimientosCaja));
+            mostrarMovimientosCaja();
+            document.getElementById("monto-caja").value = "";
+            document.getElementById("tipo-caja").value = "entrada";
+        }
+        function mostrarMovimientosCaja() {
+            listaMovimientos.innerHTML = "";
+            if (movimientosCaja.length === 0) {
+                listaMovimientos.innerHTML = '<li class="p-3 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay movimientos registrados.</li>';
+            }
+            movimientosCaja.forEach((m) => {
+                const li = document.createElement("li");
+                li.classList.add("py-2", "px-3", "border-b", "border-gray-700", "last:border-b-0", "flex", "justify-between", "items-center");
+                li.innerHTML = `
+                    <span class="${m.tipo === 'entrada' ? 'text-emerald-400' : 'text-red-400'} font-medium">
+                        ${m.tipo === "entrada" ? '<i data-feather="arrow-up-circle" class="inline-block mr-1 w-4 h-4"></i>' : '<i data-feather="arrow-down-circle" class="inline-block mr-1 w-4 h-4"></i>'}
+                        ${m.tipo === "entrada" ? "Entrada" : "Salida"}
+                    </span>
+                    <span class="font-bold">$${m.monto.toFixed(2)}</span>
+                    <span class="text-xs text-gray-500">${m.fecha.split(',')[0]}</span>
+                `;
+                listaMovimientos.appendChild(li);
+            });
+            listaMovimientos.scrollTop = listaMovimientos.scrollHeight;
+            feather.replace();
+        }
+
+        function saveProduct() {
+            const nombre = document.getElementById("prod-nombre").value.trim();
+            const codigo = document.getElementById("prod-codigo").value.trim();
+            const categoria = document.getElementById("prod-categoria").value.trim();
+            const proveedor = document.getElementById("prod-proveedor").value.trim();
+            const unidad = document.getElementById("prod-unidad").value.trim();
+            const precioCosto = parseFloat(document.getElementById("prod-precio-costo").value);
+            const precioVenta = parseFloat(document.getElementById("prod-precio-venta").value);
+            const stock = parseInt(document.getElementById("prod-stock").value);
+            const stockMinimo = parseInt(document.getElementById("prod-stock-minimo").value);
+            const descripcion = document.getElementById("prod-descripcion").value.trim();
+
+            if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock) || isNaN(stockMinimo) || precioCosto < 0 || precioVenta < 0 || stock < 0 || stockMinimo < 0) {
+                return alert("Por favor, completa todos los campos obligatorios ('Nombre', 'Código', 'Precio Costo', 'Precio Venta', 'Stock Disponible', 'Stock Mínimo') correctamente y asegúrate que los valores numéricos sean válidos.");
+            }
+
+            let isNewProduct = true;
+            productos = productos.map(p => {
+                if(p.codigo === codigo) {
+                    p.nombre = nombre;
+                    p.categoria = categoria;
+                    p.proveedor = proveedor;
+                    p.unidad = unidad;
+                    p.precioCosto = precioCosto;
+                    p.precioVenta = precioVenta;
+                    p.stock = stock;
+                    p.stockMinimo = stockMinimo;
+                    p.descripcion = descripcion;
+                    isNewProduct = false;
+                }
+                return p;
+            });
+
+            if(isNewProduct) {
+                productos.push({nombre, codigo, categoria, proveedor, unidad, precioCosto, precioVenta, stock, stockMinimo, descripcion});
+            }
+
+            localStorage.setItem("productos", JSON.stringify(productos));
+            limpiarFormProducto();
+            renderProductos();
+            renderInventoryList();
+            renderBotonesRapidos();
+            alert("Producto guardado correctamente.");
+        }
+        function limpiarFormProducto() {
+            document.getElementById("prod-nombre").value = "";
+            document.getElementById("prod-codigo").value = "";
+            document.getElementById("prod-categoria").value = "";
+            document.getElementById("prod-proveedor").value = "";
+            document.getElementById("prod-unidad").value = "";
+            document.getElementById("prod-precio-costo").value = "";
+            document.getElementById("prod-precio-venta").value = "";
+            document.getElementById("prod-stock").value = "";
+            document.getElementById("prod-stock-minimo").value = "";
+            document.getElementById("prod-descripcion").value = "";
+        }
+        function renderProductos() {
+            const tbody = document.getElementById("prod-table");
+            tbody.innerHTML = "";
+            if (productos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" class="p-4 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay productos registrados.</td></tr>';
+                return;
+            }
+            productos.forEach((p, i) => {
+                const tr = document.createElement("tr");
+                tr.classList.add("border-b", "border-gray-700", "hover:bg-gray-700", "interactive-element");
+                tr.innerHTML = `
+                    <td class="p-3">${p.nombre}</td>
+                    <td class="p-3">${p.codigo}</td>
+                    <td class="p-3">${p.categoria || 'N/A'}</td>
+                    <td class="p-3">${p.proveedor || 'N/A'}</td>
+                    <td class="p-3">${p.unidad || 'N/A'}</td>
+                    <td class="p-3 text-right">$${p.precioCosto.toFixed(2)}</td>
+                    <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
+                    <td class="p-3 text-right">${p.stock}</td>
+                    <td class="p-3 text-right">${p.stockMinimo}</td>
+                    <td class="p-3 text-center">
+                        <button class="text-blue-400 hover:text-blue-500 mr-2 interactive-element" onclick="editProduct(${i})" title="Editar"><i data-feather="edit"></i></button>
+                        <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteProduct(${i})" title="Eliminar"><i data-feather="trash-2"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            feather.replace();
+        }
+
+        function editProduct(index) {
+            const product = productos[index];
+            document.getElementById("prod-nombre").value = product.nombre;
+            document.getElementById("prod-codigo").value = product.codigo;
+            document.getElementById("prod-categoria").value = product.categoria || '';
+            document.getElementById("prod-proveedor").value = product.proveedor || '';
+            document.getElementById("prod-unidad").value = product.unidad || '';
+            document.getElementById("prod-precio-costo").value = product.precioCosto;
+            document.getElementById("prod-precio-venta").value = product.precioVenta;
+            document.getElementById("prod-stock").value = product.stock;
+            document.getElementById("prod-stock-minimo").value = product.stockMinimo;
+            document.getElementById("prod-descripcion").value = product.descripcion || '';
+            
+            // Elimina el producto de la lista temporalmente para que `saveProduct` lo actualice
+            // Esta no es la forma más robusta para "editar", pero funciona para este alcance.
+            // Una mejor implementación sería tener un ID oculto en el formulario para saber si es edición o nuevo.
             productos.splice(index, 1);
-            if (updateStorage) {
+            localStorage.setItem("productos", JSON.stringify(productos)); // Guarda el estado sin el producto editado temporalmente
+            renderProductos(); // Vuelve a renderizar la tabla sin el producto editado para evitar duplicados visuales al guardar
+        }
+
+        function deleteProduct(index) {
+            if(confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+                productos.splice(index, 1);
                 localStorage.setItem("productos", JSON.stringify(productos));
                 renderProductos();
                 renderInventoryList();
                 renderBotonesRapidos();
             }
         }
-    }
 
-    // Gestión clientes
-    function saveClient() {
-        const nombre = document.getElementById("cli-nombre").value.trim();
-        const email = document.getElementById("cli-email").value.trim();
-        const telefono = document.getElementById("cli-telefono").value.trim();
-        if(!nombre) return alert("El nombre del cliente es obligatorio.");
-        
-        clientes.push({nombre, email, telefono});
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        renderClientes();
-        document.getElementById("cli-nombre").value = "";
-        document.getElementById("cli-email").value = "";
-        document.getElementById("cli-telefono").value = "";
-        alert("Cliente guardado correctamente.");
-    }
-    function renderClientes() {
-        const list = document.getElementById("client-list");
-        list.innerHTML = "";
-        if (clientes.length === 0) {
-            list.innerHTML = '<li class="p-4 text-center text-gray-500">No hay clientes registrados.</li>';
-            return;
-        }
-        clientes.forEach((c, i) => {
-            const li = document.createElement("li");
-            li.className = "p-3 flex justify-between items-center hover:bg-gray-700 interactive-element";
-            li.innerHTML = `
-                <div>
-                    <p class="font-semibold text-lg text-white flex items-center"><i data-feather="user" class="mr-2 w-5 h-5 text-emerald-300"></i>${c.nombre}</p>
-                    ${c.email ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="mail" class="mr-2 w-4 h-4"></i>${c.email}</p>` : ''}
-                    ${c.telefono ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="phone" class="mr-2 w-4 h-4"></i>${c.telefono}</p>` : ''}
-                </div>
-                <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteClient(${i})" title="Eliminar Cliente"><i data-feather="trash-2"></i></button>
-            `;
-            list.appendChild(li);
-        });
-        feather.replace();
-    }
-
-    function deleteClient(index) {
-        if(confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
-            clientes.splice(index, 1);
+        function saveClient() {
+            const nombre = document.getElementById("cli-nombre").value.trim();
+            const email = document.getElementById("cli-email").value.trim();
+            const telefono = document.getElementById("cli-telefono").value.trim();
+            if(!nombre) return alert("El nombre del cliente es obligatorio.");
+            
+            // En un sistema real, aquí buscarías si ya existe por un ID o algún identificador único
+            // Para simplificar, aquí siempre añade un nuevo cliente
+            clientes.push({nombre, email, telefono});
             localStorage.setItem("clientes", JSON.stringify(clientes));
             renderClientes();
+            document.getElementById("cli-nombre").value = "";
+            document.getElementById("cli-email").value = "";
+            document.getElementById("cli-telefono").value = "";
+            alert("Cliente guardado correctamente.");
         }
-    }
-
-    // Gestión de Inventario (sección de Reportes/Inventario)
-    function renderInventoryList() {
-        const tbody = document.getElementById("inventory-table");
-        tbody.innerHTML = "";
-        if (productos.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500">No hay productos en inventario.</td></tr>';
-            return;
+        function renderClientes() {
+            const list = document.getElementById("client-list");
+            list.innerHTML = "";
+            if (clientes.length === 0) {
+                list.innerHTML = '<li class="p-4 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay clientes registrados.</li>';
+                return;
+            }
+            clientes.forEach((c, i) => {
+                const li = document.createElement("li");
+                li.className = "p-3 flex justify-between items-center hover:bg-gray-700 interactive-element";
+                li.innerHTML = `
+                    <div>
+                        <p class="font-semibold text-lg text-white flex items-center"><i data-feather="user" class="mr-2 w-5 h-5 text-emerald-300"></i>${c.nombre}</p>
+                        ${c.email ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="mail" class="mr-2 w-4 h-4"></i>${c.email}</p>` : ''}
+                        ${c.telefono ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="phone" class="mr-2 w-4 h-4"></i>${c.telefono}</p>` : ''}
+                    </div>
+                    <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteClient(${i})" title="Eliminar Cliente"><i data-feather="trash-2"></i></button>
+                `;
+                list.appendChild(li);
+            });
+            feather.replace();
         }
-        productos.forEach(p => {
-            const tr = document.createElement("tr");
-            tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
-            const stockColorClass = p.stock <= p.stockMinimo ? 'text-red-400 font-bold' : '';
-            tr.innerHTML = `
-                <td class="p-3">${p.nombre}</td>
-                <td class="p-3">${p.codigo}</td>
-                <td class="p-3">${p.categoria || 'N/A'}</td>
-                <td class="p-3">${p.proveedor || 'N/A'}</td>
-                <td class="p-3">${p.unidad || 'N/A'}</td>
-                <td class="p-3 text-right ${stockColorClass}">${p.stock}</td>
-                <td class="p-3 text-right">${p.stockMinimo}</td>
-                <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
 
-    // --- Funciones de Inicialización (se mantienen dentro de DOMContentLoaded) ---
-    document.addEventListener('DOMContentLoaded', (event) => {
-        feather.replace();
+        function deleteClient(index) {
+            if(confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
+                clientes.splice(index, 1);
+                localStorage.setItem("clientes", JSON.stringify(clientes));
+                renderClientes();
+            }
+        }
 
-        // Atajo Enter para login
-        [inputUser, inputPass].forEach(input => {
-            input.addEventListener("keypress", e => {
-                if(e.key === "Enter") {
-                    login();
+        function renderInventoryList() {
+            const tbody = document.getElementById("inventory-table");
+            tbody.innerHTML = "";
+            if (productos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay productos en inventario.</td></tr>';
+                return;
+            }
+            productos.forEach(p => {
+                const tr = document.createElement("tr");
+                tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
+                const stockColorClass = p.stock <= p.stockMinimo ? 'text-red-400 font-bold' : '';
+                tr.innerHTML = `
+                    <td class="p-3">${p.nombre}</td>
+                    <td class="p-3">${p.codigo}</td>
+                    <td class="p-3">${p.categoria || 'N/A'}</td>
+                    <td class="p-3">${p.proveedor || 'N/A'}</td>
+                    <td class="p-3">${p.unidad || 'N/A'}</td>
+                    <td class="p-3 text-right ${stockColorClass}">${p.stock}</td>
+                    <td class="p-3 text-right">${p.stockMinimo}</td>
+                    <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            feather.replace();
+        }
+
+        // --- Funciones de Inicialización (se mantienen dentro de DOMContentLoaded) ---
+        document.addEventListener('DOMContentLoaded', (event) => {
+            feather.replace();
+
+            // Atajo Enter para login
+            [inputUser, inputPass].forEach(input => {
+                input.addEventListener("keypress", e => {
+                    if(e.key === "Enter") {
+                        login();
+                    }
+                });
+            });
+
+            btnLogin.addEventListener("click", login);
+
+            // Teclas rápidas para cambiar secciones (F1-F7)
+            window.addEventListener("keydown", e => {
+                if(posSection.classList.contains('hidden')) return; // Solo si estamos en el POS
+                if(e.key === "F1") {
+                    e.preventDefault();
+                    showSection("ventas");
+                } else if(e.key === "F2") {
+                    e.preventDefault();
+                    showSection("productos");
+                } else if(e.key === "F3") {
+                    e.preventDefault();
+                    showSection("clientes");
+                } else if(e.key === "F4") {
+                    e.preventDefault();
+                    showSection("creditos");
+                } else if(e.key === "F5") {
+                    e.preventDefault();
+                    showSection("inventario");
+                } else if(e.key === "F6") {
+                    e.preventDefault();
+                    showSection("configuraciones");
+                } else if(e.key === "F7") {
+                    e.preventDefault();
+                    showSection("reportes");
                 }
             });
+
+            // Llamar a las funciones de renderizado iniciales
+            renderProductos();
+            renderClientes();
+            mostrarMovimientosCaja();
+            cambiarMetodoPago(); // Esto ya incluye feather.replace()
+            renderBotonesRapidos();
+            renderInventoryList();
         });
-
-        btnLogin.addEventListener("click", login);
-
-        // Teclas rápidas para cambiar secciones (F1-F7)
-        window.addEventListener("keydown", e => {
-            if(posSection.classList.contains('hidden')) return; // Solo si estamos en el POS
-            if(e.key === "F1") {
-                e.preventDefault();
-                showSection("ventas");
-            } else if(e.key === "F2") {
-                e.preventDefault();
-                showSection("productos");
-            } else if(e.key === "F3") {
-                e.preventDefault();
-                showSection("clientes");
-            } else if(e.key === "F4") {
-                e.preventDefault();
-                showSection("creditos");
-            } else if(e.key === "F5") {
-                e.preventDefault();
-                showSection("inventario");
-            } else if(e.key === "F6") {
-                e.preventDefault();
-                showSection("configuraciones");
-            } else if(e.key === "F7") {
-                e.preventDefault();
-                showSection("reportes");
-            }
-        });
-
-        // Llamar a las funciones de renderizado iniciales
-        renderProductos();
-        renderClientes();
-        mostrarMovimientosCaja();
-        cambiarMetodoPago();
-        renderBotonesRapidos();
-        renderInventoryList();
-    });
-  </script>
+    </script>
 </body>
 </html>
