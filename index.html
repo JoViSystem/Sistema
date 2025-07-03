@@ -3,118 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JoVi POS Básico</title>
+  <title>JoVi POS Animaciones CSS Puras</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAg-fTfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* Estilos globales y básicos */
+    /* Animación más básica */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    /* Estilos generales */
     body {
       font-family: sans-serif;
-      background-color: #1a202c; /* Fondo oscuro simple */
-      color: #e2e8f0; /* Texto claro */
+      background-color: #1a202c; /* Fondo base para el sistema */
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 20v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4h-2v4H0v2h4v4h2v-4h4v-2H6zm0 20v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM36 4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 4v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM21 21v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 41v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 1V0h-2v1h-4v2h4v4h2V3h4V1h-4zm36 0V0h-2v1h-4v2h4v4h2V3h4V1h-4zM21 51v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background-size: 60px 60px;
+      background-attachment: fixed;
     }
 
-    /* Ocultar secciones por defecto */
+    /* Ocultar secciones por defecto y aplicar animación */
     .section {
       display: none;
+      /* La animación se aplicará cuando se muestre la sección */
     }
-
-    /* Estilos básicos para el login */
-    #login-section {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background-color: #1a202c;
-    }
-    #login-section .login-box {
-      background-color: #2d3748;
-      padding: 2rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      width: 24rem;
-      max-width: 90%;
-    }
-    #login-section .login-input {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #4a5568;
-      border-radius: 0.5rem;
-      background-color: #2d3748;
-      color: #e2e8f0;
-      outline: none;
-    }
-    #login-section .login-button {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: #00FFFF;
-      color: #1a202c;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-    #login-section .login-error {
-        color: #fc8181;
-        font-size: 0.875rem;
-        margin-top: 0.75rem;
-        display: none;
-    }
-    #login-section .login-link {
-        color: #00FFFF;
-        font-size: 0.875rem;
-        text-decoration: none;
-        margin-top: 0.75rem;
+    
+    /* Mostrar sección con animación */
+    .section.is-active {
         display: block;
-        text-align: right;
+        animation: fadeIn 0.4s ease-out;
     }
 
-    /* Estilos básicos para las tablas (productos) */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-    }
-    th, td {
-        padding: 0.5rem;
-        text-align: left;
-        border-bottom: 1px solid #4a5568;
-    }
-    th {
-        background-color: #2d3748;
-    }
-    .hover-bg-gray-700:hover {
-        background-color: #4a5568;
-    }
-    .text-red-500 {
-        color: #ef4444;
-    }
-    .cursor-pointer {
-        cursor: pointer;
+    /* Transiciones para elementos interactivos (Tailwind) */
+    .btn-transition, .input-transition {
+        transition: all 0.2s ease-in-out;
     }
   </style>
 </head>
 <body class="bg-gray-900 text-gray-200 font-sans">
 
-  <section id="login-section">
+  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-gray-200 animate-fadeIn">
     <i class="fas fa-microchip w-32 h-32 mb-6 text-[#00FFFF]"></i>
     <h1 class="text-4xl font-extrabold text-white mb-6">Bienvenido a JoVi POS</h1>
-    <div class="login-box">
+    <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-96 max-w-sm animate-fadeIn">
       <div class="mb-4">
-        <label for="user" class="block text-gray-300 font-medium mb-1">Usuario</label>
-        <input id="user" type="text" placeholder="admin" class="login-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <label for="user" class="block text-gray-300 font-medium mb-1"><i data-feather="user" class="inline-block mr-2 text-[#00FFFF]"></i>Usuario</label>
+        <input id="user" type="text" placeholder="admin" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-[#00FFFF] focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
-      <div class="mb-4">
-        <label for="pass" class="block text-gray-300 font-medium mb-1">Contraseña</label>
-        <input id="pass" type="password" placeholder="••••••" class="login-input" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <div class="mb-6">
+        <label for="pass" class="block text-gray-300 font-medium mb-1"><i data-feather="lock" class="inline-block mr-2 text-[#00FFFF]"></i>Contraseña</label>
+        <input id="pass" type="password" placeholder="••••••" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-[#00FFFF] focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
-      <button id="btnLogin" class="login-button">
-        Iniciar Sesión
+      <button id="btnLogin" class="w-full bg-[#00FFFF] text-gray-900 py-3 rounded-lg font-semibold hover:bg-[#00CCCC] btn-transition flex justify-center items-center">
+        <i data-feather="log-in" class="mr-2"></i>Iniciar Sesión
       </button>
-      <p id="login-error" class="login-error">Usuario o contraseña incorrecta</p>
-      <p class="mt-3 text-right">
-        <a href="#" id="forgot-password" class="login-link">¿Olvidaste la contraseña?</a>
+      <p id="login-error" class="text-red-400 text-sm mt-4 hidden">Usuario o contraseña incorrecta</p>
+      <p class="mt-4 text-right">
+        <a href="#" id="forgot-password" class="text-[#00FFFF] text-sm hover:underline">¿Olvidaste la contraseña?</a>
       </p>
     </div>
   </section>
@@ -123,28 +72,29 @@
 
     <nav class="bg-gray-800 shadow-lg p-4 flex space-x-6 justify-center items-center sticky top-0 z-20 select-none">
       <i class="fas fa-microchip w-12 h-12 mr-4 text-[#00FFFF]"></i>
-      <button onclick="showSection('ventas')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Ventas</button>
-      <button onclick="showSection('productos')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Productos</button>
-      <button onclick="showSection('clientes')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Clientes</button>
-      <button onclick="showSection('creditos')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Créditos</button>
-      <button onclick="showSection('inventario')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Inventario</button>
-      <button onclick="showSection('configuraciones')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Configuraciones</button>
-      <button onclick="showSection('reportes')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Reportes</button>
-      <span class="ml-auto text-sm text-gray-400"><strong id="vendedor-info"></strong></span>
+      <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F1 - Ventas"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</button>
+      <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F2 - Productos"><i data-feather="box" class="mr-2"></i>Productos</button>
+      <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F3 - Clientes"><i data-feather="users" class="mr-2"></i>Clientes</button>
+      <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F4 - Créditos"><i data-feather="credit-card" class="mr-2"></i>Créditos</button>
+      <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F5 - Inventario"><i data-feather="database" class="mr-2"></i>Inventario</button>
+      <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F6 - Configuraciones"><i data-feather="settings" class="mr-2"></i>Configuraciones</button>
+      <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F7 - Reportes"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</button>
+      <span class="ml-auto text-sm text-gray-400 flex items-center"><i data-feather="user-check" class="inline-block mr-1 text-[#00FFFF]"></i><strong id="vendedor-info"></strong></span>
     </nav>
 
     <main class="p-8 space-y-8">
 
-      <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto">
-        <label for="busqueda-producto" class="block text-xl font-bold mb-3 text-center text-[#00FFFF]">Buscar producto</label>
+      <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto animate-fadeIn">
+        <label for="busqueda-producto" class="block text-4xl font-extrabold mb-3 text-center text-[#00FFFF]">Buscar producto</label>
         <div class="relative">
-          <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-2 border border-[#00FFFF] rounded bg-gray-700 text-white" oninput="buscarProductos()" autocomplete="off" />
+          <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-4 pl-12 border-4 border-[#00FFFF] rounded-xl shadow-lg text-2xl bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" oninput="buscarProductos()" autocomplete="off" />
+          <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
         </div>
-        <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded max-h-56 overflow-y-auto mt-2"></div>
+        <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded max-h-56 overflow-y-auto mt-2 shadow-md"></div>
       </div>
 
       <section id="ventas" class="section">
-        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Ventas</h2>
+        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</h2>
 
         <div class="grid md:grid-cols-3 gap-6">
 
@@ -172,14 +122,14 @@
 
             <div class="mt-4">
               <label class="block mb-1 font-semibold text-gray-300">Descuento global %:</label>
-              <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-24 p-1 border border-gray-600 rounded bg-gray-700 text-white" oninput="aplicarDescuentoGlobal()" />
+              <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-24 p-1 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" oninput="aplicarDescuentoGlobal()" />
             </div>
           </div>
 
           <div>
             <h3 class="font-semibold mb-2 text-gray-300">Pago</h3>
             <label class="block mb-1 text-gray-300">Método de pago:</label>
-            <select id="metodo-pago" class="w-full p-2 border border-gray-600 rounded mb-4 bg-gray-700 text-white" onchange="cambiarMetodoPago()">
+            <select id="metodo-pago" class="w-full p-2 border border-gray-600 rounded mb-4 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" onchange="cambiarMetodoPago()">
               <option value="Efectivo">Efectivo</option>
               <option value="Tarjeta">Tarjeta</option>
               <option value="Transferencia">Transferencia</option>
@@ -187,22 +137,22 @@
 
             <div id="efectivo-section">
               <label class="block mb-1 text-gray-300">Efectivo recibido:</label>
-              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" oninput="calcularCambio()" />
+              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" oninput="calcularCambio()" />
               <p class="text-gray-300">Cambio: $<span id="cambio">0.00</span></p>
             </div>
 
-            <button onclick="finalizarVenta()" class="mt-6 w-full bg-[#00FFFF] text-gray-900 py-3 rounded hover:bg-[#00CCCC]">
-              Finalizar Venta
+            <button onclick="finalizarVenta()" class="mt-6 w-full bg-[#00FFFF] text-gray-900 py-3 rounded hover:bg-[#00CCCC] btn-transition flex justify-center items-center">
+              <i data-feather="check-circle" class="mr-2"></i>Finalizar Venta
             </button>
 
             <h3 class="font-semibold mt-10 mb-2 text-gray-300">Caja Chica</h3>
-            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" />
-            <select id="tipo-caja" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white">
+            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
+            <select id="tipo-caja" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition">
               <option value="entrada">Entrada</option>
               <option value="salida">Salida</option>
             </select>
-            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-600">
-              Registrar Movimiento
+            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-600 btn-transition flex justify-center items-center">
+              <i data-feather="plus-circle" class="mr-2"></i>Registrar Movimiento
             </button>
             <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border border-gray-600 rounded p-2 bg-gray-800 text-sm text-gray-300"></ul>
           </div>
@@ -211,21 +161,21 @@
       </section>
 
       <section id="productos" class="section">
-        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Gestión de Productos</h2>
+        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="box" class="mr-2"></i>Gestión de Productos</h2>
         <div class="bg-gray-800 p-4 rounded shadow mb-4 flex flex-col md:flex-row md:space-x-4">
           <div class="flex-1 space-y-3">
-            <label class="block text-sm text-gray-300">Nombre</label>
-            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <label class="block text-sm text-gray-300">Código</label>
-            <input id="prod-codigo" placeholder="Código" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <label class="block text-sm text-gray-300">Precio de costo</label>
-            <input id="prod-precio-costo" placeholder="Precio de costo" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" step="0.01" min="0" />
-            <label class="block text-sm text-gray-300">Precio de venta</label>
-            <input id="prod-precio-venta" placeholder="Precio de venta" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" step="0.01" min="0" />
-            <label class="block text-sm text-gray-300">Stock</label>
-            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" min="0" />
-            <button onclick="saveProduct()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC]">
-              Guardar Producto
+            <label class="block text-sm text-gray-300"><i data-feather="tag" class="inline-block mr-1 text-[#00FFFF]"></i>Nombre</label>
+            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <label class="block text-sm text-gray-300"><i class="fas fa-barcode inline-block mr-1 text-[#00FFFF]"></i>Código</label>
+            <input id="prod-codigo" placeholder="Código" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <label class="block text-sm text-gray-300"><i data-feather="dollar-sign" class="inline-block mr-1 text-[#00FFFF]"></i>Precio de costo</label>
+            <input id="prod-precio-costo" placeholder="Precio de costo" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" step="0.01" min="0" />
+            <label class="block text-sm text-gray-300"><i data-feather="dollar-sign" class="inline-block mr-1 text-[#00FFFF]"></i>Precio de venta</label>
+            <input id="prod-precio-venta" placeholder="Precio de venta" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" step="0.01" min="0" />
+            <label class="block text-sm text-gray-300"><i data-feather="layers" class="inline-block mr-1 text-[#00FFFF]"></i>Stock</label>
+            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" min="0" />
+            <button onclick="saveProduct()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC] btn-transition flex items-center justify-center">
+              <i data-feather="save" class="inline-block mr-1"></i>Guardar Producto
             </button>
           </div>
           <div class="flex-1 overflow-auto max-h-[520px]">
@@ -247,38 +197,38 @@
       </section>
 
       <section id="clientes" class="section">
-        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Clientes</h2>
+        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="users" class="mr-2"></i>Clientes</h2>
         <div class="bg-gray-800 p-4 rounded shadow mb-4">
-          <label class="block mb-1 text-sm text-gray-300">Nombre</label>
-          <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-          <label class="block mb-1 text-sm text-gray-300">Email</label>
-          <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" />
-          <label class="block mb-1 text-sm text-gray-300">Teléfono</label>
-          <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" />
-          <button onclick="saveClient()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC]">
-            Guardar Cliente
+          <label class="block mb-1 text-sm text-gray-300"><i data-feather="user-plus" class="inline-block mr-1 text-[#00FFFF]"></i>Nombre</label>
+          <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          <label class="block mb-1 text-sm text-gray-300"><i data-feather="mail" class="inline-block mr-1 text-[#00FFFF]"></i>Email</label>
+          <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
+          <label class="block mb-1 text-sm text-gray-300"><i data-feather="phone-call" class="inline-block mr-1 text-[#00FFFF]"></i>Teléfono</label>
+          <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
+          <button onclick="saveClient()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC] btn-transition flex items-center justify-center">
+            <i data-feather="save" class="inline-block mr-1"></i>Guardar Cliente
           </button>
         </div>
         <ul id="client-list" class="bg-gray-800 p-4 rounded shadow h-80 overflow-y-auto text-gray-300"></ul>
       </section>
 
       <section id="creditos" class="section">
-        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Créditos</h2>
+        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="credit-card" class="mr-2"></i>Créditos</h2>
         <p class="text-gray-400">Funcionalidad de créditos en desarrollo...</p>
       </section>
 
       <section id="inventario" class="section">
-        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Inventario</h2>
+        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="database" class="mr-2"></i>Inventario</h2>
         <div id="inventory-list" class="bg-gray-800 p-4 rounded shadow h-80 overflow-y-auto text-gray-300"></div>
       </section>
 
       <section id="configuraciones" class="section">
-        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Configuraciones</h2>
+        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="settings" class="mr-2"></i>Configuraciones</h2>
         <p class="text-gray-400">Ajustes del sistema en desarrollo...</p>
       </section>
 
       <section id="reportes" class="section">
-        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Reportes</h2>
+        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</h2>
         <div id="reporte" class="bg-gray-800 p-4 rounded shadow text-sm h-80 overflow-y-auto text-gray-300">
           <p class="text-gray-400">Aquí se mostrarán los reportes próximamente...</p>
         </div>
@@ -290,7 +240,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {
-        // feather.replace(); // Deshabilitado temporalmente para máxima simplificación
+        feather.replace(); // Asegura que los iconos Feather se rendericen
 
         // Datos de acceso válidos
         const USUARIO_VALIDO = "admin";
@@ -324,13 +274,16 @@
             renderClientes();  // Carga y muestra los clientes existentes
             mostrarMovimientosCaja(); // Carga y muestra los movimientos de caja
             cambiarMetodoPago(); // Asegura que la sección de efectivo se muestre/oculte correctamente al inicio
-            // No llamar showSection aquí, para que el login sea lo primero
         }
 
         // Mostrar sección deseada
         function showSection(id) {
           sections.forEach(sec => {
-            sec.id === id ? sec.style.display = "block" : sec.style.display = "none";
+            if (sec.id === id) {
+                sec.classList.add("is-active"); // Añade la clase que activa el display y la animación CSS
+            } else {
+                sec.classList.remove("is-active"); // Remueve la clase para ocultar
+            }
           });
           // Mostrar campo buscar solo en ventas
           document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
@@ -341,16 +294,19 @@
           const user = inputUser.value.trim();
           const pass = inputPass.value.trim();
           if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
-            loginError.style.display = "none";
-            loginSection.style.display = "none";
-            posSection.style.display = "block"; // Mostrar el POS
+            loginError.classList.add("hidden");
             
+            // Ocultar login y mostrar POS usando solo display y la clase is-active
+            loginSection.classList.add("hidden");
+            posSection.classList.remove("hidden");
+            posSection.classList.add("is-active"); // Esto hace que el POS aparezca con fadein
+
             vendedorInfo.textContent = user;
             showSection("ventas"); // Muestra la sección de ventas por defecto al iniciar sesión
             inputUser.value = "";
             inputPass.value = "";
           } else {
-            loginError.style.display = "block";
+            loginError.classList.remove("hidden");
           }
         }
 
@@ -381,7 +337,7 @@
           }
           resultados.forEach(p => {
             const div = document.createElement("div");
-            div.className = "p-2 cursor-pointer hover:bg-[#00FFFF] hover:text-gray-900";
+            div.className = "p-2 cursor-pointer hover:bg-[#00FFFF] hover:text-gray-900 rounded transition duration-200 ease-in-out"; /* Transición simple */
             div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
             div.onclick = () => agregarAlCarrito(p.codigo);
             lista.appendChild(div);
@@ -417,22 +373,24 @@
         // Actualizar carrito en la tabla y total
         function actualizarCarrito() {
           const tbody = document.getElementById("carrito-items");
-          tbody.innerHTML = ""; 
+          tbody.innerHTML = "";
           let total = 0;
           carrito.forEach((item, idx) => {
             const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
             total += subtotal;
             const tr = document.createElement("tr");
+            tr.classList.add("transition-opacity", "duration-200", "ease-out"); // Transición para cuando se agregan/eliminan
             tr.innerHTML = `
               <td class="p-1">${item.nombre}</td>
               <td class="p-1 w-20">
-                <input type="number" min="1" max="999" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white" />
+                <input type="number" min="1" max="999" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
               </td>
+              <td class="p-1 w-24 text-right">$${item.precio.toFixed(2)}</td>
               <td class="p-1 w-24 text-right">$${subtotal.toFixed(2)}</td>
               <td class="p-1 w-12">
-                <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white" />
+                <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
               </td>
-              <td class="p-1 w-10 text-center cursor-pointer text-red-500" data-idx-del="${idx}">&times;</td>
+              <td class="p-1 w-10 text-center cursor-pointer text-red-500 hover:text-red-700 transition duration-200 ease-in-out" data-idx-del="${idx}" title="Eliminar">&times;</td>
             `;
             tbody.appendChild(tr);
           });
@@ -444,10 +402,10 @@
               const i = parseInt(e.target.dataset.idx);
               let val = parseInt(e.target.value);
               if (val < 1 || isNaN(val)) val = 1;
-              const stock = productos.find(p => p.codigo === carrito[i].codigo).stock;
-              if(val > stock) {
-                alert("No hay suficiente stock. Máximo disponible: " + stock);
-                val = stock;
+              const productoEnStock = productos.find(p => p.codigo === carrito[i].codigo);
+              if(val > productoEnStock.stock) {
+                alert("No hay suficiente stock. Máximo disponible: " + productoEnStock.stock);
+                val = productoEnStock.stock;
               }
               carrito[i].cantidad = val;
               actualizarCarrito();
@@ -467,8 +425,16 @@
           document.querySelectorAll("[data-idx-del]").forEach(el => {
             el.addEventListener("click", e => {
               const i = parseInt(e.target.dataset.idxDel);
-              carrito.splice(i, 1);
-              actualizarCarrito();
+              // Animación de desvanecimiento antes de eliminar
+              const row = e.target.closest('tr');
+              row.style.opacity = '0';
+              row.style.height = '0';
+              row.style.overflow = 'hidden';
+              row.style.transition = 'opacity 0.2s ease-out, height 0.2s ease-out';
+              setTimeout(() => { // Esperar la animación para eliminar del DOM
+                  carrito.splice(i, 1);
+                  actualizarCarrito();
+              }, 200);
             });
           });
         }
@@ -504,12 +470,23 @@
 
           alert("Venta finalizada. Total: $" + document.getElementById("total-venta").textContent);
           
+          // Actualizar stock de productos
+          carrito.forEach(itemCarrito => {
+              const productoIndex = productos.findIndex(p => p.codigo === itemCarrito.codigo);
+              if (productoIndex !== -1) {
+                  productos[productoIndex].stock -= itemCarrito.cantidad;
+                  if (productos[productoIndex].stock < 0) productos[productoIndex].stock = 0; // Asegurarse de que no sea negativo
+              }
+          });
+          localStorage.setItem("productos", JSON.stringify(productos)); // Guardar cambios en el stock
+
           // Resetear estado
           carrito = [];
           actualizarCarrito();
           document.getElementById("descuento-global").value = 0;
           document.getElementById("efectivo-recibido").value = "";
           document.getElementById("cambio").textContent = "0.00";
+          renderProductos(); // Volver a renderizar la tabla de productos para reflejar el stock actualizado
         }
 
         // Caja chica
@@ -529,9 +506,11 @@
           listaMovimientos.innerHTML = "";
           movimientosCaja.forEach((m, i) => {
             const li = document.createElement("li");
+            li.classList.add("py-1", "border-b", "border-gray-700", "last:border-b-0"); // Estilos simples
             li.textContent = `[${m.fecha}] ${m.tipo === "entrada" ? "+" : "-"}$${m.monto.toFixed(2)}`;
             listaMovimientos.appendChild(li);
           });
+          listaMovimientos.scrollTop = listaMovimientos.scrollHeight; // Desplazar al final
         }
 
         // Gestión productos
@@ -584,14 +563,14 @@
           }
           productos.forEach((p, i) => {
             const tr = document.createElement("tr");
-            tr.classList.add("hover-bg-gray-700"); /* Clase simplificada para hover */
+            tr.classList.add("border-b", "border-gray-700", "hover:bg-gray-700", "transition", "duration-200", "ease-in-out"); // Transición en hover
             tr.innerHTML = `
               <td class="p-2">${p.nombre}</td>
               <td class="p-2">${p.codigo}</td>
               <td class="p-2 text-right">$${p.precioCosto.toFixed(2)}</td>
               <td class="p-2 text-right">$${p.precioVenta.toFixed(2)}</td>
               <td class="p-2 text-right">${p.stock}</td>
-              <td class="p-2 text-center cursor-pointer text-red-500" data-index="${i}">&times;</td>
+              <td class="p-2 text-center cursor-pointer text-red-500 hover:text-red-700 transition duration-200 ease-in-out" title="Eliminar" data-index="${i}">&times;</td>
             `;
             tbody.appendChild(tr);
           });
@@ -600,9 +579,16 @@
             td.addEventListener("click", e => {
               const idx = parseInt(e.target.dataset.index);
               if(confirm("¿Eliminar producto? Esta acción no se puede deshacer.")) {
-                productos.splice(idx, 1);
-                localStorage.setItem("productos", JSON.stringify(productos));
-                renderProductos();
+                const row = e.target.closest('tr');
+                row.style.opacity = '0';
+                row.style.height = '0';
+                row.style.overflow = 'hidden';
+                row.style.transition = 'opacity 0.2s ease-out, height 0.2s ease-out';
+                setTimeout(() => { // Esperar la animación para eliminar del DOM
+                    productos.splice(idx, 1);
+                    localStorage.setItem("productos", JSON.stringify(productos));
+                    renderProductos();
+                }, 200);
               }
             });
           });
@@ -619,3 +605,76 @@
           localStorage.setItem("clientes", JSON.stringify(clientes));
           renderClientes();
           document.getElementById("cli-nombre").value = "";
+          document.getElementById("cli-email").value = "";
+          document.getElementById("cli-telefono").value = "";
+        }
+        function renderClientes() {
+          const list = document.getElementById("client-list");
+          list.innerHTML = "";
+          if (clientes.length === 0) {
+            list.innerHTML = '<li class="p-4 text-center text-gray-500">No hay clientes registrados.</li>';
+            return;
+          }
+          clientes.forEach((c, i) => {
+            const li = document.createElement("li");
+            li.className = "mb-2 border-b border-gray-700 pb-2 flex justify-between items-center transition-opacity duration-200 ease-out"; // Transición simple
+            li.innerHTML = `
+              <span>${c.nombre} - ${c.email || "-"} - ${c.telefono || "-"}</span>
+              <span class="cursor-pointer text-red-500 hover:text-red-700 transition duration-200 ease-in-out" title="Eliminar" data-index="${i}">&times;</span>
+            `;
+            list.appendChild(li);
+          });
+
+          // Eliminar cliente
+          list.querySelectorAll("[data-index]").forEach(span => {
+            span.addEventListener("click", e => {
+              const idx = parseInt(e.target.dataset.index);
+              if(confirm("¿Eliminar cliente?")) {
+                const listItem = e.target.closest('li');
+                listItem.style.opacity = '0';
+                listItem.style.height = '0';
+                listItem.style.overflow = 'hidden';
+                listItem.style.transition = 'opacity 0.2s ease-out, height 0.2s ease-out';
+                setTimeout(() => {
+                  clientes.splice(idx, 1);
+                  localStorage.setItem("clientes", JSON.stringify(clientes));
+                  renderClientes();
+                }, 200);
+              }
+            });
+          });
+        }
+
+        // Teclas rápidas para cambiar secciones (F1-F7)
+        window.addEventListener("keydown", e => {
+          if(posSection.classList.contains('hidden')) return; // Solo si estamos en el POS
+          if(e.key === "F1") {
+            e.preventDefault();
+            showSection("ventas");
+          } else if(e.key === "F2") {
+            e.preventDefault();
+            showSection("productos");
+          } else if(e.key === "F3") {
+            e.preventDefault();
+            showSection("clientes");
+          } else if(e.key === "F4") {
+            e.preventDefault();
+            showSection("creditos");
+          } else if(e.key === "F5") {
+            e.preventDefault();
+            showSection("inventario");
+          } else if(e.key === "F6") {
+            e.preventDefault();
+            showSection("configuraciones");
+          } else if(e.key === "F7") {
+            e.preventDefault();
+            showSection("reportes");
+          }
+        });
+
+        // Llamar a la función de inicialización cuando el DOM esté listo
+        initializeApp();
+    }); // Cierre de DOMContentLoaded
+  </script>
+</body>
+</html>
