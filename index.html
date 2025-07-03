@@ -15,11 +15,11 @@
 <body class="bg-gray-50 text-gray-800 font-sans">
   <!-- LOGIN -->
   <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#00BFFF] to-[#005F9E] animate-fadeIn">
-    <img src="logo.png" alt="JoVi Logo" class="w-32 h-32 mb-6 animate-pulse" />
+    <i data-feather="monitor" class="w-32 h-32 text-white mb-6 animate-pulse"></i>
     <h1 class="text-4xl font-extrabold text-white mb-6 drop-shadow-lg">JoVi POS Profesional</h1>
     <div class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-xl w-96">
-      <input id="user" type="text" placeholder="admin" class="w-full p-3 border rounded mb-4 focus:ring-[#00BFFF]">
-      <input id="pass" type="password" placeholder="12345" class="w-full p-3 border rounded mb-4 focus:ring-[#00BFFF]">
+      <input id="user" name="user" autocomplete="off" type="text" class="w-full p-3 border rounded mb-4 focus:ring-[#00BFFF]" placeholder="Usuario" />
+      <input id="pass" name="pass" autocomplete="off" type="password" class="w-full p-3 border rounded mb-4 focus:ring-[#00BFFF]" placeholder="Contraseña" />
       <button id="login-btn" class="w-full bg-[#00BFFF] text-white py-3 rounded-lg mb-2 hover:bg-[#007ACC]">Iniciar Sesión</button>
       <button id="forgot-btn" class="text-sm text-gray-600 hover:underline"><i data-feather="help-circle"></i> Olvidé contraseña</button>
       <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Credenciales incorrectas</p>
@@ -29,7 +29,7 @@
   <!-- POS -->
   <section id="pos-section" class="hidden animate-fadeIn">
     <nav class="bg-white shadow sticky top-0 z-10 flex items-center p-4 space-x-4">
-      <img src="logo.png" class="w-10 h-10" />
+      <i data-feather="monitor" class="w-10 h-10"></i>
       <button onclick="showSection('ventas')"><i data-feather="shopping-cart"></i> Ventas</button>
       <button onclick="showSection('productos')"><i data-feather="box"></i> Productos</button>
       <button onclick="showSection('clientes')"><i data-feather="users"></i> Clientes</button>
@@ -40,60 +40,62 @@
       <span class="ml-auto">Usuario: <strong id="vendedor-info"></strong></span>
     </nav>
     <main class="p-6 space-y-6">
+
       <!-- Ventas -->
-      <section id="ventas" class="section">
+      <section id="ventas" class="section animate-fadeIn">
         <div class="flex justify-between mb-4">
-          <input id="search-prod" placeholder="Buscar (F2)" class="border p-2 rounded w-1/3" />
-          <input id="select-client" list="clients" placeholder="Cliente (factura)" class="border p-2 rounded w-1/3" />
-          <datalist id="clients"></datalist>
+          <input id="search-prod" placeholder="Buscar producto" class="border p-2 rounded w-1/3" oninput="renderProducts()" />
+          <input id="select-client" list="clients-list" placeholder="Cliente" class="border p-2 rounded w-1/3" />
+          <datalist id="clients-list"></datalist>
         </div>
         <div class="grid md:grid-cols-3 gap-4">
           <div>
-            <h3>Inventario</h3>
+            <h3 class="font-semibold mb-2">Inventario</h3>
             <div id="product-list" class="h-64 overflow-auto bg-white p-2 rounded shadow"></div>
           </div>
           <div>
-            <h3>Carrito</h3>
+            <h3 class="font-semibold mb-2">Carrito</h3>
             <div id="cart-items" class="h-64 overflow-auto bg-white p-2 rounded shadow mb-2"></div>
-            <div class="flex space-x-2">
+            <div class="flex space-x-2 mb-2">
               <input id="discount" type="number" placeholder="Descuento %" class="border p-2 rounded w-1/2" />
               <input id="notes" placeholder="Notas" class="border p-2 rounded w-1/2" />
             </div>
-            <p>Total: $<span id="total">0.00</span></p>
-            <button onclick="checkout()" class="bg-[#00BFFF] text-white px-4 py-2 rounded hover:bg-[#007ACC]">Finalizar (Enter)</button>
+            <p class="mb-2">Total: $<span id="total">0.00</span></p>
+            <button onclick="checkout()" class="bg-[#00BFFF] text-white px-4 py-2 rounded hover:bg-[#007ACC]">Finalizar</button>
           </div>
           <div>
-            <h3>Historial en vivo</h3>
+            <h3 class="font-semibold mb-2">Historial en vivo</h3>
             <div id="live-sales" class="h-64 overflow-auto bg-white p-2 rounded shadow"></div>
           </div>
         </div>
       </section>
+
       <!-- Productos -->
-      <section id="productos" class="section hidden">
-        <div class="flex justify-between items-center mb-4">
+      <section id="productos" class="section hidden animate-fadeIn">
+        <div class="flex justify-between mb-4">
           <button onclick="exportCSV()" class="bg-green-500 text-white px-3 py-1 rounded">Exportar CSV</button>
-          <input type="file" onchange="importCSV(event)" />
+          <input type="file" accept=".csv" onchange="importCSV(event)" />
         </div>
         <div class="flex space-x-4">
           <div class="w-1/2 bg-white p-4 rounded shadow">
             <input id="prod-name" placeholder="Nombre" class="w-full mb-2 p-2 border rounded" />
-            <input id="prod-code" placeholder="Código de Barras" class="w-full mb-2 p-2 border rounded" />
+            <input id="prod-code" placeholder="Código" class="w-full mb-2 p-2 border rounded" />
             <input id="prod-price" type="number" placeholder="Precio" class="w-full mb-2 p-2 border rounded" />
             <input id="prod-stock" type="number" placeholder="Stock" class="w-full mb-2 p-2 border rounded" />
-            <select id="prod-cat" class="w-full mb-2 p-2 border rounded"><option>Electrónica</option><option>Periféricos</option></select>
             <input id="prod-img" type="file" class="w-full mb-2" />
             <button onclick="saveProduct()" class="bg-[#00BFFF] text-white px-4 py-2 rounded">Guardar</button>
           </div>
           <div class="w-1/2 bg-white p-4 rounded shadow overflow-auto h-64">
             <table class="w-full">
-              <thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th><th>Cat</th><th>Acciones</th></tr></thead>
+              <thead><tr><th>Nombre</th><th>Código</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
               <tbody id="prod-table"></tbody>
             </table>
           </div>
         </div>
       </section>
+
       <!-- Clientes -->
-      <section id="clientes" class="section hidden">
+      <section id="clientes" class="section hidden animate-fadeIn">
         <div class="bg-white p-4 rounded shadow mb-4">
           <input id="cli-name" placeholder="Nombre" class="w-full mb-2 p-2 border rounded" />
           <input id="cli-email" placeholder="Email" class="w-full mb-2 p-2 border rounded" />
@@ -105,41 +107,100 @@
         </div>
         <ul id="client-list" class="bg-white p-4 rounded shadow h-64 overflow-auto"></ul>
       </section>
+
       <!-- Créditos -->
-      <section id="creditos" class="section hidden">
+      <section id="creditos" class="section hidden animate-fadeIn">
         <div class="bg-white p-4 rounded shadow mb-4">
-          <p>Aquí gestionas abonos, vencimientos e intereses.</p>
+          <button onclick="addCredit()" class="bg-[#00BFFF] text-white px-3 py-1 rounded">Nuevo Crédito</button>
         </div>
         <div id="credits-list" class="bg-white p-4 rounded shadow h-64 overflow-auto"></div>
       </section>
+
       <!-- Inventario -->
-      <section id="inventario" class="section hidden">
+      <section id="inventario" class="section hidden animate-fadeIn">
         <button onclick="generateAudit()" class="bg-green-500 text-white px-3 py-1 rounded mb-2">Conteo Cíclico</button>
         <div id="inventory-list" class="bg-white p-4 rounded shadow h-64 overflow-auto"></div>
       </section>
+
       <!-- Configuraciones -->
-      <section id="configuraciones" class="section hidden">
+      <section id="configuraciones" class="section hidden animate-fadeIn">
         <button onclick="manageUsers()" class="bg-[#00BFFF] text-white px-4 py-2 rounded mb-2">Gestión de Usuarios</button>
         <button onclick="toggleTheme()" class="bg-gray-800 text-white px-4 py-2 rounded">Dark Mode</button>
       </section>
+
       <!-- Reportes -->
-      <section id="reportes" class="section hidden">
-        <input type="date" id="report-from" class="border p-2 rounded mb-2" />
-        <input type="date" id="report-to" class="border p-2 rounded mb-2 ml-2" />
-        <button onclick="exportReport()" class="bg-green-500 text-white px-4 py-2 rounded ml-2">Exportar</button>
-        <div id="report-output" class="bg-white p-4 rounded shadow h-64 overflow-auto mt-4"></div>
+      <section id="reportes" class="section hidden animate-fadeIn">
+        <div class="flex items-center mb-2">
+          <input type="date" id="report-from" class="border p-2 rounded" />
+          <input type="date" id="report-to" class="border p-2 rounded ml-2" />
+          <button onclick="exportReport()" class="bg-green-500 text-white px-4 py-2 rounded ml-2">Exportar</button>
+        </div>
+        <div id="report-output" class="bg-white p-4 rounded shadow h-64 overflow-auto"></div>
       </section>
+
     </main>
   </section>
 
   <script>
     feather.replace();
-    // módulos básicos de login y navegación (anterior)
-    const usuarios=[{usuario:'admin',pass:'12345'}]; let vendedor='';
-    document.getElementById('login-btn').onclick=() => {const u=document.getElementById('user').value,p=document.getElementById('pass').value; if(u==='admin'&&p==='12345'){document.getElementById('login-section').classList.add('hidden');document.getElementById('pos-section').classList.remove('hidden');document.getElementById('vendedor-info').textContent=u;showSection('ventas');}else document.getElementById('login-error').classList.remove('hidden');};
-    document.getElementById('forgot-btn').onclick=()=>alert('Contacte al administrador');
+    // Datos iniciales
+    const usuarios=[{usuario:'admin',pass:'12345'}];
+    let productos=JSON.parse(localStorage.getItem('productos')||'[]'), cart=[], total=0, clients=JSON.parse(localStorage.getItem('clientes')||'[]'), lastVenta=null;
+
+    // Login
+    document.getElementById('login-btn').onclick=()=>{
+      const u=document.getElementById('user').value, p=document.getElementById('pass').value;
+      if(u==='admin'&&p==='12345'){
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('pos-section').classList.remove('hidden');
+        document.getElementById('vendedor-info').textContent=u; showSection('ventas'); renderProducts(); renderClients(); renderInventory();
+      } else document.getElementById('login-error').classList.remove('hidden');
+    };
+    document.getElementById('forgot-btn').onclick=()=>alert('Contacte al administrador.');
+
     function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
-    // aquí van las funciones implementadas anteriormente: renderProducts, addToCart, etc.
+
+    // Ventas
+    function renderProducts(){
+      const list=document.getElementById('product-list'), filter=document.getElementById('search-prod').value.toLowerCase(); list.innerHTML='';
+      productos.filter(p=>p.nombre.toLowerCase().includes(filter)).forEach((p,i)=>{
+        const el=document.createElement('div'); el.className='flex justify-between p-1'+(p.stock<2?' critical':'');
+        el.innerHTML=`<span>${p.nombre} ($${p.precio}) [${p.stock}]</span><button onclick='addToCart(${i})'>+</button>`;
+        list.appendChild(el);
+      });
+    }
+    function addToCart(i){ if(productos[i].stock<=0) return alert('Sin stock'); productos[i].stock--; cart.push({...productos[i]}); total+=productos[i].precio; lastVenta={productos:[...cart],total}; updateCart(); renderProducts(); renderLive(); renderInventory(); }
+    function updateCart(){ const el=document.getElementById('cart-items'); el.innerHTML=''; cart.forEach((c,j)=>el.innerHTML+=`<div class='flex justify-between'><span>${c.nombre}</span><button onclick='removeFromCart(${j})'>x</button></div>`); document.getElementById('total').textContent=total.toFixed(2);}    
+    function removeFromCart(j){ productos.push(); productos.find(p=>p.nombre===cart[j].nombre).stock++; total-=cart[j].precio; cart.splice(j,1); updateCart(); renderProducts(); renderLive(); renderInventory(); }
+    function checkout(){ localStorage.setItem('ventas',JSON.stringify([...(JSON.parse(localStorage.getItem('ventas')||'[]')),{...lastVenta,vendedor:document.getElementById('vendedor-info').textContent,fecha:new Date().toLocaleString()}])); imprimirTicket(lastVenta); cart=[]; total=0; updateCart(); renderLive(); renderInventory(); }
+    function renderLive(){ const el=document.getElementById('live-sales'), data=JSON.parse(localStorage.getItem('ventas')||'[]'); el.innerHTML=''; data.forEach(v=>el.innerHTML+=`<div>${v.fecha} $${v.total}</div>`);}    
+    function imprimirTicket(v){ const w=window.open('','Ticket'); w.document.write(`<pre>Ticket\n${new Date()}\nTotal: ${v.total}</pre>`); w.print(); }
+
+    // Productos CRUD
+    function saveProduct(){ const n=document.getElementById('prod-name').value, c=document.getElementById('prod-code').value, pr=parseFloat(document.getElementById('prod-price').value), st=parseInt(document.getElementById('prod-stock').value); productos.push({nombre:n,codigo:c,precio:pr,stock:st}); localStorage.setItem('productos',JSON.stringify(productos)); renderProductTable(); renderProducts(); renderInventory(); }
+    function renderProductTable(){ const t=document.getElementById('prod-table'); t.innerHTML=''; productos.forEach((p,i)=>t.innerHTML+=`<tr><td>${p.nombre}</td><td>${p.codigo}</td><td>${p.precio}</td><td>${p.stock}</td><td><button onclick='deleteProduct(${i})'>x</button></td></tr>`); }
+    function deleteProduct(i){ productos.splice(i,1); localStorage.setItem('productos',JSON.stringify(productos)); renderProductTable(); renderProducts(); renderInventory(); }
+    function exportCSV(){ alert('Exportar CSV'); }
+    function importCSV(e){ alert('Importar CSV'); }
+
+    // Clientes
+    function saveClient(){ const n=document.getElementById('cli-name').value,e=document.getElementById('cli-email').value,t=document.getElementById('cli-phone').value,a=document.getElementById('cli-address').value,cr=document.getElementById('cli-credit').value; clients.push({nombre:n,email:e,telefono:t,direccion:a,credito:cr}); localStorage.setItem('clientes',JSON.stringify(clients)); renderClients(); }
+    function renderClients(){ const ul=document.getElementById('client-list'), dl=document.getElementById('clients-list'); ul.innerHTML=''; dl.innerHTML=''; clients.forEach((c,i)=>{ ul.innerHTML+=`<li>${c.nombre} (${c.email}) <button onclick='deleteClient(${i})'>x</button></li>`; dl.innerHTML+=`<option value='${c.nombre}'/>`; }); }
+    function deleteClient(i){ clients.splice(i,1); localStorage.setItem('clientes',JSON.stringify(clients)); renderClients(); }
+
+    // Créditos
+    function addCredit(){ alert('Nuevo crédito'); }
+
+    // Inventario
+    function renderInventory(){ const el=document.getElementById('inventory-list'); el.innerHTML=''; productos.forEach(p=>el.innerHTML+=`<div>${p.nombre}: ${p.stock}</div>`); }
+    function generateAudit(){ alert('Generar conteo cíclico'); }
+
+    // Configuraciones
+    function manageUsers(){ alert('Gestionar usuarios/roles'); }
+    function toggleTheme(){ document.body.classList.toggle('dark'); }
+
+    // Reportes
+    function exportReport(){ alert('Exportar reportes'); }
   </script>
 </body>
 </html>
