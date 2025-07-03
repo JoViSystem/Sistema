@@ -250,7 +250,10 @@
   </section>
 
   <script>
-    feather.replace();
+    // Inicializa Feather Icons tan pronto como el DOM esté listo
+    document.addEventListener('DOMContentLoaded', (event) => {
+        feather.replace(); // Esto asegura que los iconos se rendericen correctamente.
+    });
 
     // Datos de acceso válidos
     const USUARIO_VALIDO = "admin";
