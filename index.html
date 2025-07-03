@@ -3,96 +3,182 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JoVi System POS</title>
+  <title>JoVi POS Avanzado</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 text-black font-sans">
+<body class="bg-gray-100 text-black font-sans">
 
-  <!-- Encabezado -->
-  <header class="bg-[#00BFFF] text-white p-6 shadow-lg">
-    <h1 class="text-4xl font-extrabold text-center">JoVi System</h1>
-    <p class="text-center text-lg">Más que un sistema, tu aliado digital</p>
-  </header>
+  <!-- LOGIN -->
+  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center">
+    <h1 class="text-4xl font-bold mb-4">Iniciar Sesión - JoVi POS</h1>
+    <div class="bg-white p-6 rounded shadow-md w-80">
+      <input id="user" type="text" placeholder="Usuario" class="w-full mb-3 p-2 border rounded">
+      <input id="pass" type="password" placeholder="Contraseña" class="w-full mb-3 p-2 border rounded">
+      <button onclick="login()" class="w-full bg-black text-white py-2 rounded hover:bg-gray-800">Entrar</button>
+      <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Usuario o contraseña incorrecta</p>
+    </div>
+  </section>
 
-  <!-- Sección Punto de Venta -->
-  <section id="punto-venta" class="min-h-screen bg-white p-6 md:p-10">
-    <h2 class="text-3xl font-bold text-center text-black mb-6">🛒 Punto de Venta</h2>
+  <!-- SISTEMA POS -->
+  <section id="pos-section" class="hidden min-h-screen p-6">
+    <header class="bg-[#00BFFF] text-white p-4 mb-6 rounded shadow">
+      <h1 class="text-3xl font-bold">JoVi POS</h1>
+      <p id="vendedor-info" class="text-sm"></p>
+    </header>
 
-    <!-- Catálogo de productos -->
-    <div class="grid md:grid-cols-3 gap-4">
-      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Monitor 19\"', 120)">
-        <h3 class="text-xl font-semibold">Monitor 19"</h3>
-        <p class="text-gray-700">Precio: $120</p>
-      </div>
-      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Caja Registradora', 90)">
-        <h3 class="text-xl font-semibold">Caja Registradora</h3>
-        <p class="text-gray-700">Precio: $90</p>
-      </div>
-      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Printer 58mm', 45)">
-        <h3 class="text-xl font-semibold">Printer 58mm</h3>
-        <p class="text-gray-700">Precio: $45</p>
-      </div>
-      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('CPU Completo', 250)">
-        <h3 class="text-xl font-semibold">CPU Completo</h3>
-        <p class="text-gray-700">Precio: $250</p>
-      </div>
-      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Sistema de Facturación', 130)">
-        <h3 class="text-xl font-semibold">Sistema de Facturación</h3>
-        <p class="text-gray-700">Precio: $130</p>
-      </div>
+    <!-- Inventario -->
+    <div>
+      <h2 class="text-2xl font-bold mb-2">Inventario</h2>
+      <div id="product-list" class="grid md:grid-cols-3 gap-4"></div>
     </div>
 
     <!-- Carrito -->
     <div class="mt-10">
-      <h3 class="text-2xl font-bold text-black mb-2">🧾 Carrito de compras</h3>
-      <ul id="cart-items" class="bg-gray-100 p-4 rounded shadow mb-4 text-black"></ul>
-      <p class="text-xl font-semibold text-black">Total: $<span id="total">0</span></p>
-      <button onclick="checkout()" class="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Finalizar Venta</button>
+      <h2 class="text-2xl font-bold mb-2">🛒 Carrito</h2>
+      <ul id="cart-items" class="bg-white p-4 rounded shadow mb-4"></ul>
+      <p class="text-xl font-semibold">Total: $<span id="total">0.00</span></p>
+
+      <label class="block mt-4">Método de pago:</label>
+      <select id="metodo-pago" class="p-2 border rounded">
+        <option value="Efectivo">Efectivo</option>
+        <option value="Tarjeta">Tarjeta</option>
+        <option value="Transferencia">Transferencia</option>
+      </select>
+
+      <div id="efectivo-box" class="mt-4 hidden">
+        <label>Monto entregado:</label>
+        <input id="efectivo-recibido" type="number" class="p-2 border rounded w-full">
+        <p>Cambio: $<span id="cambio">0.00</span></p>
+      </div>
+
+      <button onclick="checkout()" class="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800">Finalizar Venta</button>
+      <button onclick="verReporte()" class="mt-2 ml-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Ver Reporte</button>
+    </div>
+
+    <!-- Reporte -->
+    <div id="reporte-section" class="mt-10 hidden">
+      <h2 class="text-2xl font-bold mb-2">📊 Reporte de ventas</h2>
+      <div id="reporte" class="bg-white p-4 rounded shadow text-sm"></div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-[#00BFFF] text-white p-4 text-center">
-    © 2025 JoVi System. Todos los derechos reservados.
-  </footer>
-
   <script>
+    const usuarios = [
+      { usuario: 'admin', pass: '1234' },
+      { usuario: 'vendedor1', pass: 'ventas' }
+    ];
+    let vendedor = '';
+    let productos = [
+      { nombre: 'Monitor 19"', precio: 120, stock: 5 },
+      { nombre: 'Caja Registradora', precio: 90, stock: 3 },
+      { nombre: 'Printer 58mm', precio: 45, stock: 10 },
+      { nombre: 'CPU Completo', precio: 250, stock: 2 },
+      { nombre: 'Sistema de Facturación', precio: 130, stock: 4 },
+    ];
     let cart = [];
     let total = 0;
 
-    function addToCart(product, price) {
-      cart.push({ product, price });
-      total += price;
+    function login() {
+      const u = document.getElementById('user').value;
+      const p = document.getElementById('pass').value;
+      const found = usuarios.find(x => x.usuario === u && x.pass === p);
+      if (found) {
+        vendedor = u;
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('pos-section').classList.remove('hidden');
+        document.getElementById('vendedor-info').textContent = `Sesión iniciada como: ${vendedor}`;
+        cargarProductos();
+      } else {
+        document.getElementById('login-error').classList.remove('hidden');
+      }
+    }
+
+    function cargarProductos() {
+      const contenedor = document.getElementById('product-list');
+      contenedor.innerHTML = '';
+      productos.forEach((prod, i) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-4 rounded shadow cursor-pointer';
+        card.innerHTML = `<h3 class='font-bold'>${prod.nombre}</h3>
+                          <p>$${prod.precio} | Stock: ${prod.stock}</p>
+                          <button onclick='addToCart(${i})' class='mt-2 bg-green-500 text-white px-2 py-1 rounded'>Agregar</button>`;
+        contenedor.appendChild(card);
+      });
+    }
+
+    function addToCart(index) {
+      if (productos[index].stock <= 0) {
+        alert('Producto sin stock');
+        return;
+      }
+      productos[index].stock--;
+      cart.push({ nombre: productos[index].nombre, precio: productos[index].precio });
+      total += productos[index].precio;
       updateCart();
+      cargarProductos();
     }
 
     function updateCart() {
-      const cartItems = document.getElementById('cart-items');
-      cartItems.innerHTML = '';
-      cart.forEach((item, index) => {
+      const lista = document.getElementById('cart-items');
+      lista.innerHTML = '';
+      cart.forEach((item, i) => {
         const li = document.createElement('li');
-        li.className = "flex justify-between py-1";
-        li.innerHTML = `${item.product} - $${item.price} <button onclick="removeFromCart(${index})" class="text-red-500 hover:underline">Eliminar</button>`;
-        cartItems.appendChild(li);
+        li.className = 'flex justify-between py-1';
+        li.innerHTML = `${item.nombre} - $${item.precio}`;
+        lista.appendChild(li);
       });
       document.getElementById('total').textContent = total.toFixed(2);
     }
 
-    function removeFromCart(index) {
-      total -= cart[index].price;
-      cart.splice(index, 1);
+    document.getElementById('metodo-pago').addEventListener('change', function () {
+      const box = document.getElementById('efectivo-box');
+      box.classList.toggle('hidden', this.value !== 'Efectivo');
+    });
+
+    document.getElementById('efectivo-recibido').addEventListener('input', function () {
+      const recibido = parseFloat(this.value) || 0;
+      const cambio = recibido - total;
+      document.getElementById('cambio').textContent = cambio >= 0 ? cambio.toFixed(2) : '0.00';
+    });
+
+    function checkout() {
+      if (cart.length === 0) return alert('Carrito vacío');
+      const metodo = document.getElementById('metodo-pago').value;
+      let recibido = parseFloat(document.getElementById('efectivo-recibido').value) || 0;
+      if (metodo === 'Efectivo' && recibido < total) return alert('El efectivo no cubre el total');
+
+      const venta = {
+        vendedor,
+        fecha: new Date().toLocaleString(),
+        metodo,
+        total,
+        productos: [...cart]
+      };
+
+      const ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
+      ventas.push(venta);
+      localStorage.setItem('ventas', JSON.stringify(ventas));
+
+      alert('✅ Venta realizada');
+      cart = [];
+      total = 0;
+      document.getElementById('efectivo-recibido').value = '';
+      document.getElementById('cambio').textContent = '0.00';
       updateCart();
     }
 
-    function checkout() {
-      if (cart.length === 0) {
-        alert("El carrito está vacío.");
-        return;
-      }
-      alert("✅ Venta realizada con éxito.\nTotal: $" + total.toFixed(2));
-      cart = [];
-      total = 0;
-      updateCart();
+    function verReporte() {
+      const data = JSON.parse(localStorage.getItem('ventas') || '[]');
+      const div = document.getElementById('reporte');
+      div.innerHTML = '';
+      data.forEach(v => {
+        const box = document.createElement('div');
+        box.className = 'mb-2 border-b pb-2';
+        box.innerHTML = `<strong>${v.fecha}</strong> - ${v.vendedor} - ${v.metodo} - Total: $${v.total.toFixed(2)}
+        <ul class='ml-4 list-disc'>${v.productos.map(p => `<li>${p.nombre} - $${p.precio}</li>`).join('')}</ul>`;
+        div.appendChild(box);
+      });
+      document.getElementById('reporte-section').classList.remove('hidden');
     }
   </script>
 </body>
