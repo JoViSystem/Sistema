@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JoVi POS Profesional</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Feather Icons CDN -->
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -13,6 +14,7 @@
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
+
   <!-- LOGIN -->
   <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#00BFFF] to-[#005F9E] animate-fadeIn">
     <i data-feather="monitor" class="w-32 h-32 text-white mb-6 animate-pulse"></i>
@@ -30,13 +32,13 @@
   <section id="pos-section" class="hidden animate-fadeIn">
     <nav class="bg-white shadow sticky top-0 z-10 flex items-center p-4 space-x-4">
       <i data-feather="monitor" class="w-10 h-10"></i>
-      <button onclick="showSection('ventas')"><i data-feather="shopping-cart"></i> Ventas</button>
-      <button onclick="showSection('productos')"><i data-feather="box"></i> Productos</button>
-      <button onclick="showSection('clientes')"><i data-feather="users"></i> Clientes</button>
-      <button onclick="showSection('creditos')"><i data-feather="credit-card"></i> Créditos</button>
-      <button onclick="showSection('inventario')"><i data-feather="database"></i> Inventario</button>
-      <button onclick="showSection('configuraciones')"><i data-feather="settings"></i> Configuraciones</button>
-      <button onclick="showSection('reportes')"><i data-feather="bar-chart-2"></i> Reportes</button>
+      <button onclick="showSection('ventas')"><i data-feather="shopping-cart"></i> Ventas (F1)</button>
+      <button onclick="showSection('productos')"><i data-feather="box"></i> Productos (F2)</button>
+      <button onclick="showSection('clientes')"><i data-feather="users"></i> Clientes (F3)</button>
+      <button onclick="showSection('creditos')"><i data-feather="credit-card"></i> Créditos (F4)</button>
+      <button onclick="showSection('inventario')"><i data-feather="database"></i> Inventario (F5)</button>
+      <button onclick="showSection('configuraciones')"><i data-feather="settings"></i> Configuraciones (F6)</button>
+      <button onclick="showSection('reportes')"><i data-feather="bar-chart-2"></i> Reportes (F7)</button>
       <span class="ml-auto">Usuario: <strong id="vendedor-info"></strong></span>
     </nav>
     <main class="p-6 space-y-6">
@@ -145,54 +147,189 @@
     feather.replace();
     // Datos iniciales
     const usuarios=[{usuario:'admin',pass:'12345'}];
-    let productos=JSON.parse(localStorage.getItem('productos')||'[]'), cart=[], total=0, clients=JSON.parse(localStorage.getItem('clientes')||'[]'), lastVenta=null;
+    let productos=JSON.parse(localStorage.getItem('productos')||'[]'),
+        cart=[],
+        total=0,
+        clients=JSON.parse(localStorage.getItem('clientes')||'[]'),
+        lastVenta=null;
 
     // Login
-    document.getElementById('login-btn').onclick=()=>{
-      const u=document.getElementById('user').value, p=document.getElementById('pass').value;
-      if(u==='admin'&&p==='12345'){
-        document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('pos-section').classList.remove('hidden');
-        document.getElementById('vendedor-info').textContent=u; showSection('ventas'); renderProducts(); renderClients(); renderInventory();
-      } else document.getElementById('login-error').classList.remove('hidden');
-    };
-    document.getElementById('forgot-btn').onclick=()=>alert('Contacte al administrador.');
+    const loginSection = document.getElementById('login-section'),
+          posSection   = document.getElementById('pos-section'),
+          inputUser    = document.getElementById('user'),
+          inputPass    = document.getElementById('pass'),
+          loginError   = document.getElementById('login-error'),
+          loginBtn     = document.getElementById('login-btn'),
+          forgotBtn    = document.getElementById('forgot-btn');
 
-    function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+    function doLogin() {
+      const u = inputUser.value.trim(),
+            p = inputPass.value;
+      if (u==='admin' && p==='12345') {
+        loginSection.classList.add('hidden');
+        posSection.classList.remove('hidden');
+        document.getElementById('vendedor-info').textContent = u;
+        showSection('ventas');
+        renderProducts(); renderClients(); renderInventory(); renderProductTable(); renderLive();
+      } else {
+        loginError.classList.remove('hidden');
+      }
+    }
+    loginBtn.addEventListener('click', doLogin);
+    [inputUser,inputPass].forEach(el=>{
+      el.addEventListener('keydown', e => {
+        if (e.key==='Enter') { e.preventDefault(); doLogin(); }
+      });
+    });
+    forgotBtn.addEventListener('click',()=>alert('Contacte al administrador.'));
+
+    // Navegación
+    function showSection(id){
+      document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+    document.addEventListener('keydown', e => {
+      if (posSection.classList.contains('hidden')) return;
+      switch(e.key){
+        case 'F1': e.preventDefault(); showSection('ventas'); break;
+        case 'F2': e.preventDefault(); showSection('productos'); break;
+        case 'F3': e.preventDefault(); showSection('clientes'); break;
+        case 'F4': e.preventDefault(); showSection('creditos'); break;
+        case 'F5': e.preventDefault(); showSection('inventario'); break;
+        case 'F6': e.preventDefault(); showSection('configuraciones'); break;
+        case 'F7': e.preventDefault(); showSection('reportes'); break;
+      }
+    });
 
     // Ventas
     function renderProducts(){
-      const list=document.getElementById('product-list'), filter=document.getElementById('search-prod').value.toLowerCase(); list.innerHTML='';
-      productos.filter(p=>p.nombre.toLowerCase().includes(filter)).forEach((p,i)=>{
-        const el=document.createElement('div'); el.className='flex justify-between p-1'+(p.stock<2?' critical':'');
-        el.innerHTML=`<span>${p.nombre} ($${p.precio}) [${p.stock}]</span><button onclick='addToCart(${i})'>+</button>`;
-        list.appendChild(el);
-      });
+      const list=document.getElementById('product-list'),
+            filter=document.getElementById('search-prod').value.toLowerCase();
+      list.innerHTML='';
+      productos.filter(p=>p.nombre.toLowerCase().includes(filter))
+        .forEach((p,i)=>{
+          const div=document.createElement('div');
+          div.className='flex justify-between p-1'+(p.stock<2?' critical':'');
+          div.innerHTML=`<span>${p.nombre} ($${p.precio}) [${p.stock}]</span>
+                         <button onclick="addToCart(${i})">+</button>`;
+          list.appendChild(div);
+        });
     }
-    function addToCart(i){ if(productos[i].stock<=0) return alert('Sin stock'); productos[i].stock--; cart.push({...productos[i]}); total+=productos[i].precio; lastVenta={productos:[...cart],total}; updateCart(); renderProducts(); renderLive(); renderInventory(); }
-    function updateCart(){ const el=document.getElementById('cart-items'); el.innerHTML=''; cart.forEach((c,j)=>el.innerHTML+=`<div class='flex justify-between'><span>${c.nombre}</span><button onclick='removeFromCart(${j})'>x</button></div>`); document.getElementById('total').textContent=total.toFixed(2);}    
-    function removeFromCart(j){ productos.push(); productos.find(p=>p.nombre===cart[j].nombre).stock++; total-=cart[j].precio; cart.splice(j,1); updateCart(); renderProducts(); renderLive(); renderInventory(); }
-    function checkout(){ localStorage.setItem('ventas',JSON.stringify([...(JSON.parse(localStorage.getItem('ventas')||'[]')),{...lastVenta,vendedor:document.getElementById('vendedor-info').textContent,fecha:new Date().toLocaleString()}])); imprimirTicket(lastVenta); cart=[]; total=0; updateCart(); renderLive(); renderInventory(); }
-    function renderLive(){ const el=document.getElementById('live-sales'), data=JSON.parse(localStorage.getItem('ventas')||'[]'); el.innerHTML=''; data.forEach(v=>el.innerHTML+=`<div>${v.fecha} $${v.total}</div>`);}    
-    function imprimirTicket(v){ const w=window.open('','Ticket'); w.document.write(`<pre>Ticket\n${new Date()}\nTotal: ${v.total}</pre>`); w.print(); }
+    function addToCart(i){
+      if(productos[i].stock<=0){ alert('Sin stock'); return; }
+      productos[i].stock--;
+      cart.push({...productos[i]});
+      total+=productos[i].precio;
+      lastVenta={productos:[...cart],total,total};
+      updateCart(); renderProducts(); renderLive(); renderInventory();
+      localStorage.setItem('productos',JSON.stringify(productos));
+    }
+    function updateCart(){
+      const el=document.getElementById('cart-items');
+      el.innerHTML='';
+      cart.forEach((c,j)=>{
+        el.innerHTML+=`<div class="flex justify-between">
+                         <span>${c.nombre}</span>
+                         <button onclick="removeFromCart(${j})">x</button>
+                       </div>`;
+      });
+      document.getElementById('total').textContent=total.toFixed(2);
+    }
+    function removeFromCart(j){
+      productos.find(p=>p.nombre===cart[j].nombre).stock++;
+      total-=cart[j].precio;
+      cart.splice(j,1);
+      updateCart(); renderProducts(); renderLive(); renderInventory();
+      localStorage.setItem('productos',JSON.stringify(productos));
+    }
+    function checkout(){
+      const ventas=JSON.parse(localStorage.getItem('ventas')||'[]');
+      ventas.push({...lastVenta,vendedor:document.getElementById('vendedor-info').textContent,fecha:new Date().toLocaleString()});
+      localStorage.setItem('ventas',JSON.stringify(ventas));
+      imprimirTicket(lastVenta);
+      cart=[]; total=0;
+      updateCart(); renderLive(); renderInventory();
+    }
+    function renderLive(){
+      const el=document.getElementById('live-sales'),
+            data=JSON.parse(localStorage.getItem('ventas')||'[]');
+      el.innerHTML='';
+      data.forEach(v=>el.innerHTML+=`<div>${v.fecha} - $${v.total.toFixed(2)}</div>`);
+    }
+    function imprimirTicket(v){
+      const w=window.open('','Ticket','width=300,height=600');
+      w.document.write(`<pre>--- Ticket ---
+Vendedor: ${document.getElementById('vendedor-info').textContent}
+Fecha: ${new Date().toLocaleString()}
+Productos:
+${v.productos.map(p=>`${p.nombre} - $${p.precio}`).join('\n')}
+Total: $${v.total.toFixed(2)}
+----------------
+¡Gracias por su compra!</pre>`);
+      w.print(); w.close();
+    }
 
     // Productos CRUD
-    function saveProduct(){ const n=document.getElementById('prod-name').value, c=document.getElementById('prod-code').value, pr=parseFloat(document.getElementById('prod-price').value), st=parseInt(document.getElementById('prod-stock').value); productos.push({nombre:n,codigo:c,precio:pr,stock:st}); localStorage.setItem('productos',JSON.stringify(productos)); renderProductTable(); renderProducts(); renderInventory(); }
-    function renderProductTable(){ const t=document.getElementById('prod-table'); t.innerHTML=''; productos.forEach((p,i)=>t.innerHTML+=`<tr><td>${p.nombre}</td><td>${p.codigo}</td><td>${p.precio}</td><td>${p.stock}</td><td><button onclick='deleteProduct(${i})'>x</button></td></tr>`); }
-    function deleteProduct(i){ productos.splice(i,1); localStorage.setItem('productos',JSON.stringify(productos)); renderProductTable(); renderProducts(); renderInventory(); }
+    function saveProduct(){
+      const n=document.getElementById('prod-name').value,
+            c=document.getElementById('prod-code').value,
+            pr=parseFloat(document.getElementById('prod-price').value),
+            st=parseInt(document.getElementById('prod-stock').value);
+      productos.push({nombre:n,codigo:c,precio:pr,stock:st});
+      localStorage.setItem('productos',JSON.stringify(productos));
+      renderProductTable(); renderProducts(); renderInventory();
+    }
+    function renderProductTable(){
+      const t=document.getElementById('prod-table');
+      t.innerHTML='';
+      productos.forEach((p,i)=>t.innerHTML+=`<tr>
+        <td>${p.nombre}</td><td>${p.codigo}</td><td>${p.precio}</td><td>${p.stock}</td>
+        <td><button onclick="deleteProduct(${i})">x</button></td>
+      </tr>`);
+    }
+    function deleteProduct(i){
+      productos.splice(i,1);
+      localStorage.setItem('productos',JSON.stringify(productos));
+      renderProductTable(); renderProducts(); renderInventory();
+    }
     function exportCSV(){ alert('Exportar CSV'); }
     function importCSV(e){ alert('Importar CSV'); }
 
-    // Clientes
-    function saveClient(){ const n=document.getElementById('cli-name').value,e=document.getElementById('cli-email').value,t=document.getElementById('cli-phone').value,a=document.getElementById('cli-address').value,cr=document.getElementById('cli-credit').value; clients.push({nombre:n,email:e,telefono:t,direccion:a,credito:cr}); localStorage.setItem('clientes',JSON.stringify(clients)); renderClients(); }
-    function renderClients(){ const ul=document.getElementById('client-list'), dl=document.getElementById('clients-list'); ul.innerHTML=''; dl.innerHTML=''; clients.forEach((c,i)=>{ ul.innerHTML+=`<li>${c.nombre} (${c.email}) <button onclick='deleteClient(${i})'>x</button></li>`; dl.innerHTML+=`<option value='${c.nombre}'/>`; }); }
-    function deleteClient(i){ clients.splice(i,1); localStorage.setItem('clientes',JSON.stringify(clients)); renderClients(); }
+    // Clientes CRUD
+    function saveClient(){
+      const n=document.getElementById('cli-name').value,
+            e=document.getElementById('cli-email').value,
+            t=document.getElementById('cli-phone').value,
+            a=document.getElementById('cli-address').value,
+            cr=document.getElementById('cli-credit').value;
+      clients.push({nombre:n,email:e,telefono:t,direccion:a,credito:cr});
+      localStorage.setItem('clientes',JSON.stringify(clients));
+      renderClients();
+    }
+    function renderClients(){
+      const ul=document.getElementById('client-list'),
+            dl=document.getElementById('clients-list');
+      ul.innerHTML=''; dl.innerHTML='';
+      clients.forEach((c,i)=>{
+        ul.innerHTML+=`<li>${c.nombre} (${c.email}) <button onclick="deleteClient(${i})">x</button></li>`;
+        dl.innerHTML+=`<option value="${c.nombre}"/>`;
+      });
+    }
+    function deleteClient(i){
+      clients.splice(i,1);
+      localStorage.setItem('clientes',JSON.stringify(clients));
+      renderClients();
+    }
 
     // Créditos
     function addCredit(){ alert('Nuevo crédito'); }
 
     // Inventario
-    function renderInventory(){ const el=document.getElementById('inventory-list'); el.innerHTML=''; productos.forEach(p=>el.innerHTML+=`<div>${p.nombre}: ${p.stock}</div>`); }
+    function renderInventory(){
+      const el=document.getElementById('inventory-list');
+      el.innerHTML='';
+      productos.forEach(p=>el.innerHTML+=`<div>${p.nombre}: ${p.stock}</div>`);
+    }
     function generateAudit(){ alert('Generar conteo cíclico'); }
 
     // Configuraciones
