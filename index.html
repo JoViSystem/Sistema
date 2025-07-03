@@ -6,7 +6,7 @@
     <title>JoVi POS Avanzado y Moderno</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         /* Colores y fuentes base */
         body {
@@ -55,6 +55,7 @@
             gap: 4rem; /* Espacio entre PC y formulario */
         }
 
+        /* Representación de la PC */
         #login-section::before {
             content: '';
             position: absolute;
@@ -67,9 +68,8 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1);
             transform: rotate(-10deg);
             z-index: 1;
-            /* Pantalla */
-            mask: radial-gradient(circle at 50% 50%, transparent 60%, black 100%);
-            -webkit-mask: radial-gradient(circle at 50% 50%, transparent 60%, black 100%);
+            /* Pantalla - Aquí usaremos una sombra para simular la pantalla encendida o el contenido */
+            box-shadow: 0 0 50px 20px rgba(60, 180, 255, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
         #login-section::after {
@@ -297,7 +297,7 @@
                                     </tbody>
                             </table>
                         </div>
-                        
+
                         <div class="mt-5 border-t border-gray-700 pt-3 flex flex-col items-end">
                             <div class="flex items-center mb-2.5">
                                 <label class="font-semibold text-gray-300 text-base mr-3 flex items-center"><i data-feather="minus-circle" class="mr-1.5 text-red-400 w-5 h-5"></i>Descuento Global (%):</label>
@@ -311,9 +311,9 @@
                         <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-1.5 text-green-400 w-5 h-5"></i>Opciones de Pago</h3>
                         <label class="block mb-2 text-gray-300 text-sm flex items-center"><i data-feather="credit-card" class="mr-1.5 text-blue-300 w-4 h-4"></i>Método de Pago:</label>
                         <select id="metodo-pago" class="w-full p-2.5 border border-gray-600 rounded-lg mb-3 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm" onchange="cambiarMetodoPago()">
-                            <option value="Efectivo"><i data-feather="dollar-sign" class="mr-1.5"></i>Efectivo</option>
-                            <option value="Tarjeta"><i data-feather="credit-card" class="mr-1.5"></i>Tarjeta</option>
-                            <option value="Transferencia"><i data-feather="send" class="mr-1.5"></i>Transferencia</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                            <option value="Transferencia">Transferencia</option>
                         </select>
 
                         <div id="efectivo-section" class="mb-3">
@@ -351,25 +351,24 @@
                     <div class="space-y-3">
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Nombre del Producto</label>
                         <input id="prod-nombre" placeholder="Ej: Camisa algodón" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                        
+
                         <label class="block text-sm text-gray-300 flex items-center"><i class="fas fa-barcode mr-1.5 text-emerald-400 w-4 h-4"></i>Código del Producto</label>
                         <input id="prod-codigo" placeholder="Ej: CAMS001" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                        
+
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="folder" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Categoría</label>
                         <input id="prod-categoria" placeholder="Ej: Ropa, Electrónica" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
 
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="truck" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Proveedor</label>
                         <input id="prod-proveedor" placeholder="Ej: Distribuidora XYZ" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
 
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="ruler" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Unidad de Medida</label>
-                        <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="maximize" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Unidad de Medida</label> <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Precio de Costo ($)</label>
                         <input id="prod-precio-costo" placeholder="0.00" type="number" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
-                        
+
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Precio de Venta ($)</label>
                         <input id="prod-precio-venta" placeholder="0.00" type="number" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
-                        
+
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="box" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Stock Disponible</label>
                         <input id="prod-stock" placeholder="0" type="number" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
 
@@ -378,12 +377,12 @@
 
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="file-text" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Descripción</label>
                         <textarea id="prod-descripcion" placeholder="Detalles adicionales del producto..." rows="2" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element resize-y"></textarea>
-                        
+
                         <button onclick="saveProduct()" class="bg-emerald-500 text-gray-900 px-5 py-2.5 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-base mt-4">
                             <i data-feather="save" class="mr-2.5 w-4 h-4"></i>Guardar Producto
                         </button>
                     </div>
-                    <div class="overflow-auto max-h-[580px] custom-scrollbar"> 
+                    <div class="overflow-auto max-h-[580px] custom-scrollbar">
                         <table class="w-full bg-gray-800 rounded-lg shadow text-sm">
                             <thead class="bg-gray-700 text-gray-200 sticky top-0">
                                 <tr>
@@ -391,8 +390,7 @@
                                     <th class="p-2.5 text-left flex items-center"><i class="fas fa-barcode mr-1.5 text-gray-300 w-4 h-4"></i>Código</th>
                                     <th class="p-2.5 text-left flex items-center"><i data-feather="folder" class="mr-1.5 text-gray-300 w-4 h-4"></i>Categoría</th>
                                     <th class="p-2.5 text-left flex items-center"><i data-feather="truck" class="mr-1.5 text-gray-300 w-4 h-4"></i>Proveedor</th>
-                                    <th class="p-2.5 text-left flex items-center"><i data-feather="ruler" class="mr-1.5 text-gray-300 w-4 h-4"></i>Unidad</th>
-                                    <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-1.5 text-gray-300 w-4 h-4"></i>Costo</th>
+                                    <th class="p-2.5 text-left flex items-center"><i data-feather="maximize" class="mr-1.5 text-gray-300 w-4 h-4"></i>Unidad</th> <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-1.5 text-gray-300 w-4 h-4"></i>Costo</th>
                                     <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="tag" class="mr-1.5 text-gray-300 w-4 h-4"></i>Venta</th>
                                     <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="box" class="mr-1.5 text-gray-300 w-4 h-4"></i>Stock</th>
                                     <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-1.5 text-gray-300 w-4 h-4"></i>Min.</th>
@@ -414,20 +412,19 @@
                     <div class="space-y-3">
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="user-plus" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Nombre del Cliente</label>
                         <input id="cli-nombre" placeholder="Ej: Juan Pérez" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                        
+
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="mail" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Email</label>
                         <input id="cli-email" placeholder="ejemplo@correo.com" type="email" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-                        
+
                         <label class="block text-sm text-gray-300 flex items-center"><i data-feather="phone-call" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Teléfono</label>
                         <input id="cli-telefono" placeholder="Ej: +123 456 7890" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-                        
+
                         <button onclick="saveClient()" class="bg-emerald-500 text-gray-900 px-5 py-2.5 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-base mt-4">
                             <i data-feather="save" class="mr-2.5 w-4 h-4"></i>Guardar Cliente
                         </button>
                     </div>
                     <div class="overflow-auto max-h-[480px] custom-scrollbar">
-                        <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="clipboard" class="mr-1.5 text-purple-400 w-5 h-5"></i>Listado de Clientes</h3>
-                        <ul id="client-list" class="bg-gray-800 rounded-lg text-gray-300 divide-y divide-gray-700 text-sm">
+                        <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="clipboard" class="mr-1.5 text-purple-400 w-5 h-5"></i>Listado de Clientes</h3> <ul id="client-list" class="bg-gray-800 rounded-lg text-gray-300 divide-y divide-gray-700 text-sm">
                             </ul>
                     </div>
                 </div>
@@ -442,8 +439,7 @@
                         <i data-feather="info" class="mr-2.5 text-blue-400 w-5 h-5"></i>La funcionalidad de gestión de créditos estará disponible en futuras actualizaciones.
                     </p>
                     <div class="mt-5 text-gray-500 space-y-2.5 text-sm">
-                        <p class="flex items-center"><i data-feather="clipboard-list" class="mr-2.5 w-4 h-4 text-gray-500"></i>Aquí se podrán registrar pagos a cuenta, saldos pendientes y el historial crediticio de los clientes.</p>
-                        <p class="flex items-center"><i data-feather="dollar-sign" class="mr-2.5 w-4 h-4 text-gray-500"></i>Permitirá llevar un control detallado de las deudas y abonos.</p>
+                        <p class="flex items-center"><i data-feather="clipboard" class="mr-2.5 w-4 h-4 text-gray-500"></i>Aquí se podrán registrar pagos a cuenta, saldos pendientes y el historial crediticio de los clientes.</p> <p class="flex items-center"><i data-feather="dollar-sign" class="mr-2.5 w-4 h-4 text-gray-500"></i>Permitirá llevar un control detallado de las deudas y abonos.</p>
                         <p class="flex items-center"><i data-feather="clock" class="mr-2.5 w-4 h-4 text-gray-500"></i>Registra la fecha y hora de cada movimiento de crédito.</p>
                     </div>
                 </div>
@@ -462,8 +458,7 @@
                                 <th class="p-2.5 text-left flex items-center"><i class="fas fa-barcode mr-1.5 text-gray-300 w-4 h-4"></i>Código</th>
                                 <th class="p-2.5 text-left flex items-center"><i data-feather="folder" class="mr-1.5 text-gray-300 w-4 h-4"></i>Categoría</th>
                                 <th class="p-2.5 text-left flex items-center"><i data-feather="truck" class="mr-1.5 text-gray-300 w-4 h-4"></i>Proveedor</th>
-                                <th class="p-2.5 text-left flex items-center"><i data-feather="ruler" class="mr-1.5 text-gray-300 w-4 h-4"></i>Unidad</th>
-                                <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="box" class="mr-1.5 text-gray-300 w-4 h-4"></i>Stock</th>
+                                <th class="p-2.5 text-left flex items-center"><i data-feather="maximize" class="mr-1.5 text-gray-300 w-4 h-4"></i>Unidad</th> <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="box" class="mr-1.5 text-gray-300 w-4 h-4"></i>Stock</th>
                                 <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-1.5 text-gray-300 w-4 h-4"></i>Stock Mínimo</th>
                                 <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-1.5 text-gray-300 w-4 h-4"></i>Precio Venta</th>
                             </tr>
@@ -531,7 +526,7 @@
         let descuentoGlobal = 0;
         let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
 
-        // --- Funciones del Sistema (en el ámbito global) ---
+        // --- Funciones del Sistema (ahora en el ámbito global para que los onclick las encuentren) ---
 
         function showSection(id) {
             sections.forEach(sec => {
@@ -727,7 +722,7 @@
             const totalVenta = parseFloat(document.getElementById("total-venta").textContent);
             const metodoPago = document.getElementById("metodo-pago").value;
             let mensaje = `Venta finalizada. Total: $${totalVenta.toFixed(2)}\nMétodo de Pago: ${metodoPago}`;
-            
+
             if (metodoPago === "Efectivo") {
                 const efectivoRecibido = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
                 const cambioCalculado = parseFloat(document.getElementById("cambio").textContent) || 0;
@@ -738,7 +733,7 @@
             }
 
             alert(mensaje);
-            
+
             carrito.forEach(itemCarrito => {
                 const productoIndex = productos.findIndex(p => p.codigo === itemCarrito.codigo);
                 if (productoIndex !== -1) {
@@ -849,6 +844,8 @@
             document.getElementById("prod-stock").value = "";
             document.getElementById("prod-stock-minimo").value = "";
             document.getElementById("prod-descripcion").value = "";
+            document.getElementById("prod-codigo").readOnly = false; // Habilitar de nuevo el campo de código
+            document.getElementById("prod-codigo").classList.remove("bg-gray-600", "cursor-not-allowed");
         }
         function renderProductos() {
             const tbody = document.getElementById("prod-table");
@@ -915,7 +912,7 @@
             const email = document.getElementById("cli-email").value.trim();
             const telefono = document.getElementById("cli-telefono").value.trim();
             if(!nombre) return alert("El nombre del cliente es obligatorio.");
-            
+
             clientes.push({nombre, email, telefono});
             localStorage.setItem("clientes", JSON.stringify(clientes));
             renderClientes();
@@ -1024,6 +1021,7 @@
             });
 
             // Llamar a las funciones de renderizado iniciales
+            actualizarCarrito(); // Asegura que el carrito se renderice correctamente al inicio
             renderProductos();
             renderClientes();
             mostrarMovimientosCaja();
