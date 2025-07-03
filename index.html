@@ -8,7 +8,7 @@
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* Animaciones personalizadas */
+    /* Animaciones personalizadas (solo para el POS, NO para el login) */
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .animate-fadeIn { animation: fadeIn 0.5s ease-in-out; }
 
@@ -24,29 +24,69 @@
     }
     .animate-fadeOut { animation: fadeOut 0.3s ease-out forwards; }
 
-    /* Estilos para el fondo del login con efecto sutil */
+    /* **Login Section - Estilos simplificados SIN ANIMACIONES** */
     #login-section {
-      position: relative;
-      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #1a202c; /* Fondo oscuro estático */
+      color: #e2e8f0;
+      font-family: sans-serif;
     }
-    #login-section::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg, rgba(0,255,255,0.1) 0%, rgba(0,255,255,0) 10%, rgba(0,255,255,0) 90%, rgba(0,255,255,0.1) 100%); /* Cian sutil */
-      animation: rotate 10s linear infinite;
-      z-index: 0; /* Asegura que esté detrás del contenido */
+    #login-section .login-box {
+      background-color: #2d3748; /* Un gris oscuro para la caja */
+      padding: 2rem;
+      border-radius: 0.75rem; /* Bordes redondeados */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+      width: 24rem; /* Ancho fijo */
+      max-width: 90%; /* Máximo el 90% del ancho de la pantalla */
+      z-index: 1; /* Asegura que esté por encima del fondo */
+    }
+    #login-section .login-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #4a5568; /* Borde gris oscuro */
+      border-radius: 0.5rem;
+      background-color: #2d3748; /* Fondo del input igual que la caja */
+      color: #e2e8f0; /* Color de texto del input */
+      outline: none;
+    }
+    #login-section .login-input:focus {
+      border-color: #00FFFF; /* Cian al enfocar */
+    }
+    #login-section .login-button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #00FFFF; /* Cian */
+      color: #1a202c; /* Texto oscuro */
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    #login-section .login-button:hover {
+      background-color: #00CCCC; /* Cian más oscuro al pasar el ratón */
+    }
+    #login-section .login-error {
+        color: #fc8181; /* Rojo claro */
+        font-size: 0.875rem; /* Pequeño */
+        margin-top: 0.75rem;
+        display: none; /* Por defecto oculto */
+    }
+    #login-section .login-link {
+        color: #00FFFF;
+        font-size: 0.875rem;
+        text-decoration: none;
+        margin-top: 0.75rem;
+        display: block;
+        text-align: right;
+    }
+    #login-section .login-link:hover {
+        text-decoration: underline;
     }
 
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* Fondo general con patrón sutil (opcional, puedes ajustar la URL) */
+    /* Fondo general con patrón sutil (se mantiene) */
     body {
       background-color: #1a202c; /* Fondo base para el sistema */
       background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 20v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4h-2v4H0v2h4v4h2v-4h4v-2H6zm0 20v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM36 4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 4v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM21 21v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 41v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 1V0h-2v1h-4v2h4v4h2V3h4V1h-4zm36 0V0h-2v1h-4v2h4v4h2V3h4V1h-4zM21 51v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -57,24 +97,24 @@
 </head>
 <body class="bg-gray-900 text-gray-200 font-sans">
 
-  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] animate-fadeIn">
-    <i class="fas fa-microchip w-32 h-32 mb-6 text-[#00FFFF] animate-pulse"></i>
-    <h1 class="text-4xl font-extrabold text-white mb-6 drop-shadow-lg">Bienvenido a JoVi POS</h1>
-    <div class="bg-gray-800 bg-opacity-90 p-8 rounded-2xl shadow-xl w-96 animate-fadeIn">
+  <section id="login-section">
+    <i class="fas fa-microchip w-32 h-32 mb-6 text-[#00FFFF]"></i>
+    <h1 class="text-4xl font-extrabold text-white mb-6">Bienvenido a JoVi POS</h1>
+    <div class="login-box">
       <div class="mb-4">
         <label for="user" class="block text-gray-300 font-medium mb-1"><i data-feather="user" class="inline-block mr-2 text-[#00FFFF]"></i>Usuario</label>
-        <input id="user" type="text" placeholder="admin" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#00FFFF] transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <input id="user" type="text" placeholder="admin" class="login-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
       <div class="mb-4">
         <label for="pass" class="block text-gray-300 font-medium mb-1"><i data-feather="lock" class="inline-block mr-2 text-[#00FFFF]"></i>Contraseña</label>
-        <input id="pass" type="password" placeholder="••••••" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#00FFFF] transition" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <input id="pass" type="password" placeholder="••••••" class="login-input" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
-      <button id="btnLogin" class="w-full bg-[#00FFFF] text-gray-900 font-semibold py-3 rounded-lg shadow-lg hover:bg-[#00CCCC] transition-colors duration-300 flex justify-center items-center hover:scale-105">
+      <button id="btnLogin" class="login-button">
         <i data-feather="log-in" class="inline-block mr-2"></i>Iniciar Sesión
       </button>
-      <p id="login-error" class="text-red-400 text-sm mt-3 hidden">Usuario o contraseña incorrecta</p>
+      <p id="login-error" class="login-error">Usuario o contraseña incorrecta</p>
       <p class="mt-3 text-right">
-        <a href="#" id="forgot-password" class="text-[#00FFFF] hover:underline text-sm">¿Olvidaste la contraseña?</a>
+        <a href="#" id="forgot-password" class="login-link">¿Olvidaste la contraseña?</a>
       </p>
     </div>
   </section>
@@ -280,14 +320,11 @@
         let descuentoGlobal = 0;
 
         // --- Funciones de Inicialización ---
-        // Estas funciones se llamarán al final del DOMContentLoaded para asegurar que todo se renderice al cargar
         function initializeApp() {
             renderProductos(); // Carga y muestra los productos existentes
             renderClientes();  // Carga y muestra los clientes existentes
             mostrarMovimientosCaja(); // Carga y muestra los movimientos de caja
             cambiarMetodoPago(); // Asegura que la sección de efectivo se muestre/oculte correctamente al inicio
-            // Si quieres que el usuario esté siempre "admin" al iniciar el POS, puedes hacer esto:
-            // vendedorInfo.textContent = USUARIO_VALIDO; 
         }
 
         // Mostrar sección deseada
@@ -305,14 +342,10 @@
           const pass = inputPass.value.trim();
           if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
             loginError.classList.add("hidden");
-            // Animaciones de transición del login al POS
-            loginSection.classList.add("animate-fadeOut");
-            loginSection.addEventListener('animationend', () => {
-              loginSection.classList.add("hidden");
-              loginSection.classList.remove("animate-fadeOut"); 
-              posSection.classList.remove("hidden");
-              posSection.classList.add("animate-fadeIn");
-            }, { once: true });
+            // Transición del login al POS (sin animación de salida del login)
+            loginSection.classList.add("hidden");
+            posSection.classList.remove("hidden");
+            posSection.classList.add("animate-fadeIn"); // Solo esta animación para el POS
             
             vendedorInfo.textContent = user;
             showSection("ventas"); // Muestra la sección de ventas por defecto al iniciar sesión
