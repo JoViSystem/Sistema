@@ -15,7 +15,6 @@
 
   <!-- LOGIN -->
   <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#00BFFF] to-[#005F9E] animate-fadeIn">
-    <!-- Logo: computadora -->
     <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 mb-6 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17h4.5m-6-5.25h7.5M12 2a10 10 0 0 1 10 10v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4a10 10 0 0 1 10-10z" />
     </svg>
@@ -43,7 +42,7 @@
   <section id="pos-section" class="hidden animate-fadeIn">
 
     <!-- NAV HORIZONTAL -->
-    <nav class="bg-white shadow-md p-4 flex space-x-6 justify-center items-center sticky top-0 z-10 select-none">
+    <nav class="bg-white shadow-md p-4 flex space-x-6 justify-center items-center sticky top-0 z-20 select-none">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mr-4 text-[#00BFFF] animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17h4.5m-6-5.25h7.5M12 2a10 10 0 0 1 10 10v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4a10 10 0 0 1 10-10z" />
       </svg>
@@ -59,24 +58,27 @@
 
     <main class="p-8 space-y-8">
 
+      <!-- Campo BUSCAR PRODUCTO destacado arriba solo en sección Ventas -->
+      <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto">
+        <label for="busqueda-producto" class="block text-4xl font-extrabold mb-3 text-center text-[#00BFFF]">Buscar producto</label>
+        <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-4 border-4 border-[#00BFFF] rounded-xl shadow-lg text-2xl" oninput="buscarProductos()" autocomplete="off" />
+        <div id="lista-resultados" class="bg-white border rounded max-h-56 overflow-y-auto mt-2"></div>
+      </div>
+
       <!-- Ventas -->
       <section id="ventas" class="section animate-fadeIn">
         <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</h2>
 
-        <div class="grid md:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-3 gap-6">
 
-          <!-- Panel Productos -->
+          <!-- Botones rápidos -->
           <div>
-            <label for="busqueda-producto" class="block font-semibold mb-1">Buscar producto:</label>
-            <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-2 border rounded mb-2" oninput="buscarProductos()" autocomplete="off" />
-            <div id="lista-resultados" class="bg-white border rounded max-h-48 overflow-y-auto"></div>
-
-            <h3 class="font-semibold mt-4 mb-2">Botones rápidos:</h3>
+            <h3 class="font-semibold mb-2">Botones rápidos:</h3>
             <div id="botones-rapidos" class="flex flex-wrap gap-2"></div>
           </div>
 
           <!-- Carrito -->
-          <div class="col-span-2 bg-white p-4 rounded shadow max-h-[480px] overflow-y-auto">
+          <div class="bg-white p-4 rounded shadow max-h-[480px] overflow-y-auto">
             <h3 class="font-semibold mb-2">Carrito</h3>
             <table class="w-full text-left border-collapse">
               <thead class="bg-gray-100">
@@ -138,19 +140,32 @@
       <section id="productos" class="section hidden animate-fadeIn">
         <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="box" class="mr-2"></i>Gestión de Productos</h2>
         <div class="bg-white p-4 rounded shadow mb-4 flex flex-col md:flex-row md:space-x-4">
-          <div class="flex-1">
-            <label class="block mb-1 text-sm"><i data-feather="tag" class="inline-block mr-1"></i>Nombre</label>
-            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <label class="block mb-1 text-sm"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Precio</label>
-            <input id="prod-precio" placeholder="Precio" type="number" class="w-full p-2 border rounded mb-2" step="0.01" />
-            <label class="block mb-1 text-sm"><i data-feather="layers" class="inline-block mr-1"></i>Stock</label>
-            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border rounded mb-2" />
-            <button onclick="saveProduct()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
+          <div class="flex-1 space-y-3">
+            <label class="block text-sm"><i data-feather="tag" class="inline-block mr-1"></i>Nombre</label>
+            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border rounded" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <label class="block text-sm"><i data-feather="hash" class="inline-block mr-1"></i>Código</label>
+            <input id="prod-codigo" placeholder="Código" class="w-full p-2 border rounded" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <label class="block text-sm"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Precio de costo</label>
+            <input id="prod-precio-costo" placeholder="Precio de costo" type="number" class="w-full p-2 border rounded" step="0.01" min="0" />
+            <label class="block text-sm"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Precio de venta</label>
+            <input id="prod-precio-venta" placeholder="Precio de venta" type="number" class="w-full p-2 border rounded" step="0.01" min="0" />
+            <label class="block text-sm"><i data-feather="layers" class="inline-block mr-1"></i>Stock</label>
+            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border rounded" min="0" />
+            <button onclick="saveProduct()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition flex items-center justify-center">
+              <i data-feather="save" class="inline-block mr-1"></i>Guardar Producto
+            </button>
           </div>
-          <div class="flex-1">
-            <table class="w-full bg-white rounded shadow">
+          <div class="flex-1 overflow-auto max-h-[520px]">
+            <table class="w-full bg-white rounded shadow text-sm">
               <thead class="bg-gray-100">
-                <tr><th class="p-2 text-left">Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr>
+                <tr>
+                  <th class="p-2 text-left">Nombre</th>
+                  <th class="p-2 text-left">Código</th>
+                  <th class="p-2 text-right">Costo</th>
+                  <th class="p-2 text-right">Venta</th>
+                  <th class="p-2 text-right">Stock</th>
+                  <th class="p-2 text-center">Acciones</th>
+                </tr>
               </thead>
               <tbody id="prod-table"></tbody>
             </table>
@@ -168,7 +183,9 @@
           <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border rounded mb-2" />
           <label class="block mb-1 text-sm"><i data-feather="phone-call" class="inline-block mr-1"></i>Teléfono</label>
           <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border rounded mb-2" />
-          <button onclick="saveClient()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
+          <button onclick="saveClient()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition flex items-center justify-center">
+            <i data-feather="save" class="inline-block mr-1"></i>Guardar Cliente
+          </button>
         </div>
         <ul id="client-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></ul>
       </section>
@@ -206,11 +223,11 @@
   <script>
     feather.replace();
 
-    // Variables para usuarios válidos
+    // Datos de acceso válidos
     const USUARIO_VALIDO = "admin";
     const CONTRASENA_VALIDA = "12345";
 
-    // Login
+    // Elementos login y sistema
     const loginSection = document.getElementById("login-section");
     const posSection = document.getElementById("pos-section");
     const loginError = document.getElementById("login-error");
@@ -218,389 +235,339 @@
     const inputUser = document.getElementById("user");
     const inputPass = document.getElementById("pass");
     const btnLogin = document.getElementById("btnLogin");
-    const forgotPassLink = document.getElementById("forgot-password");
 
-    btnLogin.onclick = () => {
+    // Secciones
+    const sections = document.querySelectorAll("section.section");
+
+    // Productos almacenados
+    let productos = JSON.parse(localStorage.getItem("productos")) || [];
+
+    // Clientes almacenados
+    let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+
+    // Variables para ventas
+    let carrito = [];
+    let descuentoGlobal = 0;
+
+    // Mostrar sección deseada
+    function showSection(id) {
+      sections.forEach(sec => {
+        sec.id === id ? sec.classList.remove("hidden") : sec.classList.add("hidden");
+      });
+      // Mostrar campo buscar solo en ventas
+      document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
+    }
+
+    // Manejo login
+    function login() {
       const user = inputUser.value.trim();
-      const pass = inputPass.value;
-      if (user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
+      const pass = inputPass.value.trim();
+      if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
         loginError.classList.add("hidden");
         loginSection.classList.add("hidden");
         posSection.classList.remove("hidden");
         vendedorInfo.textContent = user;
         showSection("ventas");
+        inputUser.value = "";
+        inputPass.value = "";
       } else {
         loginError.classList.remove("hidden");
       }
-    };
+    }
 
-    // Permitir enter para login
+    // Atajo Enter para login
     [inputUser, inputPass].forEach(input => {
-      input.addEventListener("keyup", (e) => {
-        if (e.key === "Enter") btnLogin.click();
+      input.addEventListener("keypress", e => {
+        if(e.key === "Enter") {
+          login();
+        }
       });
     });
 
-    forgotPassLink.onclick = (e) => {
-      e.preventDefault();
-      alert("Para recuperar tu contraseña contacta al administrador.");
-    };
+    btnLogin.addEventListener("click", login);
 
-    // Navegación entre secciones
-    function showSection(id) {
-      document.querySelectorAll("main section").forEach(sec => {
-        sec.classList.add("hidden");
-      });
-      const sec = document.getElementById(id);
-      if (sec) sec.classList.remove("hidden");
-    }
-
-    // Atajos de teclado F1-F7 para cambiar secciones
-    window.addEventListener("keydown", (e) => {
-      if (posSection.classList.contains("hidden")) return; // solo si estamos en POS
-
-      if (e.key === "F1") { e.preventDefault(); showSection("ventas"); }
-      else if (e.key === "F2") { e.preventDefault(); showSection("productos"); }
-      else if (e.key === "F3") { e.preventDefault(); showSection("clientes"); }
-      else if (e.key === "F4") { e.preventDefault(); showSection("creditos"); }
-      else if (e.key === "F5") { e.preventDefault(); showSection("inventario"); }
-      else if (e.key === "F6") { e.preventDefault(); showSection("configuraciones"); }
-      else if (e.key === "F7") { e.preventDefault(); showSection("reportes"); }
-    });
-
-    // --- Datos simulados de productos frecuentes ---
-    const productos = [
-      { id: 1, nombre: "Monitor 19\"", precio: 120.00, stock: 12 },
-      { id: 2, nombre: "Caja Registradora", precio: 90.00, stock: 5 },
-      { id: 3, nombre: "Printer 58mm", precio: 45.00, stock: 20 },
-      { id: 4, nombre: "CPU Completo", precio: 250.00, stock: 7 },
-      { id: 5, nombre: "Sistema de Facturación", precio: 130.00, stock: 15 }
-    ];
-
-    let carrito = [];
-    let movimientosCaja = [];
-    let descuentoGlobal = 0;
-
-    // --- Ventas ---
-    function initBotonesRapidos() {
-      const contenedor = document.getElementById("botones-rapidos");
-      contenedor.innerHTML = "";
-      productos.forEach(p => {
-        const btn = document.createElement("button");
-        btn.textContent = p.nombre;
-        btn.className = "bg-[#00BFFF] text-white rounded px-3 py-1 hover:bg-[#007ACC] transition";
-        btn.onclick = () => agregarProductoAlCarrito(p);
-        contenedor.appendChild(btn);
+    // Buscar productos (en ventas)
+    function buscarProductos() {
+      const query = document.getElementById("busqueda-producto").value.trim().toLowerCase();
+      const lista = document.getElementById("lista-resultados");
+      lista.innerHTML = "";
+      if(query.length === 0) return;
+      const resultados = productos.filter(p =>
+        p.nombre.toLowerCase().includes(query) ||
+        p.codigo.toLowerCase().includes(query)
+      );
+      if(resultados.length === 0) {
+        lista.innerHTML = "<p class='p-2 text-gray-500'>No hay resultados</p>";
+        return;
+      }
+      resultados.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "p-2 cursor-pointer hover:bg-[#00BFFF] hover:text-white rounded";
+        div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
+        div.onclick = () => agregarAlCarrito(p.codigo);
+        lista.appendChild(div);
       });
     }
 
-    function agregarProductoAlCarrito(producto) {
-      let item = carrito.find(i => i.id === producto.id);
-      if (item) {
-        item.cantidad++;
+    // Agregar producto al carrito
+    function agregarAlCarrito(codigo) {
+      const producto = productos.find(p => p.codigo === codigo);
+      if(!producto) return alert("Producto no encontrado");
+      let item = carrito.find(i => i.codigo === codigo);
+      if(item) {
+        if(item.cantidad < producto.stock) {
+          item.cantidad++;
+        } else {
+          alert("No hay suficiente stock");
+          return;
+        }
       } else {
-        carrito.push({ ...producto, cantidad: 1, descuento: 0 });
+        carrito.push({
+          codigo: producto.codigo,
+          nombre: producto.nombre,
+          precio: producto.precioVenta,
+          cantidad: 1,
+          descuento: 0
+        });
       }
       actualizarCarrito();
+      document.getElementById("busqueda-producto").value = "";
+      document.getElementById("lista-resultados").innerHTML = "";
     }
 
+    // Actualizar carrito en la tabla y total
     function actualizarCarrito() {
       const tbody = document.getElementById("carrito-items");
       tbody.innerHTML = "";
       let total = 0;
-
       carrito.forEach((item, idx) => {
-        const subtotal = (item.precio * item.cantidad) * (1 - item.descuento / 100);
+        const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
         total += subtotal;
-
         const tr = document.createElement("tr");
-
-        // Producto
-        const tdNombre = document.createElement("td");
-        tdNombre.textContent = item.nombre;
-        tdNombre.className = "p-1";
-        tr.appendChild(tdNombre);
-
-        // Cantidad editable
-        const tdCantidad = document.createElement("td");
-        const inputCantidad = document.createElement("input");
-        inputCantidad.type = "number";
-        inputCantidad.min = "1";
-        inputCantidad.value = item.cantidad;
-        inputCantidad.className = "w-14 p-1 border rounded";
-        inputCantidad.onchange = (e) => {
-          const val = parseInt(e.target.value);
-          if (val < 1) e.target.value = item.cantidad;
-          else {
-            item.cantidad = val;
-            actualizarCarrito();
-          }
-        };
-        tdCantidad.appendChild(inputCantidad);
-        tr.appendChild(tdCantidad);
-
-        // Precio
-        const tdPrecio = document.createElement("td");
-        tdPrecio.textContent = `$${item.precio.toFixed(2)}`;
-        tdPrecio.className = "p-1 text-right";
-        tr.appendChild(tdPrecio);
-
-        // Subtotal
-        const tdSubtotal = document.createElement("td");
-        tdSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-        tdSubtotal.className = "p-1 text-right font-semibold";
-        tr.appendChild(tdSubtotal);
-
-        // Descuento %
-        const tdDescuento = document.createElement("td");
-        const inputDesc = document.createElement("input");
-        inputDesc.type = "number";
-        inputDesc.min = "0";
-        inputDesc.max = "100";
-        inputDesc.value = item.descuento;
-        inputDesc.className = "w-14 p-1 border rounded";
-        inputDesc.onchange = (e) => {
-          let val = parseFloat(e.target.value);
-          if (val < 0) val = 0;
-          if (val > 100) val = 100;
-          item.descuento = val;
-          actualizarCarrito();
-        };
-        tdDescuento.appendChild(inputDesc);
-        tr.appendChild(tdDescuento);
-
-        // Eliminar
-        const tdEliminar = document.createElement("td");
-        const btnEliminar = document.createElement("button");
-        btnEliminar.innerHTML = '<i data-feather="trash-2"></i>';
-        btnEliminar.className = "text-red-600 hover:text-red-800";
-        btnEliminar.onclick = () => {
-          carrito.splice(idx, 1);
-          actualizarCarrito();
-        };
-        tdEliminar.appendChild(btnEliminar);
-        tr.appendChild(tdEliminar);
-
-        tbody.appendChild(tr);
-      });
-
-      // Descuento global
-      total = total * (1 - descuentoGlobal / 100);
-      document.getElementById("total-venta").textContent = total.toFixed(2);
-
-      feather.replace();
-    }
-
-    function buscarProductos() {
-      const texto = document.getElementById("busqueda-producto").value.toLowerCase();
-      const listaResultados = document.getElementById("lista-resultados");
-      listaResultados.innerHTML = "";
-      if (texto.length === 0) return;
-
-      const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(texto));
-      filtrados.forEach(p => {
-        const div = document.createElement("div");
-        div.textContent = `${p.nombre} - $${p.precio.toFixed(2)}`;
-        div.className = "cursor-pointer hover:bg-blue-100 p-1";
-        div.onclick = () => {
-          agregarProductoAlCarrito(p);
-          document.getElementById("busqueda-producto").value = "";
-          listaResultados.innerHTML = "";
-        };
-        listaResultados.appendChild(div);
-      });
-    }
-
-    function aplicarDescuentoGlobal() {
-      let val = parseFloat(document.getElementById("descuento-global").value);
-      if (isNaN(val) || val < 0) val = 0;
-      if (val > 100) val = 100;
-      descuentoGlobal = val;
-      actualizarCarrito();
-    }
-
-    function cambiarMetodoPago() {
-      const metodo = document.getElementById("metodo-pago").value;
-      const efectivoSection = document.getElementById("efectivo-section");
-      if (metodo === "Efectivo") {
-        efectivoSection.style.display = "block";
-      } else {
-        efectivoSection.style.display = "none";
-        document.getElementById("efectivo-recibido").value = "";
-        document.getElementById("cambio").textContent = "0.00";
-      }
-    }
-
-    function calcularCambio() {
-      const efectivo = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
-      const total = parseFloat(document.getElementById("total-venta").textContent) || 0;
-      const cambio = efectivo - total;
-      document.getElementById("cambio").textContent = cambio > 0 ? cambio.toFixed(2) : "0.00";
-    }
-
-    function finalizarVenta() {
-      if (carrito.length === 0) {
-        alert("El carrito está vacío.");
-        return;
-      }
-      let total = parseFloat(document.getElementById("total-venta").textContent);
-      alert(`✅ Venta finalizada.\nTotal: $${total.toFixed(2)}`);
-      carrito = [];
-      actualizarCarrito();
-      document.getElementById("efectivo-recibido").value = "";
-      document.getElementById("cambio").textContent = "0.00";
-      document.getElementById("descuento-global").value = 0;
-      descuentoGlobal = 0;
-    }
-
-    // Caja chica
-    function agregarCajaChica() {
-      const montoInput = document.getElementById("monto-caja");
-      const tipo = document.getElementById("tipo-caja").value;
-      let monto = parseFloat(montoInput.value);
-      if (isNaN(monto) || monto <= 0) {
-        alert("Ingrese un monto válido para la caja chica.");
-        return;
-      }
-      movimientosCaja.push({ monto, tipo, fecha: new Date() });
-      montoInput.value = "";
-      mostrarMovimientosCaja();
-    }
-
-    function mostrarMovimientosCaja() {
-      const lista = document.getElementById("movimientos-caja");
-      lista.innerHTML = "";
-      movimientosCaja.forEach(mov => {
-        const li = document.createElement("li");
-        const fecha = mov.fecha.toLocaleString();
-        li.textContent = `${mov.tipo.toUpperCase()} - $${mov.monto.toFixed(2)} (${fecha})`;
-        li.className = mov.tipo === "entrada" ? "text-green-600" : "text-red-600";
-        lista.appendChild(li);
-      });
-    }
-
-    // --- Gestión de productos ---
-    let editandoProductoId = null;
-
-    function saveProduct() {
-      const nombre = document.getElementById("prod-nombre").value.trim();
-      const precio = parseFloat(document.getElementById("prod-precio").value);
-      const stock = parseInt(document.getElementById("prod-stock").value);
-
-      if (!nombre || isNaN(precio) || isNaN(stock)) {
-        alert("Complete todos los campos correctamente.");
-        return;
-      }
-
-      if (editandoProductoId === null) {
-        // Nuevo producto
-        const nuevoId = productos.length ? Math.max(...productos.map(p => p.id)) + 1 : 1;
-        productos.push({ id: nuevoId, nombre, precio, stock });
-      } else {
-        // Editar producto
-        const prod = productos.find(p => p.id === editandoProductoId);
-        if (prod) {
-          prod.nombre = nombre;
-          prod.precio = precio;
-          prod.stock = stock;
-        }
-        editandoProductoId = null;
-      }
-
-      limpiarFormularioProducto();
-      renderizarProductos();
-      initBotonesRapidos();
-    }
-
-    function limpiarFormularioProducto() {
-      document.getElementById("prod-nombre").value = "";
-      document.getElementById("prod-precio").value = "";
-      document.getElementById("prod-stock").value = "";
-      editandoProductoId = null;
-    }
-
-    function renderizarProductos() {
-      const tbody = document.getElementById("prod-table");
-      tbody.innerHTML = "";
-      productos.forEach(p => {
-        const tr = document.createElement("tr");
-        tr.className = "border-b";
-
         tr.innerHTML = `
-          <td class="p-2">${p.nombre}</td>
-          <td class="p-2 text-right">$${p.precio.toFixed(2)}</td>
-          <td class="p-2 text-right">${p.stock}</td>
-          <td class="p-2 text-center space-x-2">
-            <button onclick="editarProducto(${p.id})" class="text-blue-600 hover:text-blue-900" title="Editar"><i data-feather="edit-2"></i></button>
-            <button onclick="eliminarProducto(${p.id})" class="text-red-600 hover:text-red-900" title="Eliminar"><i data-feather="trash-2"></i></button>
+          <td class="p-1">${item.nombre}</td>
+          <td class="p-1 w-20">
+            <input type="number" min="1" max="999" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border rounded p-1" />
           </td>
+          <td class="p-1 w-24 text-right">$${item.precio.toFixed(2)}</td>
+          <td class="p-1 w-24 text-right">$${subtotal.toFixed(2)}</td>
+          <td class="p-1 w-12">
+            <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border rounded p-1" />
+          </td>
+          <td class="p-1 w-10 text-center cursor-pointer text-red-600 hover:text-red-800" data-idx-del="${idx}" title="Eliminar">&times;</td>
         `;
         tbody.appendChild(tr);
       });
-      feather.replace();
+      document.getElementById("total-venta").textContent = total.toFixed(2);
+
+      // Eventos para inputs cantidad y descuento
+      document.querySelectorAll(".cantidad-input").forEach(input => {
+        input.addEventListener("change", e => {
+          const i = parseInt(e.target.dataset.idx);
+          let val = parseInt(e.target.value);
+          if (val < 1) val = 1;
+          const stock = productos.find(p => p.codigo === carrito[i].codigo).stock;
+          if(val > stock) {
+            alert("No hay suficiente stock");
+            val = stock;
+          }
+          carrito[i].cantidad = val;
+          actualizarCarrito();
+        });
+      });
+      document.querySelectorAll(".descuento-input").forEach(input => {
+        input.addEventListener("change", e => {
+          const i = parseInt(e.target.dataset.idxDesc);
+          let val = parseFloat(e.target.value);
+          if (val < 0) val = 0;
+          if (val > 100) val = 100;
+          carrito[i].descuento = val;
+          actualizarCarrito();
+        });
+      });
+      // Eliminar item
+      document.querySelectorAll("[data-idx-del]").forEach(el => {
+        el.addEventListener("click", e => {
+          const i = parseInt(e.target.dataset.idxDel);
+          carrito.splice(i, 1);
+          actualizarCarrito();
+        });
+      });
     }
 
-    function editarProducto(id) {
-      const prod = productos.find(p => p.id === id);
-      if (!prod) return;
-      editandoProductoId = id;
-      document.getElementById("prod-nombre").value = prod.nombre;
-      document.getElementById("prod-precio").value = prod.precio;
-      document.getElementById("prod-stock").value = prod.stock;
-      showSection("productos");
+    // Aplicar descuento global (sobre total)
+    function aplicarDescuentoGlobal() {
+      const val = parseFloat(document.getElementById("descuento-global").value);
+      descuentoGlobal = isNaN(val) ? 0 : val;
+      actualizarCarrito();
     }
 
-    function eliminarProducto(id) {
-      if (!confirm("¿Eliminar este producto?")) return;
-      const index = productos.findIndex(p => p.id === id);
-      if (index >= 0) {
-        productos.splice(index, 1);
-        renderizarProductos();
-        initBotonesRapidos();
+    // Cambiar método de pago (mostrar efectivo si aplica)
+    function cambiarMetodoPago() {
+      const metodo = document.getElementById("metodo-pago").value;
+      document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
+    }
+
+    // Calcular cambio efectivo
+    function calcularCambio() {
+      const efectivo = parseFloat(document.getElementById("efectivo-recibido").value);
+      const total = parseFloat(document.getElementById("total-venta").textContent);
+      let cambio = 0;
+      if(!isNaN(efectivo)) {
+        cambio = efectivo - total;
+        if(cambio < 0) cambio = 0;
       }
+      document.getElementById("cambio").textContent = cambio.toFixed(2);
     }
 
-    // --- Gestión de clientes ---
-    const clientes = [];
+    // Finalizar venta
+    function finalizarVenta() {
+      if(carrito.length === 0) return alert("El carrito está vacío");
+      alert("Venta finalizada. Total: $" + document.getElementById("total-venta").textContent);
+      carrito = [];
+      actualizarCarrito();
+      document.getElementById("descuento-global").value = 0;
+      document.getElementById("efectivo-recibido").value = "";
+      document.getElementById("cambio").textContent = "0.00";
+    }
+
+    // Caja chica
+    let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
+    const listaMovimientos = document.getElementById("movimientos-caja");
+    function agregarCajaChica() {
+      const monto = parseFloat(document.getElementById("monto-caja").value);
+      const tipo = document.getElementById("tipo-caja").value;
+      if(isNaN(monto) || monto <= 0) return alert("Monto inválido");
+      movimientosCaja.push({monto, tipo, fecha: new Date().toLocaleString()});
+      localStorage.setItem("movimientosCaja", JSON.stringify(movimientosCaja));
+      mostrarMovimientosCaja();
+      document.getElementById("monto-caja").value = "";
+      document.getElementById("tipo-caja").value = "entrada";
+    }
+    function mostrarMovimientosCaja() {
+      listaMovimientos.innerHTML = "";
+      movimientosCaja.forEach((m, i) => {
+        const li = document.createElement("li");
+        li.textContent = `[${m.fecha}] ${m.tipo === "entrada" ? "+" : "-"}$${m.monto.toFixed(2)}`;
+        listaMovimientos.appendChild(li);
+      });
+    }
+    mostrarMovimientosCaja();
+
+    // Gestión productos
+    function saveProduct() {
+      const nombre = document.getElementById("prod-nombre").value.trim();
+      const codigo = document.getElementById("prod-codigo").value.trim();
+      const precioCosto = parseFloat(document.getElementById("prod-precio-costo").value);
+      const precioVenta = parseFloat(document.getElementById("prod-precio-venta").value);
+      const stock = parseInt(document.getElementById("prod-stock").value);
+
+      if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock)) {
+        return alert("Por favor, completa todos los campos correctamente.");
+      }
+      // Validar no duplicar código
+      const existe = productos.find(p => p.codigo === codigo);
+      if(existe) {
+        // Actualizar producto existente
+        existe.nombre = nombre;
+        existe.precioCosto = precioCosto;
+        existe.precioVenta = precioVenta;
+        existe.stock = stock;
+      } else {
+        productos.push({nombre, codigo, precioCosto, precioVenta, stock});
+      }
+      localStorage.setItem("productos", JSON.stringify(productos));
+      limpiarFormProducto();
+      renderProductos();
+      alert("Producto guardado correctamente.");
+    }
+    function limpiarFormProducto() {
+      document.getElementById("prod-nombre").value = "";
+      document.getElementById("prod-codigo").value = "";
+      document.getElementById("prod-precio-costo").value = "";
+      document.getElementById("prod-precio-venta").value = "";
+      document.getElementById("prod-stock").value = "";
+    }
+    function renderProductos() {
+      const tbody = document.getElementById("prod-table");
+      tbody.innerHTML = "";
+      productos.forEach((p, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="p-2">${p.nombre}</td>
+          <td class="p-2">${p.codigo}</td>
+          <td class="p-2 text-right">$${p.precioCosto.toFixed(2)}</td>
+          <td class="p-2 text-right">$${p.precioVenta.toFixed(2)}</td>
+          <td class="p-2 text-right">${p.stock}</td>
+          <td class="p-2 text-center cursor-pointer text-red-600 hover:text-red-800" title="Eliminar" data-index="${i}">&times;</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      // Eliminar producto
+      tbody.querySelectorAll("[data-index]").forEach(td => {
+        td.addEventListener("click", e => {
+          const idx = parseInt(e.target.dataset.index);
+          if(confirm("¿Eliminar producto?")) {
+            productos.splice(idx, 1);
+            localStorage.setItem("productos", JSON.stringify(productos));
+            renderProductos();
+          }
+        });
+      });
+    }
+    renderProductos();
+
+    // Gestión clientes simple
     function saveClient() {
       const nombre = document.getElementById("cli-nombre").value.trim();
       const email = document.getElementById("cli-email").value.trim();
       const telefono = document.getElementById("cli-telefono").value.trim();
-
-      if (!nombre || !email) {
-        alert("Nombre y email son obligatorios.");
-        return;
-      }
-      clientes.push({ nombre, email, telefono });
-      renderizarClientes();
-      limpiarFormularioCliente();
-    }
-
-    function renderizarClientes() {
-      const lista = document.getElementById("client-list");
-      lista.innerHTML = "";
-      clientes.forEach((c, i) => {
-        const li = document.createElement("li");
-        li.className = "border-b p-2";
-        li.innerHTML = `<strong>${c.nombre}</strong><br/><small>${c.email} | ${c.telefono || "No teléfono"}</small>`;
-        lista.appendChild(li);
-      });
-    }
-
-    function limpiarFormularioCliente() {
+      if(!nombre) return alert("El nombre es obligatorio");
+      clientes.push({nombre, email, telefono});
+      localStorage.setItem("clientes", JSON.stringify(clientes));
+      renderClientes();
       document.getElementById("cli-nombre").value = "";
       document.getElementById("cli-email").value = "";
       document.getElementById("cli-telefono").value = "";
     }
+    function renderClientes() {
+      const list = document.getElementById("client-list");
+      list.innerHTML = "";
+      clientes.forEach(c => {
+        const li = document.createElement("li");
+        li.className = "mb-2 border-b pb-2";
+        li.textContent = `${c.nombre} - ${c.email || "-"} - ${c.telefono || "-"}`;
+        list.appendChild(li);
+      });
+    }
+    renderClientes();
 
-    // Inicialización al cargar
-    window.onload = () => {
-      initBotonesRapidos();
-      renderizarProductos();
-      renderizarClientes();
-      cambiarMetodoPago();
-    };
+    // Teclas rápidas para cambiar secciones (F1-F7)
+    window.addEventListener("keydown", e => {
+      if(e.key === "F1") {
+        e.preventDefault();
+        showSection("ventas");
+      } else if(e.key === "F2") {
+        e.preventDefault();
+        showSection("productos");
+      } else if(e.key === "F3") {
+        e.preventDefault();
+        showSection("clientes");
+      } else if(e.key === "F4") {
+        e.preventDefault();
+        showSection("creditos");
+      } else if(e.key === "F5") {
+        e.preventDefault();
+        showSection("inventario");
+      } else if(e.key === "F6") {
+        e.preventDefault();
+        showSection("configuraciones");
+      } else if(e.key === "F7") {
+        e.preventDefault();
+        showSection("reportes");
+      }
+    });
+
   </script>
-
 </body>
 </html>
