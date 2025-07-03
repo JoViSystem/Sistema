@@ -71,39 +71,33 @@
 
         <div class="grid md:grid-cols-3 gap-6">
 
-          <!-- Botones rápidos -->
-          <div>
-            <h3 class="font-semibold mb-2">Botones rápidos:</h3>
-            <div id="botones-rapidos" class="flex flex-wrap gap-2"></div>
-          </div>
-
-          <!-- Carrito -->
-          <div class="bg-white p-4 rounded shadow max-h-[480px] overflow-y-auto">
-            <h3 class="font-semibold mb-2">Carrito</h3>
+          <!-- Carrito GRANDE -->
+          <div class="bg-white p-4 rounded shadow max-h-[600px] overflow-y-auto col-span-2">
+            <h3 class="font-semibold mb-2 text-xl">Carrito</h3>
             <table class="w-full text-left border-collapse">
               <thead class="bg-gray-100">
                 <tr>
-                  <th class="p-1">Producto</th>
-                  <th class="p-1 w-20">Cant.</th>
-                  <th class="p-1 w-24">Precio</th>
-                  <th class="p-1 w-24">Subtotal</th>
-                  <th class="p-1 w-12">Desc %</th>
-                  <th class="p-1 w-10">Eliminar</th>
+                  <th class="p-2">Producto</th>
+                  <th class="p-2 w-20">Cantidad</th>
+                  <th class="p-2 w-24">Precio</th>
+                  <th class="p-2 w-24">Subtotal</th>
+                  <th class="p-2 w-16">Desc %</th>
+                  <th class="p-2 w-14">Eliminar</th>
                 </tr>
               </thead>
               <tbody id="carrito-items"></tbody>
             </table>
-            <p class="mt-2 font-bold text-right">Total: $<span id="total-venta">0.00</span></p>
+            <p class="mt-4 font-bold text-right text-xl">Total: $<span id="total-venta">0.00</span></p>
 
-            <div class="mt-4">
-              <label class="block mb-1 font-semibold">Descuento global %:</label>
-              <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-24 p-1 border rounded" oninput="aplicarDescuentoGlobal()" />
+            <div class="mt-6 flex items-center space-x-4">
+              <label class="block font-semibold">Descuento global %:</label>
+              <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-24 p-2 border rounded" oninput="aplicarDescuentoGlobal()" />
             </div>
           </div>
 
-          <!-- Pago y caja chica -->
-          <div>
-            <h3 class="font-semibold mb-2">Pago</h3>
+          <!-- Pago en esquina derecha -->
+          <div class="bg-white p-4 rounded shadow max-h-[600px] overflow-y-auto sticky top-24 self-start w-full max-w-sm">
+            <h3 class="font-semibold mb-4 text-xl">Pago</h3>
             <label>Método de pago:</label>
             <select id="metodo-pago" class="w-full p-2 border rounded mb-4" onchange="cambiarMetodoPago()">
               <option value="Efectivo">Efectivo</option>
@@ -199,20 +193,20 @@
       <!-- Inventario -->
       <section id="inventario" class="section hidden animate-fadeIn">
         <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="database" class="mr-2"></i>Inventario</h2>
-        <div id="inventory-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
+        <p class="text-gray-600">Gestión avanzada de inventario en desarrollo...</p>
       </section>
 
       <!-- Configuraciones -->
       <section id="configuraciones" class="section hidden animate-fadeIn">
         <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="settings" class="mr-2"></i>Configuraciones</h2>
-        <p class="text-gray-600">Ajustes del sistema en desarrollo...</p>
+        <p class="text-gray-600">Opciones de configuración próximamente...</p>
       </section>
 
       <!-- Reportes -->
       <section id="reportes" class="section hidden animate-fadeIn">
         <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</h2>
-        <div id="reporte" class="bg-white p-4 rounded shadow text-sm h-80 overflow-y-auto">
-          <p class="text-gray-600">Aquí se mostrarán los reportes próximamente...</p>
+        <div id="reporte" class="bg-white p-4 rounded shadow h-96 overflow-auto">
+          <p>Generación y exportación de reportes próximamente...</p>
         </div>
       </section>
 
@@ -220,354 +214,402 @@
 
   </section>
 
+  <!-- Botones flotantes de impresión y exportar -->
+  <div class="fixed bottom-4 right-4 z-50">
+    <button onclick="imprimirTicket()" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-800 transition flex items-center">
+      <i data-feather="printer" class="inline-block mr-1"></i> Imprimir Ticket
+    </button>
+  </div>
+  <div class="fixed bottom-4 left-4 z-50">
+    <button onclick="exportarReporte()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:bg-indigo-800 transition flex items-center">
+      <i data-feather="download" class="inline-block mr-1"></i> Exportar Reporte
+    </button>
+  </div>
+
   <script>
     feather.replace();
 
-    // Datos de acceso válidos
-    const USUARIO_VALIDO = "admin";
-    const CONTRASENA_VALIDA = "12345";
-
-    // Elementos login y sistema
-    const loginSection = document.getElementById("login-section");
-    const posSection = document.getElementById("pos-section");
-    const loginError = document.getElementById("login-error");
-    const vendedorInfo = document.getElementById("vendedor-info");
-    const inputUser = document.getElementById("user");
-    const inputPass = document.getElementById("pass");
-    const btnLogin = document.getElementById("btnLogin");
-
-    // Secciones
-    const sections = document.querySelectorAll("section.section");
-
-    // Productos almacenados
-    let productos = JSON.parse(localStorage.getItem("productos")) || [];
-
-    // Clientes almacenados
-    let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-
-    // Variables para ventas
+    // Variables globales
     let carrito = [];
-    let descuentoGlobal = 0;
+    let productos = [];
+    let clientes = [];
+    let movimientosCaja = [];
+    let vendedorActual = null;
 
-    // Mostrar sección deseada
-    function showSection(id) {
-      sections.forEach(sec => {
-        sec.id === id ? sec.classList.remove("hidden") : sec.classList.add("hidden");
-      });
-      // Mostrar campo buscar solo en ventas
-      document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
-    }
-
-    // Manejo login
-    function login() {
-      const user = inputUser.value.trim();
-      const pass = inputPass.value.trim();
-      if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
-        loginError.classList.add("hidden");
-        loginSection.classList.add("hidden");
-        posSection.classList.remove("hidden");
-        vendedorInfo.textContent = user;
-        showSection("ventas");
-        inputUser.value = "";
-        inputPass.value = "";
+    // LOGIN SIMPLIFICADO (admin/admin)
+    document.getElementById('btnLogin').addEventListener('click', () => {
+      const user = document.getElementById('user').value.trim();
+      const pass = document.getElementById('pass').value.trim();
+      if(user === 'admin' && pass === 'admin') {
+        vendedorActual = 'Admin';
+        document.getElementById('vendedor-info').textContent = vendedorActual;
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('pos-section').classList.remove('hidden');
+        document.getElementById('login-error').classList.add('hidden');
+        showSection('ventas');
+        document.getElementById('busqueda-container').classList.remove('hidden');
+        document.getElementById('busqueda-producto').focus();
       } else {
-        loginError.classList.remove("hidden");
+        document.getElementById('login-error').classList.remove('hidden');
       }
-    }
-
-    // Atajo Enter para login
-    [inputUser, inputPass].forEach(input => {
-      input.addEventListener("keypress", e => {
-        if(e.key === "Enter") {
-          login();
-        }
-      });
     });
 
-    btnLogin.addEventListener("click", login);
-
-    // Buscar productos (en ventas)
-    function buscarProductos() {
-      const query = document.getElementById("busqueda-producto").value.trim().toLowerCase();
-      const lista = document.getElementById("lista-resultados");
-      lista.innerHTML = "";
-      if(query.length === 0) return;
-      const resultados = productos.filter(p =>
-        p.nombre.toLowerCase().includes(query) ||
-        p.codigo.toLowerCase().includes(query)
-      );
-      if(resultados.length === 0) {
-        lista.innerHTML = "<p class='p-2 text-gray-500'>No hay resultados</p>";
-        return;
+    // Navegación entre secciones
+    function showSection(id) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(sec => {
+        if(sec.id === id) sec.classList.remove('hidden');
+        else sec.classList.add('hidden');
+      });
+      // Mostrar u ocultar campo búsqueda solo en Ventas
+      if(id === 'ventas') {
+        document.getElementById('busqueda-container').classList.remove('hidden');
+        document.getElementById('busqueda-producto').focus();
+      } else {
+        document.getElementById('busqueda-container').classList.add('hidden');
       }
+    }
+
+    // Buscar productos en ventas
+    function buscarProductos() {
+      const query = document.getElementById('busqueda-producto').value.toLowerCase();
+      const resultados = productos.filter(p => p.nombre.toLowerCase().includes(query) || p.codigo.toLowerCase().includes(query));
+      const lista = document.getElementById('lista-resultados');
+      lista.innerHTML = '';
+      if(query === '') return;
       resultados.forEach(p => {
-        const div = document.createElement("div");
-        div.className = "p-2 cursor-pointer hover:bg-[#00BFFF] hover:text-white rounded";
-        div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
-        div.onclick = () => agregarAlCarrito(p.codigo);
-        lista.appendChild(div);
+        const item = document.createElement('div');
+        item.className = 'p-2 border-b cursor-pointer hover:bg-[#00BFFF] hover:text-white transition';
+        item.textContent = `${p.nombre} - $${p.precioVenta.toFixed(2)}`;
+        item.onclick = () => agregarAlCarrito(p.codigo);
+        lista.appendChild(item);
       });
     }
 
     // Agregar producto al carrito
     function agregarAlCarrito(codigo) {
       const producto = productos.find(p => p.codigo === codigo);
-      if(!producto) return alert("Producto no encontrado");
-      let item = carrito.find(i => i.codigo === codigo);
-      if(item) {
-        if(item.cantidad < producto.stock) {
-          item.cantidad++;
-        } else {
-          alert("No hay suficiente stock");
-          return;
-        }
+      if(!producto) return;
+      const itemCarrito = carrito.find(i => i.codigo === codigo);
+      if(itemCarrito) {
+        itemCarrito.cantidad++;
       } else {
-        carrito.push({
-          codigo: producto.codigo,
-          nombre: producto.nombre,
-          precio: producto.precioVenta,
-          cantidad: 1,
-          descuento: 0
-        });
+        carrito.push({ ...producto, cantidad: 1, descuento: 0 });
       }
       actualizarCarrito();
-      document.getElementById("busqueda-producto").value = "";
-      document.getElementById("lista-resultados").innerHTML = "";
     }
 
-    // Actualizar carrito en la tabla y total
+    // Actualizar tabla carrito
     function actualizarCarrito() {
-      const tbody = document.getElementById("carrito-items");
-      tbody.innerHTML = "";
+      const tbody = document.getElementById('carrito-items');
+      tbody.innerHTML = '';
       let total = 0;
-      carrito.forEach((item, idx) => {
-        const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
+      carrito.forEach((item, index) => {
+        const subtotal = item.cantidad * item.precioVenta * (1 - item.descuento / 100);
         total += subtotal;
-        const tr = document.createElement("tr");
+        const tr = document.createElement('tr');
+
         tr.innerHTML = `
-          <td class="p-1">${item.nombre}</td>
-          <td class="p-1 w-20">
-            <input type="number" min="1" max="999" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border rounded p-1" />
+          <td class="p-2">${item.nombre}</td>
+          <td class="p-2 w-20">
+            <input type="number" min="1" value="${item.cantidad}" class="w-full border rounded p-1" oninput="cambiarCantidad(${index}, this.value)" />
           </td>
-          <td class="p-1 w-24 text-right">$${item.precio.toFixed(2)}</td>
-          <td class="p-1 w-24 text-right">$${subtotal.toFixed(2)}</td>
-          <td class="p-1 w-12">
-            <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border rounded p-1" />
+          <td class="p-2 w-24 text-right">$${item.precioVenta.toFixed(2)}</td>
+          <td class="p-2 w-24 text-right">$${subtotal.toFixed(2)}</td>
+          <td class="p-2 w-16">
+            <input type="number" min="0" max="100" value="${item.descuento}" class="w-full border rounded p-1" oninput="cambiarDescuento(${index}, this.value)" />
           </td>
-          <td class="p-1 w-10 text-center cursor-pointer text-red-600 hover:text-red-800" data-idx-del="${idx}" title="Eliminar">&times;</td>
-        `;
+          <td class="p-2 w-14 text-center">
+            <button class="text-red-600 hover:text-red-800" onclick="eliminarProducto(${index})" title="Eliminar producto">
+              <i data-feather="trash-2"></i>
+            </button>
+          </td>`;
         tbody.appendChild(tr);
       });
-      document.getElementById("total-venta").textContent = total.toFixed(2);
-
-      // Eventos para inputs cantidad y descuento
-      document.querySelectorAll(".cantidad-input").forEach(input => {
-        input.addEventListener("change", e => {
-          const i = parseInt(e.target.dataset.idx);
-          let val = parseInt(e.target.value);
-          if (val < 1) val = 1;
-          const stock = productos.find(p => p.codigo === carrito[i].codigo).stock;
-          if(val > stock) {
-            alert("No hay suficiente stock");
-            val = stock;
-          }
-          carrito[i].cantidad = val;
-          actualizarCarrito();
-        });
-      });
-      document.querySelectorAll(".descuento-input").forEach(input => {
-        input.addEventListener("change", e => {
-          const i = parseInt(e.target.dataset.idxDesc);
-          let val = parseFloat(e.target.value);
-          if (val < 0) val = 0;
-          if (val > 100) val = 100;
-          carrito[i].descuento = val;
-          actualizarCarrito();
-        });
-      });
-      // Eliminar item
-      document.querySelectorAll("[data-idx-del]").forEach(el => {
-        el.addEventListener("click", e => {
-          const i = parseInt(e.target.dataset.idxDel);
-          carrito.splice(i, 1);
-          actualizarCarrito();
-        });
-      });
+      document.getElementById('total-venta').textContent = total.toFixed(2);
+      feather.replace();
     }
 
-    // Aplicar descuento global (sobre total)
-    function aplicarDescuentoGlobal() {
-      const val = parseFloat(document.getElementById("descuento-global").value);
-      descuentoGlobal = isNaN(val) ? 0 : val;
+    // Cambiar cantidad producto en carrito
+    function cambiarCantidad(index, valor) {
+      valor = parseInt(valor);
+      if(isNaN(valor) || valor < 1) valor = 1;
+      carrito[index].cantidad = valor;
       actualizarCarrito();
     }
 
-    // Cambiar método de pago (mostrar efectivo si aplica)
-    function cambiarMetodoPago() {
-      const metodo = document.getElementById("metodo-pago").value;
-      document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
+    // Cambiar descuento producto en carrito
+    function cambiarDescuento(index, valor) {
+      valor = parseFloat(valor);
+      if(isNaN(valor) || valor < 0) valor = 0;
+      if(valor > 100) valor = 100;
+      carrito[index].descuento = valor;
+      actualizarCarrito();
     }
 
-    // Calcular cambio efectivo
-    function calcularCambio() {
-      const efectivo = parseFloat(document.getElementById("efectivo-recibido").value);
-      const total = parseFloat(document.getElementById("total-venta").textContent);
-      let cambio = 0;
-      if(!isNaN(efectivo)) {
-        cambio = efectivo - total;
-        if(cambio < 0) cambio = 0;
+    // Eliminar producto del carrito
+    function eliminarProducto(index) {
+      carrito.splice(index, 1);
+      actualizarCarrito();
+    }
+
+    // Aplicar descuento global
+    function aplicarDescuentoGlobal() {
+      let descGlobal = parseFloat(document.getElementById('descuento-global').value);
+      if(isNaN(descGlobal) || descGlobal < 0) descGlobal = 0;
+      if(descGlobal > 100) descGlobal = 100;
+      carrito.forEach(item => item.descuento = descGlobal);
+      actualizarCarrito();
+    }
+
+    // Cambiar método de pago
+    function cambiarMetodoPago() {
+      const metodo = document.getElementById('metodo-pago').value;
+      if(metodo === 'Efectivo') {
+        document.getElementById('efectivo-section').classList.remove('hidden');
+      } else {
+        document.getElementById('efectivo-section').classList.add('hidden');
+        document.getElementById('cambio').textContent = '0.00';
       }
-      document.getElementById("cambio").textContent = cambio.toFixed(2);
+    }
+
+    // Calcular cambio en efectivo
+    function calcularCambio() {
+      const recibido = parseFloat(document.getElementById('efectivo-recibido').value) || 0;
+      const total = parseFloat(document.getElementById('total-venta').textContent) || 0;
+      const cambio = recibido - total;
+      document.getElementById('cambio').textContent = cambio >= 0 ? cambio.toFixed(2) : '0.00';
     }
 
     // Finalizar venta
     function finalizarVenta() {
-      if(carrito.length === 0) return alert("El carrito está vacío");
-      alert("Venta finalizada. Total: $" + document.getElementById("total-venta").textContent);
+      if(carrito.length === 0) {
+        alert('No hay productos en el carrito');
+        return;
+      }
+      alert('Venta finalizada por ' + vendedorActual + '. Total: $' + document.getElementById('total-venta').textContent);
       carrito = [];
       actualizarCarrito();
-      document.getElementById("descuento-global").value = 0;
-      document.getElementById("efectivo-recibido").value = "";
-      document.getElementById("cambio").textContent = "0.00";
+      document.getElementById('efectivo-recibido').value = '';
+      document.getElementById('cambio').textContent = '0.00';
+      document.getElementById('descuento-global').value = '0';
+      // Aquí puedes agregar lógica para guardar la venta, etc.
     }
 
-    // Caja chica
-    let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
-    const listaMovimientos = document.getElementById("movimientos-caja");
+    // Agregar movimiento caja chica
     function agregarCajaChica() {
-      const monto = parseFloat(document.getElementById("monto-caja").value);
-      const tipo = document.getElementById("tipo-caja").value;
-      if(isNaN(monto) || monto <= 0) return alert("Monto inválido");
-      movimientosCaja.push({monto, tipo, fecha: new Date().toLocaleString()});
-      localStorage.setItem("movimientosCaja", JSON.stringify(movimientosCaja));
-      mostrarMovimientosCaja();
-      document.getElementById("monto-caja").value = "";
-      document.getElementById("tipo-caja").value = "entrada";
+      const monto = parseFloat(document.getElementById('monto-caja').value);
+      const tipo = document.getElementById('tipo-caja').value;
+      if(isNaN(monto) || monto <= 0) {
+        alert('Ingrese un monto válido');
+        return;
+      }
+      movimientosCaja.push({ monto, tipo, fecha: new Date().toLocaleString() });
+      actualizarMovimientosCaja();
+      document.getElementById('monto-caja').value = '';
     }
-    function mostrarMovimientosCaja() {
-      listaMovimientos.innerHTML = "";
-      movimientosCaja.forEach((m, i) => {
-        const li = document.createElement("li");
-        li.textContent = `[${m.fecha}] ${m.tipo === "entrada" ? "+" : "-"}$${m.monto.toFixed(2)}`;
-        listaMovimientos.appendChild(li);
+
+    // Mostrar movimientos caja chica
+    function actualizarMovimientosCaja() {
+      const ul = document.getElementById('movimientos-caja');
+      ul.innerHTML = '';
+      movimientosCaja.forEach((mov, i) => {
+        const li = document.createElement('li');
+        li.textContent = `${mov.fecha} - ${mov.tipo === 'entrada' ? '+' : '-'} $${mov.monto.toFixed(2)}`;
+        ul.appendChild(li);
       });
     }
-    mostrarMovimientosCaja();
 
-    // Gestión productos
+    // Guardar producto (agregar o editar)
     function saveProduct() {
-      const nombre = document.getElementById("prod-nombre").value.trim();
-      const codigo = document.getElementById("prod-codigo").value.trim();
-      const precioCosto = parseFloat(document.getElementById("prod-precio-costo").value);
-      const precioVenta = parseFloat(document.getElementById("prod-precio-venta").value);
-      const stock = parseInt(document.getElementById("prod-stock").value);
+      const nombre = document.getElementById('prod-nombre').value.trim();
+      const codigo = document.getElementById('prod-codigo').value.trim();
+      const precioCosto = parseFloat(document.getElementById('prod-precio-costo').value);
+      const precioVenta = parseFloat(document.getElementById('prod-precio-venta').value);
+      const stock = parseInt(document.getElementById('prod-stock').value);
 
       if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock)) {
-        return alert("Por favor, completa todos los campos correctamente.");
+        alert('Complete todos los campos correctamente');
+        return;
       }
-      // Validar no duplicar código
-      const existe = productos.find(p => p.codigo === codigo);
-      if(existe) {
-        // Actualizar producto existente
-        existe.nombre = nombre;
-        existe.precioCosto = precioCosto;
-        existe.precioVenta = precioVenta;
-        existe.stock = stock;
+
+      const existe = productos.findIndex(p => p.codigo === codigo);
+      if(existe >= 0) {
+        productos[existe] = { nombre, codigo, precioCosto, precioVenta, stock };
       } else {
-        productos.push({nombre, codigo, precioCosto, precioVenta, stock});
+        productos.push({ nombre, codigo, precioCosto, precioVenta, stock });
       }
-      localStorage.setItem("productos", JSON.stringify(productos));
-      limpiarFormProducto();
-      renderProductos();
-      alert("Producto guardado correctamente.");
+
+      actualizarTablaProductos();
+      limpiarCamposProducto();
+      alert('Producto guardado');
     }
-    function limpiarFormProducto() {
-      document.getElementById("prod-nombre").value = "";
-      document.getElementById("prod-codigo").value = "";
-      document.getElementById("prod-precio-costo").value = "";
-      document.getElementById("prod-precio-venta").value = "";
-      document.getElementById("prod-stock").value = "";
+
+    // Limpiar campos producto
+    function limpiarCamposProducto() {
+      document.getElementById('prod-nombre').value = '';
+      document.getElementById('prod-codigo').value = '';
+      document.getElementById('prod-precio-costo').value = '';
+      document.getElementById('prod-precio-venta').value = '';
+      document.getElementById('prod-stock').value = '';
     }
-    function renderProductos() {
-      const tbody = document.getElementById("prod-table");
-      tbody.innerHTML = "";
+
+    // Actualizar tabla productos
+    function actualizarTablaProductos() {
+      const tbody = document.getElementById('prod-table');
+      tbody.innerHTML = '';
       productos.forEach((p, i) => {
-        const tr = document.createElement("tr");
+        const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="p-2">${p.nombre}</td>
           <td class="p-2">${p.codigo}</td>
           <td class="p-2 text-right">$${p.precioCosto.toFixed(2)}</td>
           <td class="p-2 text-right">$${p.precioVenta.toFixed(2)}</td>
           <td class="p-2 text-right">${p.stock}</td>
-          <td class="p-2 text-center cursor-pointer text-red-600 hover:text-red-800" title="Eliminar" data-index="${i}">&times;</td>
-        `;
+          <td class="p-2 text-center">
+            <button onclick="editarProducto(${i})" title="Editar" class="text-blue-600 hover:text-blue-800 mr-2">
+              <i data-feather="edit-2"></i>
+            </button>
+            <button onclick="eliminarProductoLista(${i})" title="Eliminar" class="text-red-600 hover:text-red-800">
+              <i data-feather="trash-2"></i>
+            </button>
+          </td>`;
         tbody.appendChild(tr);
       });
-      // Eliminar producto
-      tbody.querySelectorAll("[data-index]").forEach(td => {
-        td.addEventListener("click", e => {
-          const idx = parseInt(e.target.dataset.index);
-          if(confirm("¿Eliminar producto?")) {
-            productos.splice(idx, 1);
-            localStorage.setItem("productos", JSON.stringify(productos));
-            renderProductos();
-          }
-        });
-      });
+      feather.replace();
     }
-    renderProductos();
 
-    // Gestión clientes simple
+    // Editar producto
+    function editarProducto(index) {
+      const p = productos[index];
+      document.getElementById('prod-nombre').value = p.nombre;
+      document.getElementById('prod-codigo').value = p.codigo;
+      document.getElementById('prod-precio-costo').value = p.precioCosto;
+      document.getElementById('prod-precio-venta').value = p.precioVenta;
+      document.getElementById('prod-stock').value = p.stock;
+    }
+
+    // Eliminar producto de lista productos
+    function eliminarProductoLista(index) {
+      if(confirm('¿Eliminar este producto?')) {
+        productos.splice(index,1);
+        actualizarTablaProductos();
+      }
+    }
+
+    // Guardar cliente
     function saveClient() {
-      const nombre = document.getElementById("cli-nombre").value.trim();
-      const email = document.getElementById("cli-email").value.trim();
-      const telefono = document.getElementById("cli-telefono").value.trim();
-      if(!nombre) return alert("El nombre es obligatorio");
-      clientes.push({nombre, email, telefono});
-      localStorage.setItem("clientes", JSON.stringify(clientes));
-      renderClientes();
-      document.getElementById("cli-nombre").value = "";
-      document.getElementById("cli-email").value = "";
-      document.getElementById("cli-telefono").value = "";
+      const nombre = document.getElementById('cli-nombre').value.trim();
+      const email = document.getElementById('cli-email').value.trim();
+      const telefono = document.getElementById('cli-telefono').value.trim();
+
+      if(!nombre || !email || !telefono) {
+        alert('Complete todos los campos correctamente');
+        return;
+      }
+
+      clientes.push({ nombre, email, telefono });
+      actualizarListaClientes();
+      limpiarCamposCliente();
+      alert('Cliente guardado');
     }
-    function renderClientes() {
-      const list = document.getElementById("client-list");
-      list.innerHTML = "";
-      clientes.forEach(c => {
-        const li = document.createElement("li");
-        li.className = "mb-2 border-b pb-2";
-        li.textContent = `${c.nombre} - ${c.email || "-"} - ${c.telefono || "-"}`;
-        list.appendChild(li);
+
+    // Limpiar campos cliente
+    function limpiarCamposCliente() {
+      document.getElementById('cli-nombre').value = '';
+      document.getElementById('cli-email').value = '';
+      document.getElementById('cli-telefono').value = '';
+    }
+
+    // Actualizar lista clientes
+    function actualizarListaClientes() {
+      const ul = document.getElementById('client-list');
+      ul.innerHTML = '';
+      clientes.forEach((c, i) => {
+        const li = document.createElement('li');
+        li.className = 'border-b p-2 flex justify-between items-center';
+        li.innerHTML = `
+          <span><strong>${c.nombre}</strong> - ${c.email} - ${c.telefono}</span>
+          <button onclick="eliminarCliente(${i})" class="text-red-600 hover:text-red-800" title="Eliminar cliente">
+            <i data-feather="trash-2"></i>
+          </button>`;
+        ul.appendChild(li);
+      });
+      feather.replace();
+    }
+
+    // Eliminar cliente
+    function eliminarCliente(index) {
+      if(confirm('¿Eliminar este cliente?')) {
+        clientes.splice(index,1);
+        actualizarListaClientes();
+      }
+    }
+
+    // Imprimir ticket simple
+    function imprimirTicket() {
+      if(carrito.length === 0) {
+        alert('El carrito está vacío.');
+        return;
+      }
+      let html = `
+        <div style="font-family: monospace; font-size: 14px; width: 280px; padding: 10px;">
+          <h3 style="text-align: center;">JoVi POS</h3>
+          <p>Fecha: ${new Date().toLocaleString()}</p>
+          <p>Vendedor: ${vendedorActual}</p>
+          <hr>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead><tr><th style="text-align:left;">Producto</th><th style="text-align:center;">Cant</th><th style="text-align:right;">Subtotal</th></tr></thead>
+            <tbody>`;
+      carrito.forEach(item => {
+        const subtotal = item.cantidad * item.precioVenta * (1 - item.descuento/100);
+        html += `<tr><td>${item.nombre}</td><td style="text-align:center;">${item.cantidad}</td><td style="text-align:right;">$${subtotal.toFixed(2)}</td></tr>`;
+      });
+      html += `
+            </tbody>
+          </table>
+          <hr>
+          <p style="text-align:right;"><strong>Total: $${document.getElementById('total-venta').textContent}</strong></p>
+        </div>`;
+      let ventana = window.open('','_blank','width=320,height=480');
+      ventana.document.write(html);
+      ventana.document.close();
+      ventana.focus();
+      ventana.print();
+      ventana.close();
+    }
+
+    // Exportar reporte (solo sección reportes)
+    function exportarReporte() {
+      const reporte = document.getElementById('reporte');
+      if(!reporte) return alert('No hay reporte visible');
+      html2canvas(reporte).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF();
+        pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+        pdf.save('reporte-jovi.pdf');
       });
     }
-    renderClientes();
 
-    // Teclas rápidas para cambiar secciones (F1-F7)
-    window.addEventListener("keydown", e => {
-      if(e.key === "F1") {
-        e.preventDefault();
-        showSection("ventas");
-      } else if(e.key === "F2") {
-        e.preventDefault();
-        showSection("productos");
-      } else if(e.key === "F3") {
-        e.preventDefault();
-        showSection("clientes");
-      } else if(e.key === "F4") {
-        e.preventDefault();
-        showSection("creditos");
-      } else if(e.key === "F5") {
-        e.preventDefault();
-        showSection("inventario");
-      } else if(e.key === "F6") {
-        e.preventDefault();
-        showSection("configuraciones");
-      } else if(e.key === "F7") {
-        e.preventDefault();
-        showSection("reportes");
+    // Atajos de teclado para navegación F1-F7
+    document.addEventListener('keydown', e => {
+      if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      switch(e.key) {
+        case 'F1': e.preventDefault(); showSection('ventas'); break;
+        case 'F2': e.preventDefault(); showSection('productos'); break;
+        case 'F3': e.preventDefault(); showSection('clientes'); break;
+        case 'F4': e.preventDefault(); showSection('creditos'); break;
+        case 'F5': e.preventDefault(); showSection('inventario'); break;
+        case 'F6': e.preventDefault(); showSection('configuraciones'); break;
+        case 'F7': e.preventDefault(); showSection('reportes'); break;
       }
     });
 
   </script>
+
+  <!-- Librerías para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 </body>
 </html>
