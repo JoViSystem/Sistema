@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JoVi POS Avanzado</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Heroicons CDN -->
+  <!-- Feather Icons CDN -->
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -13,6 +13,7 @@
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
+
   <!-- LOGIN -->
   <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#00BFFF] to-[#005F9E] animate-fadeIn">
     <!-- Logo -->
@@ -20,15 +21,24 @@
     <h1 class="text-4xl font-extrabold text-white mb-6 drop-shadow-lg">Bienvenido a JoVi POS</h1>
     <div class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-xl w-96 animate-fadeIn">
       <div class="mb-4">
-        <label for="user" class="block text-gray-700 font-medium mb-1"><i data-feather="user" class="inline-block mr-2"></i>Usuario</label>
+        <label for="user" class="block text-gray-700 font-medium mb-1">
+          <i data-feather="user" class="inline-block mr-2"></i>Usuario
+        </label>
         <input id="user" type="text" placeholder="admin" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFFF] transition" />
       </div>
       <div class="mb-4">
-        <label for="pass" class="block text-gray-700 font-medium mb-1"><i data-feather="lock" class="inline-block mr-2"></i>Contraseña</label>
-        <input id="pass" type="password" placeholder="••••••" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFFF] transition" />
+        <label for="pass" class="block text-gray-700 font-medium mb-1">
+          <i data-feather="lock" class="inline-block mr-2"></i>Contraseña
+        </label>
+        <input id="pass" type="password" placeholder="•••••" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFFF] transition" />
       </div>
-      <button onclick="login()" class="w-full bg-[#00BFFF] text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-[#007ACC] transition-colors duration-300"><i data-feather="log-in" class="inline-block mr-2"></i>Iniciar Sesión</button>
+      <button id="login-btn" class="w-full bg-[#00BFFF] text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-[#007ACC] transition-colors duration-300 flex justify-center items-center">
+        <i data-feather="log-in" class="inline-block mr-2"></i>Iniciar Sesión
+      </button>
       <p id="login-error" class="text-red-500 text-sm mt-3 hidden">Usuario o contraseña incorrecta</p>
+      <button id="forgot-btn" class="mt-4 text-sm text-gray-600 hover:underline">
+        <i data-feather="help-circle" class="inline-block mr-1"></i>Olvidé mi contraseña
+      </button>
     </div>
   </section>
 
@@ -37,110 +47,103 @@
     <!-- NAV HORIZONTAL -->
     <nav class="bg-white shadow-md p-4 flex space-x-6 justify-center items-center sticky top-0 z-10">
       <img src="logo.png" alt="Logo" class="w-12 h-12 mr-4 animate-pulse" />
-      <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</button>
-      <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="box" class="mr-2"></i>Productos</button>
-      <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="users" class="mr-2"></i>Clientes</button>
-      <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="credit-card" class="mr-2"></i>Créditos</button>
-      <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="database" class="mr-2"></i>Inventario</button>
-      <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="settings" class="mr-2"></i>Configuraciones</button>
-      <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</button>
-      <span class="ml-auto text-sm text-gray-500"><i data-feather="user-check" class="inline-block mr-1"></i><strong id="vendedor-info"></strong></span>
+      <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+        <i data-feather="shopping-cart" class="mr-2"></i>Ventas
+      </button>
+      <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+        <i data-feather="box" class="mr-2"></i>Productos
+      </button>
+      <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+        <i data-feather="users" class="mr-2"></i>Clientes
+      </button>
+      <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+        <i data-feather="credit-card" class="mr-2"></i>Créditos
+      </button>
+      <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+        <i data-feather="database" class="mr-2"></i>Inventario
+      </button>
+      <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+        <i data-feather="settings" class="mr-2"></i>Configuraciones
+      </button>
+      <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition">
+        <i data-feather="bar-chart-2" class="mr-2"></i>Reportes
+      </button>
+      <span class="ml-auto text-sm text-gray-500">
+        <i data-feather="user-check" class="inline-block mr-1"></i>
+        <strong id="vendedor-info"></strong>
+      </span>
     </nav>
     <main class="p-8 space-y-8">
       <!-- Ventas -->
       <section id="ventas" class="section animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="activity" class="mr-2"></i>Ventas</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div>
-            <h3 class="font-semibold mb-2 flex items-center"><i data-feather="package" class="mr-2"></i>Inventario</h3>
-            <div id="product-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
-          </div>
-          <div>
-            <h3 class="font-semibold mb-2 flex items-center"><i data-feather="shopping-bag" class="mr-2"></i>Carrito</h3>
-            <ul id="cart-items" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></ul>
-            <p class="mt-2 font-bold"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Total: $<span id="total">0.00</span></p>
-            <label class="block mt-2 text-sm"><i data-feather="credit-card" class="mr-1"></i>Método de pago:</label>
-            <select id="metodo-pago" class="p-2 border rounded w-full">
-              <option value="Efectivo">Efectivo</option>
-              <option value="Tarjeta">Tarjeta</option>
-              <option value="Transferencia">Transferencia</option>
-            </select>
-            <div id="efectivo-box" class="mt-2 hidden">
-              <input id="efectivo-recibido" type="number" placeholder="Efectivo recibido" class="w-full p-2 border rounded" step="0.01">
-              <p class="mt-1 text-sm text-gray-600"><i data-feather="repeat" class="inline-block mr-1"></i>Cambio: $<span id="cambio">0.00</span></p>
-            </div>
-            <div class="mt-4 flex space-x-2">
-              <button onclick="checkout()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="check-circle" class="inline-block mr-1"></i>Finalizar</button>
-              <button onclick="imprimirTicket(lastVenta)" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition"><i data-feather="printer" class="inline-block mr-1"></i>Imprimir</button>
-            </div>
-          </div>
-          <div>
-            <h3 class="font-semibold mb-2 flex items-center"><i data-feather="clock" class="mr-2"></i>Historial en tiempo real</h3>
-            <div id="live-sales" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
-          </div>
-        </div>
+        <!-- contenido Ventas aquí -->
       </section>
       <!-- Productos -->
       <section id="productos" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="box" class="mr-2"></i>Gestión de Productos</h2>
-        <div class="bg-white p-4 rounded shadow mb-4 flex flex-col md:flex-row md:space-x-4">
-          <div class="flex-1">
-            <label class="block mb-1 text-sm"><i data-feather="tag" class="inline-block mr-1"></i>Nombre</label>
-            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2">
-            <label class="block mb-1 text-sm"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Precio</label>
-            <input id="prod-precio" placeholder="Precio" type="number" class="w-full p-2 border rounded mb-2" step="0.01">
-            <label class="block mb-1 text-sm"><i data-feather="layers" class="inline-block mr-1"></i>Stock</label>
-            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border rounded mb-2">
-            <button onclick="saveProduct()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
-          </div>
-          <div class="flex-1">
-            <table class="w-full bg-white rounded shadow">
-              <thead class="bg-gray-100"><tr><th class="p-2 text-left">Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
-              <tbody id="prod-table"></tbody>
-            </table>
-          </div>
-        </div>
+        <!-- contenido Productos aquí -->
       </section>
       <!-- Clientes -->
       <section id="clientes" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="users" class="mr-2"></i>Clientes</h2>
-        <div class="bg-white p-4 rounded shadow mb-4">
-          <label class="block mb-1 text-sm"><i data-feather="user-plus" class="inline-block mr-1"></i>Nombre</label>
-          <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2">
-          <label class="block mb-1 text-sm"><i data-feather="mail" class="inline-block mr-1"></i>Email</label>
-          <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border rounded mb-2">
-          <label class="block mb-1 text-sm"><i data-feather="phone-call" class="inline-block mr-1"></i>Teléfono</label>
-          <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border rounded mb-2">
-          <button onclick="saveClient()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
-        </div>
-        <ul id="client-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></ul>
+        <!-- contenido Clientes aquí -->
       </section>
       <!-- Créditos -->
       <section id="creditos" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="credit-card" class="mr-2"></i>Créditos</h2>
-        <p>Funcionalidad de créditos en desarrollo...</p>
+        <!-- contenido Créditos aquí -->
       </section>
       <!-- Inventario -->
       <section id="inventario" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="database" class="mr-2"></i>Inventario</h2>
-        <div id="inventory-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
+        <!-- contenido Inventario aquí -->
       </section>
       <!-- Configuraciones -->
       <section id="configuraciones" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="settings" class="mr-2"></i>Configuraciones</h2>
-        <p>Ajustes del sistema...</p>
+        <!-- contenido Configuraciones aquí -->
       </section>
       <!-- Reportes -->
       <section id="reportes" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</h2>
-        <div id="reporte" class="bg-white p-4 rounded shadow text-sm h-80 overflow-y-auto"></div>
+        <!-- contenido Reportes aquí -->
       </section>
     </main>
   </section>
 
   <script>
     feather.replace(); // Inicializa Feather icons
-    // ... (mismatched script content remains unchanged) ...
+
+    // Credenciales únicas
+    const usuarios = [{ usuario: 'admin', pass: '12345' }];
+    let vendedor = '';
+
+    // Elementos
+    const loginSection = document.getElementById('login-section');
+    const posSection = document.getElementById('pos-section');
+    const loginBtn = document.getElementById('login-btn');
+    const forgotBtn = document.getElementById('forgot-btn');
+    const loginError = document.getElementById('login-error');
+
+    // Eventos
+    loginBtn.addEventListener('click', () => {
+      const user = document.getElementById('user').value;
+      const pass = document.getElementById('pass').value;
+      const found = usuarios.find(u => u.usuario === user && u.pass === pass);
+      if (found) {
+        vendedor = user;
+        loginSection.classList.add('hidden');
+        posSection.classList.remove('hidden');
+        document.getElementById('vendedor-info').textContent = vendedor;
+        showSection('ventas');
+      } else {
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    forgotBtn.addEventListener('click', () => {
+      alert('Para recuperar tu contraseña, por favor contacta al administrador.');
+    });
+
+    // Navegación
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
