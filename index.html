@@ -3,234 +3,318 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JoVi POS Animaciones CSS Puras</title>
+  <title>JoVi POS Avanzado y Sin Animaciones</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAg-fTfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* Animación más básica */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .animate-fadeIn {
-      animation: fadeIn 0.4s ease-out;
-    }
-
-    /* Estilos generales */
+    /* Colores y fuentes base */
     body {
-      font-family: sans-serif;
-      background-color: #1a202c; /* Fondo base para el sistema */
+      font-family: 'Inter', sans-serif; /* Fuente moderna */
+      background-color: #1A202C; /* Fondo principal oscuro (gray-900 de Tailwind) */
+      color: #E2E8F0; /* Texto claro (gray-200 de Tailwind) */
       background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 20v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4h-2v4H0v2h4v4h2v-4h4v-2H6zm0 20v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM36 4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 4v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM21 21v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 41v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 1V0h-2v1h-4v2h4v4h2V3h4V1h-4zm36 0V0h-2v1h-4v2h4v4h2V3h4V1h-4zM21 51v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       background-size: 60px 60px;
       background-attachment: fixed;
     }
 
-    /* Ocultar secciones por defecto y aplicar animación */
+    /* Ocultar secciones por defecto */
     .section {
       display: none;
-      /* La animación se aplicará cuando se muestre la sección */
     }
-    
-    /* Mostrar sección con animación */
+
+    /* Clase para mostrar la sección activa (sin animación) */
     .section.is-active {
         display: block;
-        animation: fadeIn 0.4s ease-out;
     }
 
-    /* Transiciones para elementos interactivos (Tailwind) */
-    .btn-transition, .input-transition {
-        transition: all 0.2s ease-in-out;
+    /* Transiciones suaves para elementos interactivos (sin animaciones complejas) */
+    .interactive-element {
+        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, color 0.15s ease-in-out;
     }
   </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-900 text-gray-200 font-sans">
+<body class="bg-gray-900 text-gray-200 font-inter">
 
-  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-gray-200 animate-fadeIn">
-    <i class="fas fa-microchip w-32 h-32 mb-6 text-[#00FFFF]"></i>
-    <h1 class="text-4xl font-extrabold text-white mb-6">Bienvenido a JoVi POS</h1>
-    <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-96 max-w-sm animate-fadeIn">
-      <div class="mb-4">
-        <label for="user" class="block text-gray-300 font-medium mb-1"><i data-feather="user" class="inline-block mr-2 text-[#00FFFF]"></i>Usuario</label>
-        <input id="user" type="text" placeholder="admin" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-[#00FFFF] focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-gray-200">
+    <i class="fas fa-microchip text-8xl mb-6 text-emerald-400"></i> <h1 class="text-5xl font-extrabold text-white mb-8">JoVi POS</h1>
+    <div class="bg-gray-800 p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-700">
+      <div class="mb-5">
+        <label for="user" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
+            <i data-feather="user" class="mr-3 text-emerald-400"></i>Usuario
+        </label>
+        <input id="user" type="text" placeholder="admin" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
-      <div class="mb-6">
-        <label for="pass" class="block text-gray-300 font-medium mb-1"><i data-feather="lock" class="inline-block mr-2 text-[#00FFFF]"></i>Contraseña</label>
-        <input id="pass" type="password" placeholder="••••••" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-[#00FFFF] focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <div class="mb-7">
+        <label for="pass" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
+            <i data-feather="lock" class="mr-3 text-emerald-400"></i>Contraseña
+        </label>
+        <input id="pass" type="password" placeholder="••••••" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
-      <button id="btnLogin" class="w-full bg-[#00FFFF] text-gray-900 py-3 rounded-lg font-semibold hover:bg-[#00CCCC] btn-transition flex justify-center items-center">
-        <i data-feather="log-in" class="mr-2"></i>Iniciar Sesión
+      <button id="btnLogin" class="w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
+        <i data-feather="log-in" class="mr-3 w-6 h-6"></i>Iniciar Sesión
       </button>
-      <p id="login-error" class="text-red-400 text-sm mt-4 hidden">Usuario o contraseña incorrecta</p>
-      <p class="mt-4 text-right">
-        <a href="#" id="forgot-password" class="text-[#00FFFF] text-sm hover:underline">¿Olvidaste la contraseña?</a>
+      <p id="login-error" class="text-red-400 text-sm mt-5 hidden text-center">Usuario o contraseña incorrecta</p>
+      <p class="mt-6 text-right">
+        <a href="#" id="forgot-password" class="text-emerald-400 text-sm hover:underline">¿Olvidaste la contraseña?</a>
       </p>
     </div>
   </section>
 
-  <section id="pos-section" class="hidden">
+  <section id="pos-section" class="hidden min-h-screen flex flex-col">
 
-    <nav class="bg-gray-800 shadow-lg p-4 flex space-x-6 justify-center items-center sticky top-0 z-20 select-none">
-      <i class="fas fa-microchip w-12 h-12 mr-4 text-[#00FFFF]"></i>
-      <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F1 - Ventas"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</button>
-      <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F2 - Productos"><i data-feather="box" class="mr-2"></i>Productos</button>
-      <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F3 - Clientes"><i data-feather="users" class="mr-2"></i>Clientes</button>
-      <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F4 - Créditos"><i data-feather="credit-card" class="mr-2"></i>Créditos</button>
-      <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F5 - Inventario"><i data-feather="database" class="mr-2"></i>Inventario</button>
-      <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F6 - Configuraciones"><i data-feather="settings" class="mr-2"></i>Configuraciones</button>
-      <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md btn-transition" title="F7 - Reportes"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</button>
-      <span class="ml-auto text-sm text-gray-400 flex items-center"><i data-feather="user-check" class="inline-block mr-1 text-[#00FFFF]"></i><strong id="vendedor-info"></strong></span>
+    <nav class="bg-gray-800 shadow-lg p-4 flex items-center sticky top-0 z-20 select-none border-b border-gray-700">
+      <div class="flex items-center space-x-4">
+        <i class="fas fa-microchip text-3xl text-emerald-400"></i>
+        <span class="text-2xl font-bold text-white">JoVi POS</span>
+      </div>
+      <div class="flex-grow flex justify-center space-x-3 mx-8">
+        <button onclick="showSection('ventas')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F1 - Ventas">
+            <i data-feather="shopping-cart" class="mr-2"></i>Ventas
+        </button>
+        <button onclick="showSection('productos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F2 - Productos">
+            <i data-feather="box" class="mr-2"></i>Productos
+        </button>
+        <button onclick="showSection('clientes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F3 - Clientes">
+            <i data-feather="users" class="mr-2"></i>Clientes
+        </button>
+        <button onclick="showSection('creditos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F4 - Créditos">
+            <i data-feather="credit-card" class="mr-2"></i>Créditos
+        </button>
+        <button onclick="showSection('inventario')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F5 - Inventario">
+            <i data-feather="database" class="mr-2"></i>Inventario
+        </button>
+        <button onclick="showSection('configuraciones')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F6 - Configuraciones">
+            <i data-feather="settings" class="mr-2"></i>Configuraciones
+        </button>
+        <button onclick="showSection('reportes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F7 - Reportes">
+            <i data-feather="bar-chart-2" class="mr-2"></i>Reportes
+        </button>
+      </div>
+      <span class="ml-auto text-base text-gray-400 flex items-center p-2 rounded-lg bg-gray-700">
+          <i data-feather="user-check" class="inline-block mr-2 text-emerald-400 w-5 h-5"></i>Vendedor: <strong id="vendedor-info" class="text-white ml-1"></strong>
+      </span>
     </nav>
 
-    <main class="p-8 space-y-8">
+    <main class="p-8 flex-grow">
 
-      <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto animate-fadeIn">
-        <label for="busqueda-producto" class="block text-4xl font-extrabold mb-3 text-center text-[#00FFFF]">Buscar producto</label>
+      <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto">
+        <label for="busqueda-producto" class="block text-4xl font-extrabold mb-4 text-center text-emerald-400 flex items-center justify-center">
+            <i data-feather="search" class="mr-4 w-10 h-10"></i>Buscar producto
+        </label>
         <div class="relative">
-          <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-4 pl-12 border-4 border-[#00FFFF] rounded-xl shadow-lg text-2xl bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" oninput="buscarProductos()" autocomplete="off" />
-          <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <input id="busqueda-producto" type="text" placeholder="Escribe para buscar por nombre o código..." class="w-full p-5 pl-14 border-4 border-emerald-500 rounded-xl shadow-lg text-2xl bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" oninput="buscarProductos()" autocomplete="off" />
+          <i data-feather="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6"></i>
         </div>
-        <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded max-h-56 overflow-y-auto mt-2 shadow-md"></div>
+        <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded-lg max-h-56 overflow-y-auto mt-3 shadow-md z-10 relative"></div>
       </div>
 
       <section id="ventas" class="section">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</h2>
+        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+            <i data-feather="shopping-cart" class="mr-3 w-8 h-8"></i>Gestión de Ventas
+        </h2>
 
-        <div class="grid md:grid-cols-3 gap-6">
+        <div class="grid lg:grid-cols-3 gap-8">
 
-          <div>
-            <h3 class="font-semibold mb-2 text-gray-300">Botones rápidos:</h3>
-            <div id="botones-rapidos" class="flex flex-wrap gap-2"></div>
+          <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+            <h3 class="font-semibold text-xl mb-4 text-gray-300">Productos Rápidos</h3>
+            <div id="botones-rapidos" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                </div>
           </div>
 
-          <div class="bg-gray-800 p-4 rounded shadow max-h-[480px] overflow-y-auto">
-            <h3 class="font-semibold mb-2 text-gray-300">Carrito</h3>
-            <table class="w-full text-left border-collapse text-gray-200">
-              <thead class="bg-gray-700">
-                <tr>
-                  <th class="p-1">Producto</th>
-                  <th class="p-1 w-20">Cant.</th>
-                  <th class="p-1 w-24">Precio</th>
-                  <th class="p-1 w-24">Subtotal</th>
-                  <th class="p-1 w-12">Desc %</th>
-                  <th class="p-1 w-10">Eliminar</th>
-                </tr>
-              </thead>
-              <tbody id="carrito-items"></tbody>
-            </table>
-            <p class="mt-2 font-bold text-right text-gray-100">Total: $<span id="total-venta">0.00</span></p>
-
-            <div class="mt-4">
-              <label class="block mb-1 font-semibold text-gray-300">Descuento global %:</label>
-              <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-24 p-1 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" oninput="aplicarDescuentoGlobal()" />
+          <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 lg:col-span-2">
+            <h3 class="font-semibold text-xl mb-4 text-gray-300">Carrito de Compras</h3>
+            <div class="overflow-x-auto max-h-[500px] custom-scrollbar">
+                <table class="w-full text-left border-collapse text-gray-200">
+                  <thead class="bg-gray-700">
+                    <tr>
+                      <th class="p-3 text-sm font-medium">Producto</th>
+                      <th class="p-3 text-sm font-medium w-24">Cantidad</th>
+                      <th class="p-3 text-sm font-medium w-28 text-right">Precio Unitario</th>
+                      <th class="p-3 text-sm font-medium w-28 text-right">Subtotal</th>
+                      <th class="p-3 text-sm font-medium w-20 text-center">Descuento (%)</th>
+                      <th class="p-3 text-sm font-medium w-16 text-center">Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="carrito-items">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-6 border-t border-gray-700 pt-4 flex flex-col items-end">
+              <div class="flex items-center mb-3">
+                <label class="font-semibold text-gray-300 text-lg mr-4">Descuento Global (%):</label>
+                <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-28 p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-lg text-center" oninput="aplicarDescuentoGlobal()" />
+              </div>
+              <p class="text-3xl font-extrabold text-white">Total: <span class="text-emerald-400">$<span id="total-venta">0.00</span></span></p>
             </div>
           </div>
 
-          <div>
-            <h3 class="font-semibold mb-2 text-gray-300">Pago</h3>
-            <label class="block mb-1 text-gray-300">Método de pago:</label>
-            <select id="metodo-pago" class="w-full p-2 border border-gray-600 rounded mb-4 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" onchange="cambiarMetodoPago()">
+          <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+            <h3 class="font-semibold text-xl mb-4 text-gray-300">Opciones de Pago</h3>
+            <label class="block mb-2 text-gray-300 text-base">Método de Pago:</label>
+            <select id="metodo-pago" class="w-full p-3 border border-gray-600 rounded-lg mb-4 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" onchange="cambiarMetodoPago()">
               <option value="Efectivo">Efectivo</option>
               <option value="Tarjeta">Tarjeta</option>
               <option value="Transferencia">Transferencia</option>
             </select>
 
-            <div id="efectivo-section">
-              <label class="block mb-1 text-gray-300">Efectivo recibido:</label>
-              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" oninput="calcularCambio()" />
-              <p class="text-gray-300">Cambio: $<span id="cambio">0.00</span></p>
+            <div id="efectivo-section" class="mb-4">
+              <label class="block mb-2 text-gray-300 text-base">Efectivo Recibido:</label>
+              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-3 border border-gray-600 rounded-lg mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" oninput="calcularCambio()" />
+              <p class="text-gray-300 text-base">Cambio: <span class="font-bold text-emerald-400">$<span id="cambio">0.00</span></span></p>
             </div>
 
-            <button onclick="finalizarVenta()" class="mt-6 w-full bg-[#00FFFF] text-gray-900 py-3 rounded hover:bg-[#00CCCC] btn-transition flex justify-center items-center">
-              <i data-feather="check-circle" class="mr-2"></i>Finalizar Venta
+            <button onclick="finalizarVenta()" class="mt-6 w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
+              <i data-feather="check-circle" class="mr-3 w-6 h-6"></i>Finalizar Venta
             </button>
 
-            <h3 class="font-semibold mt-10 mb-2 text-gray-300">Caja Chica</h3>
-            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
-            <select id="tipo-caja" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition">
+            <h3 class="font-semibold text-xl mt-10 mb-4 text-gray-300">Caja Chica</h3>
+            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-3 border border-gray-600 rounded-lg mb-3 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" />
+            <select id="tipo-caja" class="w-full p-3 border border-gray-600 rounded-lg mb-3 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base">
               <option value="entrada">Entrada</option>
               <option value="salida">Salida</option>
             </select>
-            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-600 btn-transition flex justify-center items-center">
-              <i data-feather="plus-circle" class="mr-2"></i>Registrar Movimiento
+            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-600 active:bg-gray-500 interactive-element flex justify-center items-center text-base">
+              <i data-feather="plus-circle" class="mr-3 w-5 h-5"></i>Registrar Movimiento
             </button>
-            <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border border-gray-600 rounded p-2 bg-gray-800 text-sm text-gray-300"></ul>
+            <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border border-gray-600 rounded-lg p-3 bg-gray-800 text-sm text-gray-300 custom-scrollbar"></ul>
           </div>
 
         </div>
       </section>
 
       <section id="productos" class="section">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="box" class="mr-2"></i>Gestión de Productos</h2>
-        <div class="bg-gray-800 p-4 rounded shadow mb-4 flex flex-col md:flex-row md:space-x-4">
-          <div class="flex-1 space-y-3">
-            <label class="block text-sm text-gray-300"><i data-feather="tag" class="inline-block mr-1 text-[#00FFFF]"></i>Nombre</label>
-            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <label class="block text-sm text-gray-300"><i class="fas fa-barcode inline-block mr-1 text-[#00FFFF]"></i>Código</label>
-            <input id="prod-codigo" placeholder="Código" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <label class="block text-sm text-gray-300"><i data-feather="dollar-sign" class="inline-block mr-1 text-[#00FFFF]"></i>Precio de costo</label>
-            <input id="prod-precio-costo" placeholder="Precio de costo" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" step="0.01" min="0" />
-            <label class="block text-sm text-gray-300"><i data-feather="dollar-sign" class="inline-block mr-1 text-[#00FFFF]"></i>Precio de venta</label>
-            <input id="prod-precio-venta" placeholder="Precio de venta" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" step="0.01" min="0" />
-            <label class="block text-sm text-gray-300"><i data-feather="layers" class="inline-block mr-1 text-[#00FFFF]"></i>Stock</label>
-            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" min="0" />
-            <button onclick="saveProduct()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC] btn-transition flex items-center justify-center">
-              <i data-feather="save" class="inline-block mr-1"></i>Guardar Producto
+        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+            <i data-feather="box" class="mr-3 w-8 h-8"></i>Gestión de Productos
+        </h2>
+        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Producto</label>
+            <input id="prod-nombre" placeholder="Ej: Camisa algodón" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            
+            <label class="block text-sm text-gray-300 flex items-center"><i class="fas fa-barcode mr-2 text-emerald-400 w-5 h-5"></i>Código del Producto</label>
+            <input id="prod-codigo" placeholder="Ej: CAMS001" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Costo ($)</label>
+            <input id="prod-precio-costo" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
+            
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Venta ($)</label>
+            <input id="prod-precio-venta" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
+            
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="layers" class="mr-2 text-emerald-400 w-5 h-5"></i>Stock Disponible</label>
+            <input id="prod-stock" placeholder="0" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
+            
+            <button onclick="saveProduct()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
+              <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Producto
             </button>
           </div>
-          <div class="flex-1 overflow-auto max-h-[520px]">
-            <table class="w-full bg-gray-800 rounded shadow text-sm">
-              <thead class="bg-gray-700 text-gray-200">
+          <div class="overflow-auto max-h-[520px] custom-scrollbar">
+            <table class="w-full bg-gray-800 rounded-lg shadow text-base">
+              <thead class="bg-gray-700 text-gray-200 sticky top-0">
                 <tr>
-                  <th class="p-2 text-left">Nombre</th>
-                  <th class="p-2 text-left">Código</th>
-                  <th class="p-2 text-right">Costo</th>
-                  <th class="p-2 text-right">Venta</th>
-                  <th class="p-2 text-right">Stock</th>
-                  <th class="p-2 text-center">Acciones</th>
+                  <th class="p-3 text-left">Nombre</th>
+                  <th class="p-3 text-left">Código</th>
+                  <th class="p-3 text-right">Costo</th>
+                  <th class="p-3 text-right">Venta</th>
+                  <th class="p-3 text-right">Stock</th>
+                  <th class="p-3 text-center">Acciones</th>
                 </tr>
               </thead>
-              <tbody id="prod-table" class="text-gray-300"></tbody>
+              <tbody id="prod-table" class="text-gray-300">
+                </tbody>
             </table>
           </div>
         </div>
       </section>
 
       <section id="clientes" class="section">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="users" class="mr-2"></i>Clientes</h2>
-        <div class="bg-gray-800 p-4 rounded shadow mb-4">
-          <label class="block mb-1 text-sm text-gray-300"><i data-feather="user-plus" class="inline-block mr-1 text-[#00FFFF]"></i>Nombre</label>
-          <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-          <label class="block mb-1 text-sm text-gray-300"><i data-feather="mail" class="inline-block mr-1 text-[#00FFFF]"></i>Email</label>
-          <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
-          <label class="block mb-1 text-sm text-gray-300"><i data-feather="phone-call" class="inline-block mr-1 text-[#00FFFF]"></i>Teléfono</label>
-          <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
-          <button onclick="saveClient()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC] btn-transition flex items-center justify-center">
-            <i data-feather="save" class="inline-block mr-1"></i>Guardar Cliente
-          </button>
+        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+            <i data-feather="users" class="mr-3 w-8 h-8"></i>Gestión de Clientes
+        </h2>
+        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="user-plus" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Cliente</label>
+            <input id="cli-nombre" placeholder="Ej: Juan Pérez" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="mail" class="mr-2 text-emerald-400 w-5 h-5"></i>Email</label>
+            <input id="cli-email" placeholder="ejemplo@correo.com" type="email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+            
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="phone-call" class="mr-2 text-emerald-400 w-5 h-5"></i>Teléfono</label>
+            <input id="cli-telefono" placeholder="Ej: +123 456 7890" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+            
+            <button onclick="saveClient()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
+              <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Cliente
+            </button>
+          </div>
+          <div class="overflow-auto max-h-[520px] custom-scrollbar">
+            <h3 class="font-semibold text-xl mb-4 text-gray-300">Listado de Clientes</h3>
+            <ul id="client-list" class="bg-gray-800 rounded-lg text-gray-300 divide-y divide-gray-700">
+              </ul>
+          </div>
         </div>
-        <ul id="client-list" class="bg-gray-800 p-4 rounded shadow h-80 overflow-y-auto text-gray-300"></ul>
       </section>
 
       <section id="creditos" class="section">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="credit-card" class="mr-2"></i>Créditos</h2>
-        <p class="text-gray-400">Funcionalidad de créditos en desarrollo...</p>
+        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+            <i data-feather="credit-card" class="mr-3 w-8 h-8"></i>Gestión de Créditos
+        </h2>
+        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+          <p class="text-gray-400 text-lg">La funcionalidad de gestión de créditos estará disponible en futuras actualizaciones.</p>
+          <div class="mt-6 text-gray-500">
+              <p class="flex items-center mb-2"><i data-feather="info" class="mr-2 w-5 h-5"></i>Aquí se podrán registrar pagos a cuenta, saldos pendientes y el historial crediticio de los clientes.</p>
+              <p class="flex items-center"><i data-feather="dollar-sign" class="mr-2 w-5 h-5"></i>Permitirá llevar un control detallado de las deudas y abonos.</p>
+          </div>
+        </div>
       </section>
 
       <section id="inventario" class="section">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="database" class="mr-2"></i>Inventario</h2>
-        <div id="inventory-list" class="bg-gray-800 p-4 rounded shadow h-80 overflow-y-auto text-gray-300"></div>
+        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+            <i data-feather="database" class="mr-3 w-8 h-8"></i>Reporte de Inventario
+        </h2>
+        <div id="inventory-list" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 h-96 overflow-y-auto text-gray-300 custom-scrollbar">
+          <h3 class="font-semibold text-xl mb-4 text-gray-300">Stock Actual de Productos</h3>
+          <table class="w-full bg-gray-800 rounded-lg text-base">
+            <thead class="bg-gray-700 text-gray-200 sticky top-0">
+              <tr>
+                <th class="p-3 text-left">Nombre</th>
+                <th class="p-3 text-left">Código</th>
+                <th class="p-3 text-right">Stock</th>
+                <th class="p-3 text-right">Precio Venta</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-table" class="text-gray-300">
+              </tbody>
+          </table>
+        </div>
       </section>
 
       <section id="configuraciones" class="section">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="settings" class="mr-2"></i>Configuraciones</h2>
-        <p class="text-gray-400">Ajustes del sistema en desarrollo...</p>
+        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+            <i data-feather="settings" class="mr-3 w-8 h-8"></i>Configuraciones del Sistema
+        </h2>
+        <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700">
+          <p class="text-gray-400 text-lg">Los ajustes y configuraciones del sistema estarán disponibles aquí.</p>
+          <div class="mt-6 text-gray-500">
+              <p class="flex items-center mb-2"><i data-feather="tool" class="mr-2 w-5 h-5"></i>Opciones para personalizar el comportamiento del POS.</p>
+              <p class="flex items-center"><i data-feather="user-x" class="mr-2 w-5 h-5"></i>Gestión de usuarios y permisos (próximamente).</p>
+          </div>
+        </div>
       </section>
 
       <section id="reportes" class="section">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</h2>
-        <div id="reporte" class="bg-gray-800 p-4 rounded shadow text-sm h-80 overflow-y-auto text-gray-300">
-          <p class="text-gray-400">Aquí se mostrarán los reportes próximamente...</p>
+        <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+            <i data-feather="bar-chart-2" class="mr-3 w-8 h-8"></i>Reportes y Estadísticas
+        </h2>
+        <div id="reporte" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 text-sm h-96 overflow-y-auto text-gray-300 custom-scrollbar">
+          <p class="text-gray-400 text-lg">Esta sección proporcionará informes detallados sobre ventas, inventario y movimientos financieros.</p>
+          <div class="mt-6 text-gray-500">
+              <p class="flex items-center mb-2"><i data-feather="trending-up" class="mr-2 w-5 h-5"></i>Visualiza tus ganancias y tendencias de venta.</p>
+              <p class="flex items-center"><i data-feather="file-text" class="mr-2 w-5 h-5"></i>Genera informes personalizados para tu contabilidad.</p>
+          </div>
         </div>
       </section>
 
@@ -270,17 +354,19 @@
 
         // --- Funciones de Inicialización ---
         function initializeApp() {
-            renderProductos(); // Carga y muestra los productos existentes
+            renderProductos(); // Carga y muestra los productos existentes en la gestión de productos
             renderClientes();  // Carga y muestra los clientes existentes
             mostrarMovimientosCaja(); // Carga y muestra los movimientos de caja
             cambiarMetodoPago(); // Asegura que la sección de efectivo se muestre/oculte correctamente al inicio
+            renderBotonesRapidos(); // Genera y muestra los botones rápidos en ventas
+            renderInventoryList(); // Genera y muestra la lista de inventario
         }
 
         // Mostrar sección deseada
         function showSection(id) {
           sections.forEach(sec => {
             if (sec.id === id) {
-                sec.classList.add("is-active"); // Añade la clase que activa el display y la animación CSS
+                sec.classList.add("is-active"); // Añade la clase para mostrar
             } else {
                 sec.classList.remove("is-active"); // Remueve la clase para ocultar
             }
@@ -296,10 +382,9 @@
           if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
             loginError.classList.add("hidden");
             
-            // Ocultar login y mostrar POS usando solo display y la clase is-active
+            // Ocultar login y mostrar POS
             loginSection.classList.add("hidden");
             posSection.classList.remove("hidden");
-            posSection.classList.add("is-active"); // Esto hace que el POS aparezca con fadein
 
             vendedorInfo.textContent = user;
             showSection("ventas"); // Muestra la sección de ventas por defecto al iniciar sesión
@@ -332,12 +417,12 @@
             p.codigo.toLowerCase().includes(query)
           );
           if(resultados.length === 0) {
-            lista.innerHTML = "<p class='p-2 text-gray-500'>No hay resultados</p>";
+            lista.innerHTML = "<p class='p-3 text-gray-500'>No hay resultados</p>";
             return;
           }
           resultados.forEach(p => {
             const div = document.createElement("div");
-            div.className = "p-2 cursor-pointer hover:bg-[#00FFFF] hover:text-gray-900 rounded transition duration-200 ease-in-out"; /* Transición simple */
+            div.className = "p-3 cursor-pointer hover:bg-emerald-600 hover:text-white rounded-md text-base interactive-element";
             div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
             div.onclick = () => agregarAlCarrito(p.codigo);
             lista.appendChild(div);
@@ -353,7 +438,7 @@
             if(item.cantidad < producto.stock) {
               item.cantidad++;
             } else {
-              alert("No hay suficiente stock");
+              alert("No hay suficiente stock para '" + producto.nombre + "'. Máximo disponible: " + producto.stock);
               return;
             }
           } else {
@@ -375,22 +460,28 @@
           const tbody = document.getElementById("carrito-items");
           tbody.innerHTML = "";
           let total = 0;
+          if (carrito.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500">El carrito está vacío. Agrega productos.</td></tr>';
+          }
+
           carrito.forEach((item, idx) => {
             const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
             total += subtotal;
             const tr = document.createElement("tr");
-            tr.classList.add("transition-opacity", "duration-200", "ease-out"); // Transición para cuando se agregan/eliminan
+            tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
             tr.innerHTML = `
-              <td class="p-1">${item.nombre}</td>
-              <td class="p-1 w-20">
-                <input type="number" min="1" max="999" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
+              <td class="p-3">${item.nombre}</td>
+              <td class="p-3 w-24">
+                <input type="number" min="1" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
               </td>
-              <td class="p-1 w-24 text-right">$${item.precio.toFixed(2)}</td>
-              <td class="p-1 w-24 text-right">$${subtotal.toFixed(2)}</td>
-              <td class="p-1 w-12">
-                <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] input-transition" />
+              <td class="p-3 w-28 text-right">$${item.precio.toFixed(2)}</td>
+              <td class="p-3 w-28 text-right">$${subtotal.toFixed(2)}</td>
+              <td class="p-3 w-20">
+                <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-center" />
               </td>
-              <td class="p-1 w-10 text-center cursor-pointer text-red-500 hover:text-red-700 transition duration-200 ease-in-out" data-idx-del="${idx}" title="Eliminar">&times;</td>
+              <td class="p-3 w-16 text-center">
+                <button class="text-red-500 hover:text-red-600 text-xl font-bold interactive-element" data-idx-del="${idx}" title="Eliminar">&times;</button>
+              </td>
             `;
             tbody.appendChild(tr);
           });
@@ -401,11 +492,12 @@
             input.addEventListener("change", e => {
               const i = parseInt(e.target.dataset.idx);
               let val = parseInt(e.target.value);
-              if (val < 1 || isNaN(val)) val = 1;
+              if (isNaN(val) || val < 1) val = 1;
               const productoEnStock = productos.find(p => p.codigo === carrito[i].codigo);
               if(val > productoEnStock.stock) {
-                alert("No hay suficiente stock. Máximo disponible: " + productoEnStock.stock);
+                alert("No hay suficiente stock para '" + carrito[i].nombre + "'. Máximo disponible: " + productoEnStock.stock);
                 val = productoEnStock.stock;
+                e.target.value = val; // Corregir el valor en el input
               }
               carrito[i].cantidad = val;
               actualizarCarrito();
@@ -415,7 +507,7 @@
             input.addEventListener("change", e => {
               const i = parseInt(e.target.dataset.idxDesc);
               let val = parseFloat(e.target.value);
-              if (val < 0 || isNaN(val)) val = 0;
+              if (isNaN(val) || val < 0) val = 0;
               if (val > 100) val = 100;
               carrito[i].descuento = val;
               actualizarCarrito();
@@ -425,19 +517,35 @@
           document.querySelectorAll("[data-idx-del]").forEach(el => {
             el.addEventListener("click", e => {
               const i = parseInt(e.target.dataset.idxDel);
-              // Animación de desvanecimiento antes de eliminar
-              const row = e.target.closest('tr');
-              row.style.opacity = '0';
-              row.style.height = '0';
-              row.style.overflow = 'hidden';
-              row.style.transition = 'opacity 0.2s ease-out, height 0.2s ease-out';
-              setTimeout(() => { // Esperar la animación para eliminar del DOM
-                  carrito.splice(i, 1);
-                  actualizarCarrito();
-              }, 200);
+              carrito.splice(i, 1);
+              actualizarCarrito();
             });
           });
         }
+
+        // Generar botones rápidos de productos
+        function renderBotonesRapidos() {
+            const container = document.getElementById("botones-rapidos");
+            container.innerHTML = ""; // Limpiar antes de renderizar
+            const productosLimit = productos.slice(0, 8); // Solo mostrar los primeros 8 productos como rápidos
+            if (productosLimit.length === 0) {
+                container.innerHTML = '<p class="col-span-full text-gray-500 text-center">No hay productos para mostrar en los botones rápidos.</p>';
+                return;
+            }
+            productosLimit.forEach(p => {
+                const button = document.createElement("button");
+                button.className = "bg-gray-700 text-gray-100 py-3 px-2 rounded-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex flex-col items-center justify-center text-sm text-center shadow-md";
+                button.onclick = () => agregarAlCarrito(p.codigo);
+                button.innerHTML = `
+                    <i data-feather="plus-square" class="mb-1 w-5 h-5 text-emerald-300"></i>
+                    <span class="font-medium">${p.nombre}</span>
+                    <span class="text-xs text-gray-400">$${p.precioVenta.toFixed(2)}</span>
+                `;
+                container.appendChild(button);
+            });
+            feather.replace(); // Volver a renderizar iconos después de añadir elementos dinámicamente
+        }
+
 
         // Aplicar descuento global (sobre total)
         function aplicarDescuentoGlobal() {
@@ -450,6 +558,7 @@
         function cambiarMetodoPago() {
           const metodo = document.getElementById("metodo-pago").value;
           document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
+          calcularCambio(); // Recalcular cambio al cambiar método
         }
 
         // Calcular cambio efectivo
@@ -457,18 +566,30 @@
           const efectivo = parseFloat(document.getElementById("efectivo-recibido").value);
           const total = parseFloat(document.getElementById("total-venta").textContent);
           let cambio = 0;
-          if(!isNaN(efectivo)) {
+          if(!isNaN(efectivo) && efectivo > total) {
             cambio = efectivo - total;
-            if(cambio < 0) cambio = 0; 
           }
           document.getElementById("cambio").textContent = cambio.toFixed(2);
         }
 
         // Finalizar venta
         function finalizarVenta() {
-          if(carrito.length === 0) return alert("El carrito está vacío");
+          if(carrito.length === 0) return alert("El carrito está vacío. Agrega productos para finalizar la venta.");
 
-          alert("Venta finalizada. Total: $" + document.getElementById("total-venta").textContent);
+          const totalVenta = parseFloat(document.getElementById("total-venta").textContent);
+          const metodoPago = document.getElementById("metodo-pago").value;
+          let mensaje = `Venta finalizada. Total: $${totalVenta.toFixed(2)}\nMétodo de Pago: ${metodoPago}`;
+          
+          if (metodoPago === "Efectivo") {
+              const efectivoRecibido = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
+              const cambioCalculado = parseFloat(document.getElementById("cambio").textContent) || 0;
+              if (efectivoRecibido < totalVenta) {
+                  return alert("El efectivo recibido es insuficiente.");
+              }
+              mensaje += `\nEfectivo Recibido: $${efectivoRecibido.toFixed(2)}\nCambio: $${cambioCalculado.toFixed(2)}`;
+          }
+
+          alert(mensaje);
           
           // Actualizar stock de productos
           carrito.forEach(itemCarrito => {
@@ -487,6 +608,8 @@
           document.getElementById("efectivo-recibido").value = "";
           document.getElementById("cambio").textContent = "0.00";
           renderProductos(); // Volver a renderizar la tabla de productos para reflejar el stock actualizado
+          renderInventoryList(); // Actualizar lista de inventario
+          renderBotonesRapidos(); // Actualizar botones rápidos
         }
 
         // Caja chica
@@ -495,7 +618,7 @@
         function agregarCajaChica() {
           const monto = parseFloat(document.getElementById("monto-caja").value);
           const tipo = document.getElementById("tipo-caja").value;
-          if(isNaN(monto) || monto <= 0) return alert("Monto inválido");
+          if(isNaN(monto) || monto <= 0) return alert("Monto inválido. Por favor, introduce un valor positivo.");
           movimientosCaja.push({monto, tipo, fecha: new Date().toLocaleString()});
           localStorage.setItem("movimientosCaja", JSON.stringify(movimientosCaja));
           mostrarMovimientosCaja();
@@ -504,13 +627,24 @@
         }
         function mostrarMovimientosCaja() {
           listaMovimientos.innerHTML = "";
-          movimientosCaja.forEach((m, i) => {
+          if (movimientosCaja.length === 0) {
+            listaMovimientos.innerHTML = '<li class="p-3 text-center text-gray-500">No hay movimientos registrados.</li>';
+          }
+          movimientosCaja.forEach((m) => {
             const li = document.createElement("li");
-            li.classList.add("py-1", "border-b", "border-gray-700", "last:border-b-0"); // Estilos simples
-            li.textContent = `[${m.fecha}] ${m.tipo === "entrada" ? "+" : "-"}$${m.monto.toFixed(2)}`;
+            li.classList.add("py-2", "px-3", "border-b", "border-gray-700", "last:border-b-0", "flex", "justify-between", "items-center");
+            li.innerHTML = `
+                <span class="${m.tipo === 'entrada' ? 'text-emerald-400' : 'text-red-400'} font-medium">
+                    ${m.tipo === "entrada" ? '<i data-feather="arrow-up-circle" class="inline-block mr-1 w-4 h-4"></i>' : '<i data-feather="arrow-down-circle" class="inline-block mr-1 w-4 h-4"></i>'}
+                    ${m.tipo === "entrada" ? "Entrada" : "Salida"}
+                </span>
+                <span class="font-bold">$${m.monto.toFixed(2)}</span>
+                <span class="text-xs text-gray-500">${m.fecha.split(',')[0]}</span>
+            `;
             listaMovimientos.appendChild(li);
           });
           listaMovimientos.scrollTop = listaMovimientos.scrollHeight; // Desplazar al final
+          feather.replace(); // Recargar iconos
         }
 
         // Gestión productos
@@ -521,8 +655,8 @@
           const precioVenta = parseFloat(document.getElementById("prod-precio-venta").value);
           const stock = parseInt(document.getElementById("prod-stock").value);
 
-          if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock)) {
-            return alert("Por favor, completa todos los campos correctamente.");
+          if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock) || precioCosto < 0 || precioVenta < 0 || stock < 0) {
+            return alert("Por favor, completa todos los campos correctamente y asegúrate que los valores numéricos sean válidos.");
           }
 
           let isNewProduct = true;
@@ -545,6 +679,8 @@
           localStorage.setItem("productos", JSON.stringify(productos));
           limpiarFormProducto();
           renderProductos();
+          renderInventoryList(); // Actualizar lista de inventario después de guardar/actualizar productos
+          renderBotonesRapidos(); // Actualizar botones rápidos
           alert("Producto guardado correctamente.");
         }
         function limpiarFormProducto() {
@@ -563,43 +699,54 @@
           }
           productos.forEach((p, i) => {
             const tr = document.createElement("tr");
-            tr.classList.add("border-b", "border-gray-700", "hover:bg-gray-700", "transition", "duration-200", "ease-in-out"); // Transición en hover
+            tr.classList.add("border-b", "border-gray-700", "hover:bg-gray-700", "interactive-element");
             tr.innerHTML = `
-              <td class="p-2">${p.nombre}</td>
-              <td class="p-2">${p.codigo}</td>
-              <td class="p-2 text-right">$${p.precioCosto.toFixed(2)}</td>
-              <td class="p-2 text-right">$${p.precioVenta.toFixed(2)}</td>
-              <td class="p-2 text-right">${p.stock}</td>
-              <td class="p-2 text-center cursor-pointer text-red-500 hover:text-red-700 transition duration-200 ease-in-out" title="Eliminar" data-index="${i}">&times;</td>
+              <td class="p-3">${p.nombre}</td>
+              <td class="p-3">${p.codigo}</td>
+              <td class="p-3 text-right">$${p.precioCosto.toFixed(2)}</td>
+              <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
+              <td class="p-3 text-right">${p.stock}</td>
+              <td class="p-3 text-center">
+                <button class="text-blue-400 hover:text-blue-500 mr-2 interactive-element" onclick="editProduct(${i})" title="Editar"><i data-feather="edit"></i></button>
+                <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteProduct(${i})" title="Eliminar"><i data-feather="trash-2"></i></button>
+              </td>
             `;
             tbody.appendChild(tr);
           });
-          // Eliminar producto
-          tbody.querySelectorAll("[data-index]").forEach(td => {
-            td.addEventListener("click", e => {
-              const idx = parseInt(e.target.dataset.index);
-              if(confirm("¿Eliminar producto? Esta acción no se puede deshacer.")) {
-                const row = e.target.closest('tr');
-                row.style.opacity = '0';
-                row.style.height = '0';
-                row.style.overflow = 'hidden';
-                row.style.transition = 'opacity 0.2s ease-out, height 0.2s ease-out';
-                setTimeout(() => { // Esperar la animación para eliminar del DOM
-                    productos.splice(idx, 1);
+          feather.replace(); // Recargar iconos
+        }
+
+        function editProduct(index) {
+            const product = productos[index];
+            document.getElementById("prod-nombre").value = product.nombre;
+            document.getElementById("prod-codigo").value = product.codigo;
+            document.getElementById("prod-precio-costo").value = product.precioCosto;
+            document.getElementById("prod-precio-venta").value = product.precioVenta;
+            document.getElementById("prod-stock").value = product.stock;
+            // Eliminar el producto original y guardar el modificado como nuevo para simplificar
+            // O una lógica más robusta sería actualizar en la misma posición, pero para este demo, re-guardar es más simple
+            deleteProduct(index, false); // Elimina sin actualizar localStorage de inmediato
+        }
+
+        function deleteProduct(index, updateStorage = true) {
+            if(confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+                productos.splice(index, 1);
+                if (updateStorage) {
                     localStorage.setItem("productos", JSON.stringify(productos));
                     renderProductos();
-                }, 200);
-              }
-            });
-          });
+                    renderInventoryList();
+                    renderBotonesRapidos();
+                }
+            }
         }
+
 
         // Gestión clientes simple
         function saveClient() {
           const nombre = document.getElementById("cli-nombre").value.trim();
           const email = document.getElementById("cli-email").value.trim();
           const telefono = document.getElementById("cli-telefono").value.trim();
-          if(!nombre) return alert("El nombre es obligatorio");
+          if(!nombre) return alert("El nombre del cliente es obligatorio.");
           
           clientes.push({nombre, email, telefono});
           localStorage.setItem("clientes", JSON.stringify(clientes));
@@ -607,6 +754,7 @@
           document.getElementById("cli-nombre").value = "";
           document.getElementById("cli-email").value = "";
           document.getElementById("cli-telefono").value = "";
+          alert("Cliente guardado correctamente.");
         }
         function renderClientes() {
           const list = document.getElementById("client-list");
@@ -617,33 +765,50 @@
           }
           clientes.forEach((c, i) => {
             const li = document.createElement("li");
-            li.className = "mb-2 border-b border-gray-700 pb-2 flex justify-between items-center transition-opacity duration-200 ease-out"; // Transición simple
+            li.className = "p-3 flex justify-between items-center hover:bg-gray-700 interactive-element";
             li.innerHTML = `
-              <span>${c.nombre} - ${c.email || "-"} - ${c.telefono || "-"}</span>
-              <span class="cursor-pointer text-red-500 hover:text-red-700 transition duration-200 ease-in-out" title="Eliminar" data-index="${i}">&times;</span>
+              <div>
+                <p class="font-semibold text-lg text-white flex items-center"><i data-feather="user" class="mr-2 w-5 h-5 text-emerald-300"></i>${c.nombre}</p>
+                ${c.email ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="mail" class="mr-2 w-4 h-4"></i>${c.email}</p>` : ''}
+                ${c.telefono ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="phone" class="mr-2 w-4 h-4"></i>${c.telefono}</p>` : ''}
+              </div>
+              <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteClient(${i})" title="Eliminar Cliente"><i data-feather="trash-2"></i></button>
             `;
             list.appendChild(li);
           });
-
-          // Eliminar cliente
-          list.querySelectorAll("[data-index]").forEach(span => {
-            span.addEventListener("click", e => {
-              const idx = parseInt(e.target.dataset.index);
-              if(confirm("¿Eliminar cliente?")) {
-                const listItem = e.target.closest('li');
-                listItem.style.opacity = '0';
-                listItem.style.height = '0';
-                listItem.style.overflow = 'hidden';
-                listItem.style.transition = 'opacity 0.2s ease-out, height 0.2s ease-out';
-                setTimeout(() => {
-                  clientes.splice(idx, 1);
-                  localStorage.setItem("clientes", JSON.stringify(clientes));
-                  renderClientes();
-                }, 200);
-              }
-            });
-          });
+          feather.replace(); // Recargar iconos
         }
+
+        function deleteClient(index) {
+            if(confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
+                clientes.splice(index, 1);
+                localStorage.setItem("clientes", JSON.stringify(clientes));
+                renderClientes();
+            }
+        }
+
+        // Gestión de Inventario (sección de Reportes/Inventario)
+        function renderInventoryList() {
+            const tbody = document.getElementById("inventory-table");
+            tbody.innerHTML = "";
+            if (productos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-gray-500">No hay productos en inventario.</td></tr>';
+                return;
+            }
+            productos.forEach(p => {
+                const tr = document.createElement("tr");
+                tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
+                const stockColorClass = p.stock <= 5 ? 'text-red-400 font-bold' : ''; // Resaltar stock bajo
+                tr.innerHTML = `
+                    <td class="p-3">${p.nombre}</td>
+                    <td class="p-3">${p.codigo}</td>
+                    <td class="p-3 text-right ${stockColorClass}">${p.stock}</td>
+                    <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
 
         // Teclas rápidas para cambiar secciones (F1-F7)
         window.addEventListener("keydown", e => {
