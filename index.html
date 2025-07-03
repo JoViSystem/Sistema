@@ -3,76 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JoVi POS Avanzado</title>
+  <title>JoVi POS Básico</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* Animaciones personalizadas (solo para el POS, NO para el login) */
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .animate-fadeIn { animation: fadeIn 0.5s ease-in-out; }
-
-    @keyframes slideInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Estilos globales y básicos */
+    body {
+      font-family: sans-serif;
+      background-color: #1a202c; /* Fondo oscuro simple */
+      color: #e2e8f0; /* Texto claro */
     }
-    .animate-slideInUp { animation: slideInUp 0.3s ease-out; }
 
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; }
+    /* Ocultar secciones por defecto */
+    .section {
+      display: none;
     }
-    .animate-fadeOut { animation: fadeOut 0.3s ease-out forwards; }
 
-    /* **Login Section - Estilos simplificados SIN ANIMACIONES** */
+    /* Estilos básicos para el login */
     #login-section {
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: #1a202c; /* Fondo oscuro estático */
-      color: #e2e8f0;
-      font-family: sans-serif;
+      min-height: 100vh;
+      background-color: #1a202c;
     }
     #login-section .login-box {
-      background-color: #2d3748; /* Un gris oscuro para la caja */
+      background-color: #2d3748;
       padding: 2rem;
-      border-radius: 0.75rem; /* Bordes redondeados */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-      width: 24rem; /* Ancho fijo */
-      max-width: 90%; /* Máximo el 90% del ancho de la pantalla */
-      z-index: 1; /* Asegura que esté por encima del fondo */
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 24rem;
+      max-width: 90%;
     }
     #login-section .login-input {
       width: 100%;
       padding: 0.75rem;
-      border: 1px solid #4a5568; /* Borde gris oscuro */
+      border: 1px solid #4a5568;
       border-radius: 0.5rem;
-      background-color: #2d3748; /* Fondo del input igual que la caja */
-      color: #e2e8f0; /* Color de texto del input */
+      background-color: #2d3748;
+      color: #e2e8f0;
       outline: none;
-    }
-    #login-section .login-input:focus {
-      border-color: #00FFFF; /* Cian al enfocar */
     }
     #login-section .login-button {
       width: 100%;
       padding: 0.75rem;
-      background-color: #00FFFF; /* Cian */
-      color: #1a202c; /* Texto oscuro */
+      background-color: #00FFFF;
+      color: #1a202c;
       font-weight: 600;
       border-radius: 0.5rem;
       cursor: pointer;
     }
-    #login-section .login-button:hover {
-      background-color: #00CCCC; /* Cian más oscuro al pasar el ratón */
-    }
     #login-section .login-error {
-        color: #fc8181; /* Rojo claro */
-        font-size: 0.875rem; /* Pequeño */
+        color: #fc8181;
+        font-size: 0.875rem;
         margin-top: 0.75rem;
-        display: none; /* Por defecto oculto */
+        display: none;
     }
     #login-section .login-link {
         color: #00FFFF;
@@ -82,16 +69,29 @@
         display: block;
         text-align: right;
     }
-    #login-section .login-link:hover {
-        text-decoration: underline;
-    }
 
-    /* Fondo general con patrón sutil (se mantiene) */
-    body {
-      background-color: #1a202c; /* Fondo base para el sistema */
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0 20v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4h-2v4H0v2h4v4h2v-4h4v-2H6zm0 20v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM36 4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 4v-4h-2v4H0v2h4v4h2v-4h4v-2H6zM21 21v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 41v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm36 0v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM21 1V0h-2v1h-4v2h4v4h2V3h4V1h-4zm36 0V0h-2v1h-4v2h4v4h2V3h4V1h-4zM21 51v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM36 10v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      background-size: 60px 60px; /* Tamaño del patrón */
-      background-attachment: fixed;
+    /* Estilos básicos para las tablas (productos) */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    th, td {
+        padding: 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid #4a5568;
+    }
+    th {
+        background-color: #2d3748;
+    }
+    .hover-bg-gray-700:hover {
+        background-color: #4a5568;
+    }
+    .text-red-500 {
+        color: #ef4444;
+    }
+    .cursor-pointer {
+        cursor: pointer;
     }
   </style>
 </head>
@@ -102,15 +102,15 @@
     <h1 class="text-4xl font-extrabold text-white mb-6">Bienvenido a JoVi POS</h1>
     <div class="login-box">
       <div class="mb-4">
-        <label for="user" class="block text-gray-300 font-medium mb-1"><i data-feather="user" class="inline-block mr-2 text-[#00FFFF]"></i>Usuario</label>
+        <label for="user" class="block text-gray-300 font-medium mb-1">Usuario</label>
         <input id="user" type="text" placeholder="admin" class="login-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
       <div class="mb-4">
-        <label for="pass" class="block text-gray-300 font-medium mb-1"><i data-feather="lock" class="inline-block mr-2 text-[#00FFFF]"></i>Contraseña</label>
+        <label for="pass" class="block text-gray-300 font-medium mb-1">Contraseña</label>
         <input id="pass" type="password" placeholder="••••••" class="login-input" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
       </div>
       <button id="btnLogin" class="login-button">
-        <i data-feather="log-in" class="inline-block mr-2"></i>Iniciar Sesión
+        Iniciar Sesión
       </button>
       <p id="login-error" class="login-error">Usuario o contraseña incorrecta</p>
       <p class="mt-3 text-right">
@@ -119,33 +119,32 @@
     </div>
   </section>
 
-  <section id="pos-section" class="hidden animate-fadeIn">
+  <section id="pos-section" class="hidden">
 
     <nav class="bg-gray-800 shadow-lg p-4 flex space-x-6 justify-center items-center sticky top-0 z-20 select-none">
-      <i class="fas fa-microchip w-12 h-12 mr-4 text-[#00FFFF] animate-pulse"></i>
-      <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md hover:scale-105 transition-all duration-200" title="F1 - Ventas"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</button>
-      <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md hover:scale-105 transition-all duration-200" title="F2 - Productos"><i data-feather="box" class="mr-2"></i>Productos</button>
-      <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md hover:scale-105 transition-all duration-200" title="F3 - Clientes"><i data-feather="users" class="mr-2"></i>Clientes</button>
-      <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md hover:scale-105 transition-all duration-200" title="F4 - Créditos"><i data-feather="credit-card" class="mr-2"></i>Créditos</button>
-      <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md hover:scale-105 transition-all duration-200" title="F5 - Inventario"><i data-feather="database" class="mr-2"></i>Inventario</button>
-      <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md hover:scale-105 transition-all duration-200" title="F6 - Configuraciones"><i data-feather="settings" class="mr-2"></i>Configuraciones</button>
-      <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700 hover:shadow-md hover:scale-105 transition-all duration-200" title="F7 - Reportes"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</button>
-      <span class="ml-auto text-sm text-gray-400 flex items-center"><i data-feather="user-check" class="inline-block mr-1 text-[#00FFFF]"></i><strong id="vendedor-info"></strong></span>
+      <i class="fas fa-microchip w-12 h-12 mr-4 text-[#00FFFF]"></i>
+      <button onclick="showSection('ventas')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Ventas</button>
+      <button onclick="showSection('productos')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Productos</button>
+      <button onclick="showSection('clientes')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Clientes</button>
+      <button onclick="showSection('creditos')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Créditos</button>
+      <button onclick="showSection('inventario')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Inventario</button>
+      <button onclick="showSection('configuraciones')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Configuraciones</button>
+      <button onclick="showSection('reportes')" class="py-2 px-4 rounded-lg text-gray-200 hover:bg-gray-700">Reportes</button>
+      <span class="ml-auto text-sm text-gray-400"><strong id="vendedor-info"></strong></span>
     </nav>
 
     <main class="p-8 space-y-8">
 
       <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto">
-        <label for="busqueda-producto" class="block text-4xl font-extrabold mb-3 text-center text-[#00FFFF]">Buscar producto</label>
+        <label for="busqueda-producto" class="block text-xl font-bold mb-3 text-center text-[#00FFFF]">Buscar producto</label>
         <div class="relative">
-          <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-4 pl-12 border-4 border-[#00FFFF] rounded-xl shadow-lg text-2xl bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" oninput="buscarProductos()" autocomplete="off" />
-          <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-2 border border-[#00FFFF] rounded bg-gray-700 text-white" oninput="buscarProductos()" autocomplete="off" />
         </div>
-        <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded max-h-56 overflow-y-auto mt-2 shadow-md"></div>
+        <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded max-h-56 overflow-y-auto mt-2"></div>
       </div>
 
-      <section id="ventas" class="section animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</h2>
+      <section id="ventas" class="section">
+        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Ventas</h2>
 
         <div class="grid md:grid-cols-3 gap-6">
 
@@ -180,7 +179,7 @@
           <div>
             <h3 class="font-semibold mb-2 text-gray-300">Pago</h3>
             <label class="block mb-1 text-gray-300">Método de pago:</label>
-            <select id="metodo-pago" class="w-full p-2 border border-gray-600 rounded mb-4 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" onchange="cambiarMetodoPago()">
+            <select id="metodo-pago" class="w-full p-2 border border-gray-600 rounded mb-4 bg-gray-700 text-white" onchange="cambiarMetodoPago()">
               <option value="Efectivo">Efectivo</option>
               <option value="Tarjeta">Tarjeta</option>
               <option value="Transferencia">Transferencia</option>
@@ -188,22 +187,22 @@
 
             <div id="efectivo-section">
               <label class="block mb-1 text-gray-300">Efectivo recibido:</label>
-              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" oninput="calcularCambio()" />
+              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" oninput="calcularCambio()" />
               <p class="text-gray-300">Cambio: $<span id="cambio">0.00</span></p>
             </div>
 
-            <button onclick="finalizarVenta()" class="mt-6 w-full bg-[#00FFFF] text-gray-900 py-3 rounded hover:bg-[#00CCCC] transition flex justify-center items-center hover:shadow-lg hover:scale-105">
-              <i data-feather="check-circle" class="mr-2"></i>Finalizar Venta
+            <button onclick="finalizarVenta()" class="mt-6 w-full bg-[#00FFFF] text-gray-900 py-3 rounded hover:bg-[#00CCCC]">
+              Finalizar Venta
             </button>
 
             <h3 class="font-semibold mt-10 mb-2 text-gray-300">Caja Chica</h3>
-            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" />
-            <select id="tipo-caja" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition">
+            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" />
+            <select id="tipo-caja" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white">
               <option value="entrada">Entrada</option>
               <option value="salida">Salida</option>
             </select>
-            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-600 transition flex justify-center items-center hover:shadow-md hover:scale-105">
-              <i data-feather="plus-circle" class="mr-2"></i>Registrar Movimiento
+            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-600">
+              Registrar Movimiento
             </button>
             <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border border-gray-600 rounded p-2 bg-gray-800 text-sm text-gray-300"></ul>
           </div>
@@ -211,22 +210,22 @@
         </div>
       </section>
 
-      <section id="productos" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="box" class="mr-2"></i>Gestión de Productos</h2>
+      <section id="productos" class="section">
+        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Gestión de Productos</h2>
         <div class="bg-gray-800 p-4 rounded shadow mb-4 flex flex-col md:flex-row md:space-x-4">
           <div class="flex-1 space-y-3">
-            <label class="block text-sm text-gray-300"><i data-feather="tag" class="inline-block mr-1 text-[#00FFFF]"></i>Nombre</label>
-            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <label class="block text-sm text-gray-300"><i class="fas fa-barcode inline-block mr-1 text-[#00FFFF]"></i>Código</label>
-            <input id="prod-codigo" placeholder="Código" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <label class="block text-sm text-gray-300"><i data-feather="dollar-sign" class="inline-block mr-1 text-[#00FFFF]"></i>Precio de costo</label>
-            <input id="prod-precio-costo" placeholder="Precio de costo" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" step="0.01" min="0" />
-            <label class="block text-sm text-gray-300"><i data-feather="dollar-sign" class="inline-block mr-1 text-[#00FFFF]"></i>Precio de venta</label>
-            <input id="prod-precio-venta" placeholder="Precio de venta" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" step="0.01" min="0" />
-            <label class="block text-sm text-gray-300"><i data-feather="layers" class="inline-block mr-1 text-[#00FFFF]"></i>Stock</label>
-            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" min="0" />
-            <button onclick="saveProduct()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC] transition flex items-center justify-center hover:shadow-lg hover:scale-105">
-              <i data-feather="save" class="inline-block mr-1"></i>Guardar Producto
+            <label class="block text-sm text-gray-300">Nombre</label>
+            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <label class="block text-sm text-gray-300">Código</label>
+            <input id="prod-codigo" placeholder="Código" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <label class="block text-sm text-gray-300">Precio de costo</label>
+            <input id="prod-precio-costo" placeholder="Precio de costo" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" step="0.01" min="0" />
+            <label class="block text-sm text-gray-300">Precio de venta</label>
+            <input id="prod-precio-venta" placeholder="Precio de venta" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" step="0.01" min="0" />
+            <label class="block text-sm text-gray-300">Stock</label>
+            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" min="0" />
+            <button onclick="saveProduct()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC]">
+              Guardar Producto
             </button>
           </div>
           <div class="flex-1 overflow-auto max-h-[520px]">
@@ -247,39 +246,39 @@
         </div>
       </section>
 
-      <section id="clientes" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="users" class="mr-2"></i>Clientes</h2>
+      <section id="clientes" class="section">
+        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Clientes</h2>
         <div class="bg-gray-800 p-4 rounded shadow mb-4">
-          <label class="block mb-1 text-sm text-gray-300"><i data-feather="user-plus" class="inline-block mr-1 text-[#00FFFF]"></i>Nombre</label>
-          <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-          <label class="block mb-1 text-sm text-gray-300"><i data-feather="mail" class="inline-block mr-1 text-[#00FFFF]"></i>Email</label>
-          <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" />
-          <label class="block mb-1 text-sm text-gray-300"><i data-feather="phone-call" class="inline-block mr-1 text-[#00FFFF]"></i>Teléfono</label>
-          <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-[#00FFFF] transition" />
-          <button onclick="saveClient()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC] transition flex items-center justify-center hover:shadow-lg hover:scale-105">
-            <i data-feather="save" class="inline-block mr-1"></i>Guardar Cliente
+          <label class="block mb-1 text-sm text-gray-300">Nombre</label>
+          <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          <label class="block mb-1 text-sm text-gray-300">Email</label>
+          <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" />
+          <label class="block mb-1 text-sm text-gray-300">Teléfono</label>
+          <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border border-gray-600 rounded mb-2 bg-gray-700 text-white" />
+          <button onclick="saveClient()" class="bg-[#00FFFF] text-gray-900 px-4 py-2 rounded-lg shadow hover:bg-[#00CCCC]">
+            Guardar Cliente
           </button>
         </div>
         <ul id="client-list" class="bg-gray-800 p-4 rounded shadow h-80 overflow-y-auto text-gray-300"></ul>
       </section>
 
-      <section id="creditos" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="credit-card" class="mr-2"></i>Créditos</h2>
+      <section id="creditos" class="section">
+        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Créditos</h2>
         <p class="text-gray-400">Funcionalidad de créditos en desarrollo...</p>
       </section>
 
-      <section id="inventario" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="database" class="mr-2"></i>Inventario</h2>
+      <section id="inventario" class="section">
+        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Inventario</h2>
         <div id="inventory-list" class="bg-gray-800 p-4 rounded shadow h-80 overflow-y-auto text-gray-300"></div>
       </section>
 
-      <section id="configuraciones" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="settings" class="mr-2"></i>Configuraciones</h2>
+      <section id="configuraciones" class="section">
+        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Configuraciones</h2>
         <p class="text-gray-400">Ajustes del sistema en desarrollo...</p>
       </section>
 
-      <section id="reportes" class="section hidden animate-fadeIn">
-        <h2 class="text-3xl font-bold mb-4 flex items-center text-[#00FFFF]"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</h2>
+      <section id="reportes" class="section">
+        <h2 class="text-2xl font-bold mb-4 text-[#00FFFF]">Reportes</h2>
         <div id="reporte" class="bg-gray-800 p-4 rounded shadow text-sm h-80 overflow-y-auto text-gray-300">
           <p class="text-gray-400">Aquí se mostrarán los reportes próximamente...</p>
         </div>
@@ -291,7 +290,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {
-        feather.replace(); // Asegura que los iconos Feather se rendericen
+        // feather.replace(); // Deshabilitado temporalmente para máxima simplificación
 
         // Datos de acceso válidos
         const USUARIO_VALIDO = "admin";
@@ -325,12 +324,13 @@
             renderClientes();  // Carga y muestra los clientes existentes
             mostrarMovimientosCaja(); // Carga y muestra los movimientos de caja
             cambiarMetodoPago(); // Asegura que la sección de efectivo se muestre/oculte correctamente al inicio
+            // No llamar showSection aquí, para que el login sea lo primero
         }
 
         // Mostrar sección deseada
         function showSection(id) {
           sections.forEach(sec => {
-            sec.id === id ? sec.classList.remove("hidden") : sec.classList.add("hidden");
+            sec.id === id ? sec.style.display = "block" : sec.style.display = "none";
           });
           // Mostrar campo buscar solo en ventas
           document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
@@ -341,18 +341,16 @@
           const user = inputUser.value.trim();
           const pass = inputPass.value.trim();
           if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
-            loginError.classList.add("hidden");
-            // Transición del login al POS (sin animación de salida del login)
-            loginSection.classList.add("hidden");
-            posSection.classList.remove("hidden");
-            posSection.classList.add("animate-fadeIn"); // Solo esta animación para el POS
+            loginError.style.display = "none";
+            loginSection.style.display = "none";
+            posSection.style.display = "block"; // Mostrar el POS
             
             vendedorInfo.textContent = user;
             showSection("ventas"); // Muestra la sección de ventas por defecto al iniciar sesión
             inputUser.value = "";
             inputPass.value = "";
           } else {
-            loginError.classList.remove("hidden");
+            loginError.style.display = "block";
           }
         }
 
@@ -383,7 +381,7 @@
           }
           resultados.forEach(p => {
             const div = document.createElement("div");
-            div.className = "p-2 cursor-pointer hover:bg-[#00FFFF] hover:text-gray-900 rounded animate-slideInUp"; 
+            div.className = "p-2 cursor-pointer hover:bg-[#00FFFF] hover:text-gray-900";
             div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
             div.onclick = () => agregarAlCarrito(p.codigo);
             lista.appendChild(div);
@@ -425,18 +423,16 @@
             const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
             total += subtotal;
             const tr = document.createElement("tr");
-            tr.classList.add("animate-slideInUp"); 
             tr.innerHTML = `
               <td class="p-1">${item.nombre}</td>
               <td class="p-1 w-20">
                 <input type="number" min="1" max="999" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white" />
               </td>
-              <td class="p-1 w-24 text-right">$${item.precio.toFixed(2)}</td>
               <td class="p-1 w-24 text-right">$${subtotal.toFixed(2)}</td>
               <td class="p-1 w-12">
                 <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-1 bg-gray-700 text-white" />
               </td>
-              <td class="p-1 w-10 text-center cursor-pointer text-red-500 hover:text-red-700 transition" data-idx-del="${idx}" title="Eliminar">&times;</td>
+              <td class="p-1 w-10 text-center cursor-pointer text-red-500" data-idx-del="${idx}">&times;</td>
             `;
             tbody.appendChild(tr);
           });
@@ -471,12 +467,8 @@
           document.querySelectorAll("[data-idx-del]").forEach(el => {
             el.addEventListener("click", e => {
               const i = parseInt(e.target.dataset.idxDel);
-              const row = e.target.closest('tr');
-              row.classList.add("animate-fadeOut"); 
-              row.addEventListener('animationend', () => {
-                carrito.splice(i, 1);
-                actualizarCarrito();
-              }, { once: true });
+              carrito.splice(i, 1);
+              actualizarCarrito();
             });
           });
         }
@@ -510,7 +502,6 @@
         function finalizarVenta() {
           if(carrito.length === 0) return alert("El carrito está vacío");
 
-          // Aquí iría la lógica para procesar la venta, guardar en DB, imprimir factura, etc.
           alert("Venta finalizada. Total: $" + document.getElementById("total-venta").textContent);
           
           // Resetear estado
@@ -538,7 +529,6 @@
           listaMovimientos.innerHTML = "";
           movimientosCaja.forEach((m, i) => {
             const li = document.createElement("li");
-            li.classList.add("animate-slideInUp", "py-1");
             li.textContent = `[${m.fecha}] ${m.tipo === "entrada" ? "+" : "-"}$${m.monto.toFixed(2)}`;
             listaMovimientos.appendChild(li);
           });
@@ -594,14 +584,14 @@
           }
           productos.forEach((p, i) => {
             const tr = document.createElement("tr");
-            tr.classList.add("animate-slideInUp", "border-b", "border-gray-700", "hover:bg-gray-700", "transition-colors");
+            tr.classList.add("hover-bg-gray-700"); /* Clase simplificada para hover */
             tr.innerHTML = `
               <td class="p-2">${p.nombre}</td>
               <td class="p-2">${p.codigo}</td>
               <td class="p-2 text-right">$${p.precioCosto.toFixed(2)}</td>
               <td class="p-2 text-right">$${p.precioVenta.toFixed(2)}</td>
               <td class="p-2 text-right">${p.stock}</td>
-              <td class="p-2 text-center cursor-pointer text-red-500 hover:text-red-700 transition" title="Eliminar" data-index="${i}">&times;</td>
+              <td class="p-2 text-center cursor-pointer text-red-500" data-index="${i}">&times;</td>
             `;
             tbody.appendChild(tr);
           });
@@ -610,13 +600,9 @@
             td.addEventListener("click", e => {
               const idx = parseInt(e.target.dataset.index);
               if(confirm("¿Eliminar producto? Esta acción no se puede deshacer.")) {
-                const row = e.target.closest('tr');
-                row.classList.add("animate-fadeOut");
-                row.addEventListener('animationend', () => {
-                  productos.splice(idx, 1);
-                  localStorage.setItem("productos", JSON.stringify(productos));
-                  renderProductos();
-                }, { once: true });
+                productos.splice(idx, 1);
+                localStorage.setItem("productos", JSON.stringify(productos));
+                renderProductos();
               }
             });
           });
@@ -633,73 +619,3 @@
           localStorage.setItem("clientes", JSON.stringify(clientes));
           renderClientes();
           document.getElementById("cli-nombre").value = "";
-          document.getElementById("cli-email").value = "";
-          document.getElementById("cli-telefono").value = "";
-        }
-        function renderClientes() {
-          const list = document.getElementById("client-list");
-          list.innerHTML = "";
-          if (clientes.length === 0) {
-            list.innerHTML = '<li class="p-4 text-center text-gray-500">No hay clientes registrados.</li>';
-            return;
-          }
-          clientes.forEach((c, i) => {
-            const li = document.createElement("li");
-            li.className = "mb-2 border-b border-gray-700 pb-2 animate-slideInUp flex justify-between items-center";
-            li.innerHTML = `
-              <span>${c.nombre} - ${c.email || "-"} - ${c.telefono || "-"}</span>
-              <span class="cursor-pointer text-red-500 hover:text-red-700 transition" title="Eliminar" data-index="${i}">&times;</span>
-            `;
-            list.appendChild(li);
-          });
-
-          // Eliminar cliente
-          list.querySelectorAll("[data-index]").forEach(span => {
-            span.addEventListener("click", e => {
-              const idx = parseInt(e.target.dataset.index);
-              if(confirm("¿Eliminar cliente?")) {
-                const listItem = e.target.closest('li');
-                listItem.classList.add("animate-fadeOut");
-                listItem.addEventListener('animationend', () => {
-                  clientes.splice(idx, 1);
-                  localStorage.setItem("clientes", JSON.stringify(clientes));
-                  renderClientes();
-                }, { once: true });
-              }
-            });
-          });
-        }
-
-        // Teclas rápidas para cambiar secciones (F1-F7)
-        window.addEventListener("keydown", e => {
-          if(posSection.classList.contains('hidden')) return; // Solo si estamos en el POS
-          if(e.key === "F1") {
-            e.preventDefault();
-            showSection("ventas");
-          } else if(e.key === "F2") {
-            e.preventDefault();
-            showSection("productos");
-          } else if(e.key === "F3") {
-            e.preventDefault();
-            showSection("clientes");
-          } else if(e.key === "F4") {
-            e.preventDefault();
-            showSection("creditos");
-          } else if(e.key === "F5") {
-            e.preventDefault();
-            showSection("inventario");
-          } else if(e.key === "F6") {
-            e.preventDefault();
-            showSection("configuraciones");
-          } else if(e.key === "F7") {
-            e.preventDefault();
-            showSection("reportes");
-          }
-        });
-
-        // Llamar a la función de inicialización cuando el DOM esté listo
-        initializeApp();
-    }); // Cierre de DOMContentLoaded
-  </script>
-</body>
-</html>
