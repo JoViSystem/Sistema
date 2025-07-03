@@ -6,6 +6,7 @@
   <title>JoVi POS Avanzado y Sin Animaciones</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     /* Colores y fuentes base */
@@ -53,6 +54,7 @@
       background: #5A6A78; /* Un poco más claro al pasar el ratón */
     }
   </style>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -60,7 +62,8 @@
 <body class="bg-gray-900 text-gray-200 font-inter">
 
   <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-gray-200">
-    <i class="fas fa-microchip text-8xl mb-6 text-emerald-400"></i> <h1 class="text-5xl font-extrabold text-white mb-8">JoVi POS</h1>
+    <i class="fas fa-microchip text-8xl mb-6 text-emerald-400"></i> 
+    <h1 class="text-5xl font-extrabold text-white mb-8">JoVi POS</h1>
     <div class="bg-gray-800 p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-700">
       <div class="mb-5">
         <label for="user" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
@@ -225,8 +228,7 @@
             <label class="block text-sm text-gray-300 flex items-center"><i data-feather="truck" class="mr-2 text-emerald-400 w-5 h-5"></i>Proveedor</label>
             <input id="prod-proveedor" placeholder="Ej: Distribuidora XYZ" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
 
-            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="ruler" class="mr-2 text-emerald-400 w-5 h-5"></i>Unidad de Medida</label>
-            <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+            <label class="block text-sm text-gray-300 flex items-center"><i data-feather="edit" class="mr-2 text-emerald-400 w-5 h-5"></i>Unidad de Medida</label> <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
             
             <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Costo ($)</label>
             <input id="prod-precio-costo" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
@@ -247,7 +249,8 @@
               <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Producto
             </button>
           </div>
-          <div class="overflow-auto max-h-[700px] custom-scrollbar"> <table class="w-full bg-gray-800 rounded-lg shadow text-base">
+          <div class="overflow-auto max-h-[700px] custom-scrollbar"> 
+            <table class="w-full bg-gray-800 rounded-lg shadow text-base">
               <thead class="bg-gray-700 text-gray-200 sticky top-0">
                 <tr>
                   <th class="p-3 text-left">Nombre</th>
@@ -365,63 +368,58 @@
   </section>
 
   <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        feather.replace(); // Asegura que los iconos Feather se rendericen
+    // --- Variables Globales ---
+    // Datos de acceso válidos
+    const USUARIO_VALIDO = "admin";
+    const CONTRASENA_VALIDA = "12345";
 
-        // Datos de acceso válidos
-        const USUARIO_VALIDO = "admin";
-        const CONTRASENA_VALIDA = "12345";
+    // Elementos login y sistema
+    const loginSection = document.getElementById("login-section");
+    const posSection = document.getElementById("pos-section");
+    const loginError = document.getElementById("login-error");
+    const vendedorInfo = document.getElementById("vendedor-info");
+    const inputUser = document.getElementById("user");
+    const inputPass = document.getElementById("pass");
+    const btnLogin = document.getElementById("btnLogin");
 
-        // Elementos login y sistema
-        const loginSection = document.getElementById("login-section");
-        const posSection = document.getElementById("pos-section");
-        const loginError = document.getElementById("login-error");
-        const vendedorInfo = document.getElementById("vendedor-info");
-        const inputUser = document.getElementById("user");
-        const inputPass = document.getElementById("pass");
-        const btnLogin = document.getElementById("btnLogin");
+    // Secciones
+    const sections = document.querySelectorAll("section.section");
 
-        // Secciones
-        const sections = document.querySelectorAll("section.section");
+    // Productos almacenados
+    let productos = JSON.parse(localStorage.getItem("productos")) || [];
 
-        // Productos almacenados
-        let productos = JSON.parse(localStorage.getItem("productos")) || [];
+    // Clientes almacenados
+    let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 
-        // Clientes almacenados
-        let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+    // Variables para ventas
+    let carrito = [];
+    let descuentoGlobal = 0;
 
-        // Variables para ventas
-        let carrito = [];
-        let descuentoGlobal = 0;
+    // Caja chica
+    let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
 
-        // --- Funciones de Inicialización ---
-        function initializeApp() {
-            renderProductos(); // Carga y muestra los productos existentes en la gestión de productos
-            renderClientes();  // Carga y muestra los clientes existentes
-            mostrarMovimientosCaja(); // Carga y muestra los movimientos de caja
-            cambiarMetodoPago(); // Asegura que la sección de efectivo se muestre/oculte correctamente al inicio
-            renderBotonesRapidos(); // Genera y muestra los botones rápidos en ventas
-            renderInventoryList(); // Genera y muestra la lista de inventario
-        }
+    // --- Funciones del Sistema (ahora en el ámbito global) ---
 
-        // Mostrar sección deseada
-        function showSection(id) {
-          sections.forEach(sec => {
+    // Mostrar sección deseada
+    function showSection(id) {
+        sections.forEach(sec => {
             if (sec.id === id) {
-                sec.classList.add("is-active"); // Añade la clase para mostrar
+                sec.classList.add("is-active");
             } else {
-                sec.classList.remove("is-active"); // Remueve la clase para ocultar
+                sec.classList.remove("is-active");
             }
-          });
-          // Mostrar campo buscar solo en ventas
-          document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
-        }
+        });
+        // Mostrar campo buscar solo en ventas
+        document.getElementById("busqueda-container").style.display = id === "ventas" ? "block" : "none";
+        // Asegúrate de que los iconos Feather se rendericen de nuevo al cambiar de sección
+        feather.replace(); 
+    }
 
-        // Manejo login
-        function login() {
-          const user = inputUser.value.trim();
-          const pass = inputPass.value.trim();
-          if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
+    // Manejo login
+    function login() {
+        const user = inputUser.value.trim();
+        const pass = inputPass.value.trim();
+        if(user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
             loginError.classList.add("hidden");
             
             // Ocultar login y mostrar POS
@@ -432,247 +430,235 @@
             showSection("ventas"); // Muestra la sección de ventas por defecto al iniciar sesión
             inputUser.value = "";
             inputPass.value = "";
-          } else {
+            feather.replace(); // Asegura que los iconos Feather se rendericen
+        } else {
             loginError.classList.remove("hidden");
-          }
         }
+    }
 
-        // Atajo Enter para login
-        [inputUser, inputPass].forEach(input => {
-          input.addEventListener("keypress", e => {
-            if(e.key === "Enter") {
-              login();
-            }
-          });
-        });
-
-        btnLogin.addEventListener("click", login);
-
-        // Buscar productos (en ventas)
-        function buscarProductos() {
-          const query = document.getElementById("busqueda-producto").value.trim().toLowerCase();
-          const lista = document.getElementById("lista-resultados");
-          lista.innerHTML = "";
-          if(query.length === 0) return;
-          const resultados = productos.filter(p =>
+    // Buscar productos (en ventas)
+    function buscarProductos() {
+        const query = document.getElementById("busqueda-producto").value.trim().toLowerCase();
+        const lista = document.getElementById("lista-resultados");
+        lista.innerHTML = "";
+        if(query.length === 0) return;
+        const resultados = productos.filter(p =>
             p.nombre.toLowerCase().includes(query) ||
             p.codigo.toLowerCase().includes(query)
-          );
-          if(resultados.length === 0) {
+        );
+        if(resultados.length === 0) {
             lista.innerHTML = "<p class='p-3 text-gray-500'>No hay resultados</p>";
             return;
-          }
-          resultados.forEach(p => {
+        }
+        resultados.forEach(p => {
             const div = document.createElement("div");
             div.className = "p-3 cursor-pointer hover:bg-emerald-600 hover:text-white rounded-md text-base interactive-element";
             div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
             div.onclick = () => agregarAlCarrito(p.codigo);
             lista.appendChild(div);
-          });
-        }
+        });
+    }
 
-        // Agregar producto al carrito
-        function agregarAlCarrito(codigo) {
-          const producto = productos.find(p => p.codigo === codigo);
-          if(!producto) return alert("Producto no encontrado");
-          let item = carrito.find(i => i.codigo === codigo);
-          if(item) {
+    // Agregar producto al carrito
+    function agregarAlCarrito(codigo) {
+        const producto = productos.find(p => p.codigo === codigo);
+        if(!producto) return alert("Producto no encontrado");
+        let item = carrito.find(i => i.codigo === codigo);
+        if(item) {
             if(item.cantidad < producto.stock) {
-              item.cantidad++;
+                item.cantidad++;
             } else {
-              alert("No hay suficiente stock para '" + producto.nombre + "'. Máximo disponible: " + producto.stock);
-              return;
+                alert("No hay suficiente stock para '" + producto.nombre + "'. Máximo disponible: " + producto.stock);
+                return;
             }
-          } else {
+        } else {
             carrito.push({
-              codigo: producto.codigo,
-              nombre: producto.nombre,
-              precio: producto.precioVenta,
-              cantidad: 1,
-              descuento: 0
+                codigo: producto.codigo,
+                nombre: producto.nombre,
+                precio: producto.precioVenta,
+                cantidad: 1,
+                descuento: 0
             });
-          }
-          actualizarCarrito();
-          document.getElementById("busqueda-producto").value = "";
-          document.getElementById("lista-resultados").innerHTML = "";
+        }
+        actualizarCarrito();
+        document.getElementById("busqueda-producto").value = "";
+        document.getElementById("lista-resultados").innerHTML = "";
+    }
+
+    // Actualizar carrito en la tabla y total
+    function actualizarCarrito() {
+        const tbody = document.getElementById("carrito-items");
+        tbody.innerHTML = "";
+        let total = 0;
+        if (carrito.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500">El carrito está vacío. Agrega productos.</td></tr>';
         }
 
-        // Actualizar carrito en la tabla y total
-        function actualizarCarrito() {
-          const tbody = document.getElementById("carrito-items");
-          tbody.innerHTML = "";
-          let total = 0;
-          if (carrito.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500">El carrito está vacío. Agrega productos.</td></tr>';
-          }
-
-          carrito.forEach((item, idx) => {
+        carrito.forEach((item, idx) => {
             const subtotal = (item.precio * item.cantidad) * (1 - item.descuento/100);
             total += subtotal;
             const tr = document.createElement("tr");
             tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
             tr.innerHTML = `
-              <td class="p-3">${item.nombre}</td>
-              <td class="p-3 w-24">
-                <input type="number" min="1" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-              </td>
-              <td class="p-3 w-28 text-right">$${item.precio.toFixed(2)}</td>
-              <td class="p-3 w-28 text-right">$${subtotal.toFixed(2)}</td>
-              <td class="p-3 w-20">
-                <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-center" />
-              </td>
-              <td class="p-3 w-16 text-center">
-                <button class="text-red-500 hover:text-red-600 text-xl font-bold interactive-element" data-idx-del="${idx}" title="Eliminar">&times;</button>
-              </td>
+                <td class="p-3">${item.nombre}</td>
+                <td class="p-3 w-24">
+                    <input type="number" min="1" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                </td>
+                <td class="p-3 w-28 text-right">$${item.precio.toFixed(2)}</td>
+                <td class="p-3 w-28 text-right">$${subtotal.toFixed(2)}</td>
+                <td class="p-3 w-20">
+                    <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-center" />
+                </td>
+                <td class="p-3 w-16 text-center">
+                    <button class="text-red-500 hover:text-red-600 text-xl font-bold interactive-element" data-idx-del="${idx}" title="Eliminar">&times;</button>
+                </td>
             `;
             tbody.appendChild(tr);
-          });
-          document.getElementById("total-venta").textContent = total.toFixed(2);
+        });
+        document.getElementById("total-venta").textContent = total.toFixed(2);
 
-          // Eventos para inputs cantidad y descuento
-          document.querySelectorAll(".cantidad-input").forEach(input => {
+        // Eventos para inputs cantidad y descuento (delegados para asegurar que siempre funcionen)
+        tbody.querySelectorAll(".cantidad-input").forEach(input => {
             input.addEventListener("change", e => {
-              const i = parseInt(e.target.dataset.idx);
-              let val = parseInt(e.target.value);
-              if (isNaN(val) || val < 1) val = 1;
-              const productoEnStock = productos.find(p => p.codigo === carrito[i].codigo);
-              if(val > productoEnStock.stock) {
-                alert("No hay suficiente stock para '" + carrito[i].nombre + "'. Máximo disponible: " + productoEnStock.stock);
-                val = productoEnStock.stock;
-                e.target.value = val; // Corregir el valor en el input
-              }
-              carrito[i].cantidad = val;
-              actualizarCarrito();
+                const i = parseInt(e.target.dataset.idx);
+                let val = parseInt(e.target.value);
+                if (isNaN(val) || val < 1) val = 1;
+                const productoEnStock = productos.find(p => p.codigo === carrito[i].codigo);
+                if(productoEnStock && val > productoEnStock.stock) { // Asegurarse de que el producto exista en `productos`
+                    alert("No hay suficiente stock para '" + carrito[i].nombre + "'. Máximo disponible: " + productoEnStock.stock);
+                    val = productoEnStock.stock;
+                    e.target.value = val;
+                }
+                carrito[i].cantidad = val;
+                actualizarCarrito();
             });
-          });
-          document.querySelectorAll(".descuento-input").forEach(input => {
+        });
+        tbody.querySelectorAll(".descuento-input").forEach(input => {
             input.addEventListener("change", e => {
-              const i = parseInt(e.target.dataset.idxDesc);
-              let val = parseFloat(e.target.value);
-              if (isNaN(val) || val < 0) val = 0;
-              if (val > 100) val = 100;
-              carrito[i].descuento = val;
-              actualizarCarrito();
+                const i = parseInt(e.target.dataset.idxDesc);
+                let val = parseFloat(e.target.value);
+                if (isNaN(val) || val < 0) val = 0;
+                if (val > 100) val = 100;
+                carrito[i].descuento = val;
+                actualizarCarrito();
             });
-          });
-          // Eliminar item
-          document.querySelectorAll("[data-idx-del]").forEach(el => {
+        });
+        // Eliminar item (delegado)
+        tbody.querySelectorAll("[data-idx-del]").forEach(el => {
             el.addEventListener("click", e => {
-              const i = parseInt(e.target.dataset.idxDel);
-              carrito.splice(i, 1);
-              actualizarCarrito();
+                const i = parseInt(e.target.dataset.idxDel);
+                carrito.splice(i, 1);
+                actualizarCarrito();
             });
-          });
+        });
+    }
+
+    // Generar botones rápidos de productos
+    function renderBotonesRapidos() {
+        const container = document.getElementById("botones-rapidos");
+        container.innerHTML = "";
+        const productosLimit = productos.slice(0, 8); // Solo mostrar los primeros 8 productos como rápidos
+        if (productosLimit.length === 0) {
+            container.innerHTML = '<p class="col-span-full text-gray-500 text-center">No hay productos para mostrar en los botones rápidos.</p>';
+            return;
         }
+        productosLimit.forEach(p => {
+            const button = document.createElement("button");
+            button.className = "bg-gray-700 text-gray-100 py-3 px-2 rounded-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex flex-col items-center justify-center text-sm text-center shadow-md";
+            button.onclick = () => agregarAlCarrito(p.codigo);
+            button.innerHTML = `
+                <i data-feather="plus-square" class="mb-1 w-5 h-5 text-emerald-300"></i>
+                <span class="font-medium">${p.nombre}</span>
+                <span class="text-xs text-gray-400">$${p.precioVenta.toFixed(2)}</span>
+            `;
+            container.appendChild(button);
+        });
+        feather.replace(); // Volver a renderizar iconos después de añadir elementos dinámicamente
+    }
 
-        // Generar botones rápidos de productos
-        function renderBotonesRapidos() {
-            const container = document.getElementById("botones-rapidos");
-            container.innerHTML = ""; // Limpiar antes de renderizar
-            const productosLimit = productos.slice(0, 8); // Solo mostrar los primeros 8 productos como rápidos
-            if (productosLimit.length === 0) {
-                container.innerHTML = '<p class="col-span-full text-gray-500 text-center">No hay productos para mostrar en los botones rápidos.</p>';
-                return;
-            }
-            productosLimit.forEach(p => {
-                const button = document.createElement("button");
-                button.className = "bg-gray-700 text-gray-100 py-3 px-2 rounded-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex flex-col items-center justify-center text-sm text-center shadow-md";
-                button.onclick = () => agregarAlCarrito(p.codigo);
-                button.innerHTML = `
-                    <i data-feather="plus-square" class="mb-1 w-5 h-5 text-emerald-300"></i>
-                    <span class="font-medium">${p.nombre}</span>
-                    <span class="text-xs text-gray-400">$${p.precioVenta.toFixed(2)}</span>
-                `;
-                container.appendChild(button);
-            });
-            feather.replace(); // Volver a renderizar iconos después de añadir elementos dinámicamente
-        }
+    // Aplicar descuento global (sobre total)
+    function aplicarDescuentoGlobal() {
+        const val = parseFloat(document.getElementById("descuento-global").value);
+        descuentoGlobal = isNaN(val) ? 0 : val;
+        actualizarCarrito();
+    }
 
+    // Cambiar método de pago (mostrar efectivo si aplica)
+    function cambiarMetodoPago() {
+        const metodo = document.getElementById("metodo-pago").value;
+        document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
+        calcularCambio();
+    }
 
-        // Aplicar descuento global (sobre total)
-        function aplicarDescuentoGlobal() {
-          const val = parseFloat(document.getElementById("descuento-global").value);
-          descuentoGlobal = isNaN(val) ? 0 : val;
-          actualizarCarrito();
-        }
-
-        // Cambiar método de pago (mostrar efectivo si aplica)
-        function cambiarMetodoPago() {
-          const metodo = document.getElementById("metodo-pago").value;
-          document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
-          calcularCambio(); // Recalcular cambio al cambiar método
-        }
-
-        // Calcular cambio efectivo
-        function calcularCambio() {
-          const efectivo = parseFloat(document.getElementById("efectivo-recibido").value);
-          const total = parseFloat(document.getElementById("total-venta").textContent);
-          let cambio = 0;
-          if(!isNaN(efectivo) && efectivo > total) {
+    // Calcular cambio efectivo
+    function calcularCambio() {
+        const efectivo = parseFloat(document.getElementById("efectivo-recibido").value);
+        const total = parseFloat(document.getElementById("total-venta").textContent);
+        let cambio = 0;
+        if(!isNaN(efectivo) && efectivo > total) {
             cambio = efectivo - total;
-          }
-          document.getElementById("cambio").textContent = cambio.toFixed(2);
+        }
+        document.getElementById("cambio").textContent = cambio.toFixed(2);
+    }
+
+    // Finalizar venta
+    function finalizarVenta() {
+        if(carrito.length === 0) return alert("El carrito está vacío. Agrega productos para finalizar la venta.");
+
+        const totalVenta = parseFloat(document.getElementById("total-venta").textContent);
+        const metodoPago = document.getElementById("metodo-pago").value;
+        let mensaje = `Venta finalizada. Total: $${totalVenta.toFixed(2)}\nMétodo de Pago: ${metodoPago}`;
+        
+        if (metodoPago === "Efectivo") {
+            const efectivoRecibido = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
+            const cambioCalculado = parseFloat(document.getElementById("cambio").textContent) || 0;
+            if (efectivoRecibido < totalVenta) {
+                return alert("El efectivo recibido es insuficiente.");
+            }
+            mensaje += `\nEfectivo Recibido: $${efectivoRecibido.toFixed(2)}\nCambio: $${cambioCalculado.toFixed(2)}`;
         }
 
-        // Finalizar venta
-        function finalizarVenta() {
-          if(carrito.length === 0) return alert("El carrito está vacío. Agrega productos para finalizar la venta.");
+        alert(mensaje);
+        
+        // Actualizar stock de productos
+        carrito.forEach(itemCarrito => {
+            const productoIndex = productos.findIndex(p => p.codigo === itemCarrito.codigo);
+            if (productoIndex !== -1) {
+                productos[productoIndex].stock -= itemCarrito.cantidad;
+                if (productos[productoIndex].stock < 0) productos[productoIndex].stock = 0;
+            }
+        });
+        localStorage.setItem("productos", JSON.stringify(productos));
 
-          const totalVenta = parseFloat(document.getElementById("total-venta").textContent);
-          const metodoPago = document.getElementById("metodo-pago").value;
-          let mensaje = `Venta finalizada. Total: $${totalVenta.toFixed(2)}\nMétodo de Pago: ${metodoPago}`;
-          
-          if (metodoPago === "Efectivo") {
-              const efectivoRecibido = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
-              const cambioCalculado = parseFloat(document.getElementById("cambio").textContent) || 0;
-              if (efectivoRecibido < totalVenta) {
-                  return alert("El efectivo recibido es insuficiente.");
-              }
-              mensaje += `\nEfectivo Recibido: $${efectivoRecibido.toFixed(2)}\nCambio: $${cambioCalculado.toFixed(2)}`;
-          }
+        // Resetear estado
+        carrito = [];
+        actualizarCarrito();
+        document.getElementById("descuento-global").value = 0;
+        document.getElementById("efectivo-recibido").value = "";
+        document.getElementById("cambio").textContent = "0.00";
+        renderProductos();
+        renderInventoryList();
+        renderBotonesRapidos();
+    }
 
-          alert(mensaje);
-          
-          // Actualizar stock de productos
-          carrito.forEach(itemCarrito => {
-              const productoIndex = productos.findIndex(p => p.codigo === itemCarrito.codigo);
-              if (productoIndex !== -1) {
-                  productos[productoIndex].stock -= itemCarrito.cantidad;
-                  if (productos[productoIndex].stock < 0) productos[productoIndex].stock = 0; // Asegurarse de que no sea negativo
-              }
-          });
-          localStorage.setItem("productos", JSON.stringify(productos)); // Guardar cambios en el stock
-
-          // Resetear estado
-          carrito = [];
-          actualizarCarrito();
-          document.getElementById("descuento-global").value = 0;
-          document.getElementById("efectivo-recibido").value = "";
-          document.getElementById("cambio").textContent = "0.00";
-          renderProductos(); // Volver a renderizar la tabla de productos para reflejar el stock actualizado
-          renderInventoryList(); // Actualizar lista de inventario
-          renderBotonesRapidos(); // Actualizar botones rápidos
-        }
-
-        // Caja chica
-        let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
-        const listaMovimientos = document.getElementById("movimientos-caja");
-        function agregarCajaChica() {
-          const monto = parseFloat(document.getElementById("monto-caja").value);
-          const tipo = document.getElementById("tipo-caja").value;
-          if(isNaN(monto) || monto <= 0) return alert("Monto inválido. Por favor, introduce un valor positivo.");
-          movimientosCaja.push({monto, tipo, fecha: new Date().toLocaleString()});
-          localStorage.setItem("movimientosCaja", JSON.stringify(movimientosCaja));
-          mostrarMovimientosCaja();
-          document.getElementById("monto-caja").value = "";
-          document.getElementById("tipo-caja").value = "entrada";
-        }
-        function mostrarMovimientosCaja() {
-          listaMovimientos.innerHTML = "";
-          if (movimientosCaja.length === 0) {
+    // Caja chica
+    const listaMovimientos = document.getElementById("movimientos-caja"); // Mover la declaración aquí
+    function agregarCajaChica() {
+        const monto = parseFloat(document.getElementById("monto-caja").value);
+        const tipo = document.getElementById("tipo-caja").value;
+        if(isNaN(monto) || monto <= 0) return alert("Monto inválido. Por favor, introduce un valor positivo.");
+        movimientosCaja.push({monto, tipo, fecha: new Date().toLocaleString()});
+        localStorage.setItem("movimientosCaja", JSON.stringify(movimientosCaja));
+        mostrarMovimientosCaja();
+        document.getElementById("monto-caja").value = "";
+        document.getElementById("tipo-caja").value = "entrada";
+    }
+    function mostrarMovimientosCaja() {
+        listaMovimientos.innerHTML = "";
+        if (movimientosCaja.length === 0) {
             listaMovimientos.innerHTML = '<li class="p-3 text-center text-gray-500">No hay movimientos registrados.</li>';
-          }
-          movimientosCaja.forEach((m) => {
+        }
+        movimientosCaja.forEach((m) => {
             const li = document.createElement("li");
             li.classList.add("py-2", "px-3", "border-b", "border-gray-700", "last:border-b-0", "flex", "justify-between", "items-center");
             li.innerHTML = `
@@ -684,233 +670,249 @@
                 <span class="text-xs text-gray-500">${m.fecha.split(',')[0]}</span>
             `;
             listaMovimientos.appendChild(li);
-          });
-          listaMovimientos.scrollTop = listaMovimientos.scrollHeight; // Desplazar al final
-          feather.replace(); // Recargar iconos
+        });
+        listaMovimientos.scrollTop = listaMovimientos.scrollHeight;
+        feather.replace();
+    }
+
+    // Gestión productos
+    function saveProduct() {
+        const nombre = document.getElementById("prod-nombre").value.trim();
+        const codigo = document.getElementById("prod-codigo").value.trim();
+        const categoria = document.getElementById("prod-categoria").value.trim();
+        const proveedor = document.getElementById("prod-proveedor").value.trim();
+        const unidad = document.getElementById("prod-unidad").value.trim();
+        const precioCosto = parseFloat(document.getElementById("prod-precio-costo").value);
+        const precioVenta = parseFloat(document.getElementById("prod-precio-venta").value);
+        const stock = parseInt(document.getElementById("prod-stock").value);
+        const stockMinimo = parseInt(document.getElementById("prod-stock-minimo").value);
+        const descripcion = document.getElementById("prod-descripcion").value.trim();
+
+        if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock) || isNaN(stockMinimo) || precioCosto < 0 || precioVenta < 0 || stock < 0 || stockMinimo < 0) {
+            return alert("Por favor, completa todos los campos obligatorios ('Nombre', 'Código', 'Precio Costo', 'Precio Venta', 'Stock Disponible', 'Stock Mínimo') correctamente y asegúrate que los valores numéricos sean válidos.");
         }
 
-        // Gestión productos
-        function saveProduct() {
-          const nombre = document.getElementById("prod-nombre").value.trim();
-          const codigo = document.getElementById("prod-codigo").value.trim();
-          const categoria = document.getElementById("prod-categoria").value.trim();
-          const proveedor = document.getElementById("prod-proveedor").value.trim();
-          const unidad = document.getElementById("prod-unidad").value.trim();
-          const precioCosto = parseFloat(document.getElementById("prod-precio-costo").value);
-          const precioVenta = parseFloat(document.getElementById("prod-precio-venta").value);
-          const stock = parseInt(document.getElementById("prod-stock").value);
-          const stockMinimo = parseInt(document.getElementById("prod-stock-minimo").value);
-          const descripcion = document.getElementById("prod-descripcion").value.trim();
-
-          if(!nombre || !codigo || isNaN(precioCosto) || isNaN(precioVenta) || isNaN(stock) || isNaN(stockMinimo) || precioCosto < 0 || precioVenta < 0 || stock < 0 || stockMinimo < 0) {
-            return alert("Por favor, completa todos los campos obligatorios ('Nombre', 'Código', 'Precio Costo', 'Precio Venta', 'Stock Disponible', 'Stock Mínimo') correctamente y asegúrate que los valores numéricos sean válidos.");
-          }
-
-          let isNewProduct = true;
-          productos = productos.map(p => {
+        let isNewProduct = true;
+        productos = productos.map(p => {
             if(p.codigo === codigo) {
-              // Actualizar producto existente
-              p.nombre = nombre;
-              p.categoria = categoria;
-              p.proveedor = proveedor;
-              p.unidad = unidad;
-              p.precioCosto = precioCosto;
-              p.precioVenta = precioVenta;
-              p.stock = stock;
-              p.stockMinimo = stockMinimo;
-              p.descripcion = descripcion;
-              isNewProduct = false;
+                // Actualizar producto existente
+                p.nombre = nombre;
+                p.categoria = categoria;
+                p.proveedor = proveedor;
+                p.unidad = unidad;
+                p.precioCosto = precioCosto;
+                p.precioVenta = precioVenta;
+                p.stock = stock;
+                p.stockMinimo = stockMinimo;
+                p.descripcion = descripcion;
+                isNewProduct = false;
             }
             return p;
-          });
+        });
 
-          if(isNewProduct) {
+        if(isNewProduct) {
             productos.push({nombre, codigo, categoria, proveedor, unidad, precioCosto, precioVenta, stock, stockMinimo, descripcion});
-          }
+        }
 
-          localStorage.setItem("productos", JSON.stringify(productos));
-          limpiarFormProducto();
-          renderProductos();
-          renderInventoryList(); // Actualizar lista de inventario después de guardar/actualizar productos
-          renderBotonesRapidos(); // Actualizar botones rápidos
-          alert("Producto guardado correctamente.");
-        }
-        function limpiarFormProducto() {
-          document.getElementById("prod-nombre").value = "";
-          document.getElementById("prod-codigo").value = "";
-          document.getElementById("prod-categoria").value = "";
-          document.getElementById("prod-proveedor").value = "";
-          document.getElementById("prod-unidad").value = "";
-          document.getElementById("prod-precio-costo").value = "";
-          document.getElementById("prod-precio-venta").value = "";
-          document.getElementById("prod-stock").value = "";
-          document.getElementById("prod-stock-minimo").value = "";
-          document.getElementById("prod-descripcion").value = "";
-        }
-        function renderProductos() {
-          const tbody = document.getElementById("prod-table");
-          tbody.innerHTML = "";
-          if (productos.length === 0) {
+        localStorage.setItem("productos", JSON.stringify(productos));
+        limpiarFormProducto();
+        renderProductos();
+        renderInventoryList();
+        renderBotonesRapidos();
+        alert("Producto guardado correctamente.");
+    }
+    function limpiarFormProducto() {
+        document.getElementById("prod-nombre").value = "";
+        document.getElementById("prod-codigo").value = "";
+        document.getElementById("prod-categoria").value = "";
+        document.getElementById("prod-proveedor").value = "";
+        document.getElementById("prod-unidad").value = "";
+        document.getElementById("prod-precio-costo").value = "";
+        document.getElementById("prod-precio-venta").value = "";
+        document.getElementById("prod-stock").value = "";
+        document.getElementById("prod-stock-minimo").value = "";
+        document.getElementById("prod-descripcion").value = "";
+    }
+    function renderProductos() {
+        const tbody = document.getElementById("prod-table");
+        tbody.innerHTML = "";
+        if (productos.length === 0) {
             tbody.innerHTML = '<tr><td colspan="10" class="p-4 text-center text-gray-500">No hay productos registrados.</td></tr>';
             return;
-          }
-          productos.forEach((p, i) => {
+        }
+        productos.forEach((p, i) => {
             const tr = document.createElement("tr");
             tr.classList.add("border-b", "border-gray-700", "hover:bg-gray-700", "interactive-element");
             tr.innerHTML = `
-              <td class="p-3">${p.nombre}</td>
-              <td class="p-3">${p.codigo}</td>
-              <td class="p-3">${p.categoria || 'N/A'}</td>
-              <td class="p-3">${p.proveedor || 'N/A'}</td>
-              <td class="p-3">${p.unidad || 'N/A'}</td>
-              <td class="p-3 text-right">$${p.precioCosto.toFixed(2)}</td>
-              <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
-              <td class="p-3 text-right">${p.stock}</td>
-              <td class="p-3 text-right">${p.stockMinimo}</td>
-              <td class="p-3 text-center">
-                <button class="text-blue-400 hover:text-blue-500 mr-2 interactive-element" onclick="editProduct(${i})" title="Editar"><i data-feather="edit"></i></button>
-                <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteProduct(${i})" title="Eliminar"><i data-feather="trash-2"></i></button>
-              </td>
+                <td class="p-3">${p.nombre}</td>
+                <td class="p-3">${p.codigo}</td>
+                <td class="p-3">${p.categoria || 'N/A'}</td>
+                <td class="p-3">${p.proveedor || 'N/A'}</td>
+                <td class="p-3">${p.unidad || 'N/A'}</td>
+                <td class="p-3 text-right">$${p.precioCosto.toFixed(2)}</td>
+                <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
+                <td class="p-3 text-right">${p.stock}</td>
+                <td class="p-3 text-right">${p.stockMinimo}</td>
+                <td class="p-3 text-center">
+                    <button class="text-blue-400 hover:text-blue-500 mr-2 interactive-element" onclick="editProduct(${i})" title="Editar"><i data-feather="edit"></i></button>
+                    <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteProduct(${i})" title="Eliminar"><i data-feather="trash-2"></i></button>
+                </td>
             `;
             tbody.appendChild(tr);
-          });
-          feather.replace(); // Recargar iconos
-        }
+        });
+        feather.replace();
+    }
 
-        function editProduct(index) {
-            const product = productos[index];
-            document.getElementById("prod-nombre").value = product.nombre;
-            document.getElementById("prod-codigo").value = product.codigo;
-            document.getElementById("prod-categoria").value = product.categoria || '';
-            document.getElementById("prod-proveedor").value = product.proveedor || '';
-            document.getElementById("prod-unidad").value = product.unidad || '';
-            document.getElementById("prod-precio-costo").value = product.precioCosto;
-            document.getElementById("prod-precio-venta").value = product.precioVenta;
-            document.getElementById("prod-stock").value = product.stock;
-            document.getElementById("prod-stock-minimo").value = product.stockMinimo;
-            document.getElementById("prod-descripcion").value = product.descripcion || '';
-            
-            // Para evitar duplicados al editar, eliminamos el producto original y lo guardamos actualizado
-            // Esto es una simplificación. En un sistema real, se usaría un ID único y se actualizaría directamente.
-            deleteProduct(index, false); // Elimina sin actualizar localStorage de inmediato, para que saveProduct lo agregue.
-        }
+    function editProduct(index) {
+        const product = productos[index];
+        document.getElementById("prod-nombre").value = product.nombre;
+        document.getElementById("prod-codigo").value = product.codigo;
+        document.getElementById("prod-categoria").value = product.categoria || '';
+        document.getElementById("prod-proveedor").value = product.proveedor || '';
+        document.getElementById("prod-unidad").value = product.unidad || '';
+        document.getElementById("prod-precio-costo").value = product.precioCosto;
+        document.getElementById("prod-precio-venta").value = product.precioVenta;
+        document.getElementById("prod-stock").value = product.stock;
+        document.getElementById("prod-stock-minimo").value = product.stockMinimo;
+        document.getElementById("prod-descripcion").value = product.descripcion || '';
+        
+        deleteProduct(index, false); // Esto es una simplificación, para que el siguiente saveProduct lo reemplace
+    }
 
-        function deleteProduct(index, updateStorage = true) {
-            if(confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-                productos.splice(index, 1);
-                if (updateStorage) {
-                    localStorage.setItem("productos", JSON.stringify(productos));
-                    renderProductos();
-                    renderInventoryList();
-                    renderBotonesRapidos();
-                }
+    function deleteProduct(index, updateStorage = true) {
+        if(confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+            productos.splice(index, 1);
+            if (updateStorage) {
+                localStorage.setItem("productos", JSON.stringify(productos));
+                renderProductos();
+                renderInventoryList();
+                renderBotonesRapidos();
             }
         }
+    }
 
-
-        // Gestión clientes simple
-        function saveClient() {
-          const nombre = document.getElementById("cli-nombre").value.trim();
-          const email = document.getElementById("cli-email").value.trim();
-          const telefono = document.getElementById("cli-telefono").value.trim();
-          if(!nombre) return alert("El nombre del cliente es obligatorio.");
-          
-          clientes.push({nombre, email, telefono});
-          localStorage.setItem("clientes", JSON.stringify(clientes));
-          renderClientes();
-          document.getElementById("cli-nombre").value = "";
-          document.getElementById("cli-email").value = "";
-          document.getElementById("cli-telefono").value = "";
-          alert("Cliente guardado correctamente.");
-        }
-        function renderClientes() {
-          const list = document.getElementById("client-list");
-          list.innerHTML = "";
-          if (clientes.length === 0) {
+    // Gestión clientes
+    function saveClient() {
+        const nombre = document.getElementById("cli-nombre").value.trim();
+        const email = document.getElementById("cli-email").value.trim();
+        const telefono = document.getElementById("cli-telefono").value.trim();
+        if(!nombre) return alert("El nombre del cliente es obligatorio.");
+        
+        clientes.push({nombre, email, telefono});
+        localStorage.setItem("clientes", JSON.stringify(clientes));
+        renderClientes();
+        document.getElementById("cli-nombre").value = "";
+        document.getElementById("cli-email").value = "";
+        document.getElementById("cli-telefono").value = "";
+        alert("Cliente guardado correctamente.");
+    }
+    function renderClientes() {
+        const list = document.getElementById("client-list");
+        list.innerHTML = "";
+        if (clientes.length === 0) {
             list.innerHTML = '<li class="p-4 text-center text-gray-500">No hay clientes registrados.</li>';
             return;
-          }
-          clientes.forEach((c, i) => {
+        }
+        clientes.forEach((c, i) => {
             const li = document.createElement("li");
             li.className = "p-3 flex justify-between items-center hover:bg-gray-700 interactive-element";
             li.innerHTML = `
-              <div>
-                <p class="font-semibold text-lg text-white flex items-center"><i data-feather="user" class="mr-2 w-5 h-5 text-emerald-300"></i>${c.nombre}</p>
-                ${c.email ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="mail" class="mr-2 w-4 h-4"></i>${c.email}</p>` : ''}
-                ${c.telefono ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="phone" class="mr-2 w-4 h-4"></i>${c.telefono}</p>` : ''}
-              </div>
-              <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteClient(${i})" title="Eliminar Cliente"><i data-feather="trash-2"></i></button>
+                <div>
+                    <p class="font-semibold text-lg text-white flex items-center"><i data-feather="user" class="mr-2 w-5 h-5 text-emerald-300"></i>${c.nombre}</p>
+                    ${c.email ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="mail" class="mr-2 w-4 h-4"></i>${c.email}</p>` : ''}
+                    ${c.telefono ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="phone" class="mr-2 w-4 h-4"></i>${c.telefono}</p>` : ''}
+                </div>
+                <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteClient(${i})" title="Eliminar Cliente"><i data-feather="trash-2"></i></button>
             `;
             list.appendChild(li);
-          });
-          feather.replace(); // Recargar iconos
-        }
+        });
+        feather.replace();
+    }
 
-        function deleteClient(index) {
-            if(confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
-                clientes.splice(index, 1);
-                localStorage.setItem("clientes", JSON.stringify(clientes));
-                renderClientes();
-            }
+    function deleteClient(index) {
+        if(confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
+            clientes.splice(index, 1);
+            localStorage.setItem("clientes", JSON.stringify(clientes));
+            renderClientes();
         }
+    }
 
-        // Gestión de Inventario (sección de Reportes/Inventario)
-        function renderInventoryList() {
-            const tbody = document.getElementById("inventory-table");
-            tbody.innerHTML = "";
-            if (productos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500">No hay productos en inventario.</td></tr>';
-                return;
-            }
-            productos.forEach(p => {
-                const tr = document.createElement("tr");
-                tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
-                const stockColorClass = p.stock <= p.stockMinimo ? 'text-red-400 font-bold' : ''; // Resaltar stock bajo
-                tr.innerHTML = `
-                    <td class="p-3">${p.nombre}</td>
-                    <td class="p-3">${p.codigo}</td>
-                    <td class="p-3">${p.categoria || 'N/A'}</td>
-                    <td class="p-3">${p.proveedor || 'N/A'}</td>
-                    <td class="p-3">${p.unidad || 'N/A'}</td>
-                    <td class="p-3 text-right ${stockColorClass}">${p.stock}</td>
-                    <td class="p-3 text-right">${p.stockMinimo}</td>
-                    <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
-                `;
-                tbody.appendChild(tr);
+    // Gestión de Inventario (sección de Reportes/Inventario)
+    function renderInventoryList() {
+        const tbody = document.getElementById("inventory-table");
+        tbody.innerHTML = "";
+        if (productos.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500">No hay productos en inventario.</td></tr>';
+            return;
+        }
+        productos.forEach(p => {
+            const tr = document.createElement("tr");
+            tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
+            const stockColorClass = p.stock <= p.stockMinimo ? 'text-red-400 font-bold' : '';
+            tr.innerHTML = `
+                <td class="p-3">${p.nombre}</td>
+                <td class="p-3">${p.codigo}</td>
+                <td class="p-3">${p.categoria || 'N/A'}</td>
+                <td class="p-3">${p.proveedor || 'N/A'}</td>
+                <td class="p-3">${p.unidad || 'N/A'}</td>
+                <td class="p-3 text-right ${stockColorClass}">${p.stock}</td>
+                <td class="p-3 text-right">${p.stockMinimo}</td>
+                <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // --- Funciones de Inicialización (se mantienen dentro de DOMContentLoaded) ---
+    document.addEventListener('DOMContentLoaded', (event) => {
+        feather.replace();
+
+        // Atajo Enter para login
+        [inputUser, inputPass].forEach(input => {
+            input.addEventListener("keypress", e => {
+                if(e.key === "Enter") {
+                    login();
+                }
             });
-        }
+        });
 
+        btnLogin.addEventListener("click", login);
 
         // Teclas rápidas para cambiar secciones (F1-F7)
         window.addEventListener("keydown", e => {
-          if(posSection.classList.contains('hidden')) return; // Solo si estamos en el POS
-          if(e.key === "F1") {
-            e.preventDefault();
-            showSection("ventas");
-          } else if(e.key === "F2") {
-            e.preventDefault();
-            showSection("productos");
-          } else if(e.key === "F3") {
-            e.preventDefault();
-            showSection("clientes");
-          } else if(e.key === "F4") {
-            e.preventDefault();
-            showSection("creditos");
-          } else if(e.key === "F5") {
-            e.preventDefault();
-            showSection("inventario");
-          } else if(e.key === "F6") {
-            e.preventDefault();
-            showSection("configuraciones");
-          } else if(e.key === "F7") {
-            e.preventDefault();
-            showSection("reportes");
-          }
+            if(posSection.classList.contains('hidden')) return; // Solo si estamos en el POS
+            if(e.key === "F1") {
+                e.preventDefault();
+                showSection("ventas");
+            } else if(e.key === "F2") {
+                e.preventDefault();
+                showSection("productos");
+            } else if(e.key === "F3") {
+                e.preventDefault();
+                showSection("clientes");
+            } else if(e.key === "F4") {
+                e.preventDefault();
+                showSection("creditos");
+            } else if(e.key === "F5") {
+                e.preventDefault();
+                showSection("inventario");
+            } else if(e.key === "F6") {
+                e.preventDefault();
+                showSection("configuraciones");
+            } else if(e.key === "F7") {
+                e.preventDefault();
+                showSection("reportes");
+            }
         });
 
-        // Llamar a la función de inicialización cuando el DOM esté listo
-        initializeApp();
-    }); // Cierre de DOMContentLoaded
+        // Llamar a las funciones de renderizado iniciales
+        renderProductos();
+        renderClientes();
+        mostrarMovimientosCaja();
+        cambiarMetodoPago();
+        renderBotonesRapidos();
+        renderInventoryList();
+    });
   </script>
 </body>
 </html>
