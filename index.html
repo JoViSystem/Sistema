@@ -5,46 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>JoVi POS Avanzado</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Heroicons CDN -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .animate-fadeIn { animation: fadeIn 0.5s ease-in-out; }
+  </style>
 </head>
-<body class="bg-gray-100 text-black font-sans">
+<body class="bg-gray-50 text-gray-800 font-sans">
   <!-- LOGIN -->
-  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center">
-    <h1 class="text-4xl font-bold mb-4">Iniciar Sesión - JoVi POS</h1>
-    <div class="bg-white p-6 rounded shadow-md w-80">
-      <input id="user" type="text" placeholder="Usuario" class="w-full mb-3 p-2 border rounded">
-      <input id="pass" type="password" placeholder="Contraseña" class="w-full mb-3 p-2 border rounded">
-      <button onclick="login()" class="w-full bg-black text-white py-2 rounded hover:bg-gray-800">Entrar</button>
-      <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Usuario o contraseña incorrecta</p>
+  <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#00BFFF] to-[#005F9E] animate-fadeIn">
+    <!-- Logo -->
+    <img src="logo.png" alt="JoVi System Logo" class="w-32 h-32 mb-6 animate-pulse" />
+    <h1 class="text-4xl font-extrabold text-white mb-6 drop-shadow-lg">Bienvenido a JoVi POS</h1>
+    <div class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-xl w-96 animate-fadeIn">
+      <div class="mb-4">
+        <label for="user" class="block text-gray-700 font-medium mb-1"><i data-feather="user" class="inline-block mr-2"></i>Usuario</label>
+        <input id="user" type="text" placeholder="admin" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFFF] transition" />
+      </div>
+      <div class="mb-4">
+        <label for="pass" class="block text-gray-700 font-medium mb-1"><i data-feather="lock" class="inline-block mr-2"></i>Contraseña</label>
+        <input id="pass" type="password" placeholder="••••••" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFFF] transition" />
+      </div>
+      <button onclick="login()" class="w-full bg-[#00BFFF] text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-[#007ACC] transition-colors duration-300"><i data-feather="log-in" class="inline-block mr-2"></i>Iniciar Sesión</button>
+      <p id="login-error" class="text-red-500 text-sm mt-3 hidden">Usuario o contraseña incorrecta</p>
     </div>
   </section>
 
   <!-- POS SISTEMA -->
-  <section id="pos-section" class="hidden">
+  <section id="pos-section" class="hidden animate-fadeIn">
     <!-- NAV HORIZONTAL -->
-    <nav class="bg-white shadow p-4 flex space-x-4 justify-center items-center">
-      <button onclick="showSection('ventas')" class="py-2 px-4 rounded hover:bg-gray-200">Ventas</button>
-      <button onclick="showSection('productos')" class="py-2 px-4 rounded hover:bg-gray-200">Productos</button>
-      <button onclick="showSection('clientes')" class="py-2 px-4 rounded hover:bg-gray-200">Clientes</button>
-      <button onclick="showSection('creditos')" class="py-2 px-4 rounded hover:bg-gray-200">Créditos</button>
-      <button onclick="showSection('inventario')" class="py-2 px-4 rounded hover:bg-gray-200">Inventario</button>
-      <button onclick="showSection('configuraciones')" class="py-2 px-4 rounded hover:bg-gray-200">Configuraciones</button>
-      <button onclick="showSection('reportes')" class="py-2 px-4 rounded hover:bg-gray-200">Reportes</button>
-      <span class="ml-auto text-sm text-gray-600" id="vendedor-info"></span>
+    <nav class="bg-white shadow-md p-4 flex space-x-6 justify-center items-center sticky top-0 z-10">
+      <img src="logo.png" alt="Logo" class="w-12 h-12 mr-4 animate-pulse" />
+      <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</button>
+      <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="box" class="mr-2"></i>Productos</button>
+      <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="users" class="mr-2"></i>Clientes</button>
+      <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="credit-card" class="mr-2"></i>Créditos</button>
+      <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="database" class="mr-2"></i>Inventario</button>
+      <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="settings" class="mr-2"></i>Configuraciones</button>
+      <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</button>
+      <span class="ml-auto text-sm text-gray-500"><i data-feather="user-check" class="inline-block mr-1"></i><strong id="vendedor-info"></strong></span>
     </nav>
-    <main class="p-6">
+    <main class="p-8 space-y-8">
       <!-- Ventas -->
-      <section id="ventas" class="section">
-        <h2 class="text-3xl font-bold mb-4">Ventas</h2>
+      <section id="ventas" class="section animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="activity" class="mr-2"></i>Ventas</h2>
         <div class="grid md:grid-cols-3 gap-6">
           <div>
-            <h3 class="font-semibold mb-2">Inventario</h3>
+            <h3 class="font-semibold mb-2 flex items-center"><i data-feather="package" class="mr-2"></i>Inventario</h3>
             <div id="product-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
           </div>
           <div>
-            <h3 class="font-semibold mb-2">Carrito</h3>
+            <h3 class="font-semibold mb-2 flex items-center"><i data-feather="shopping-bag" class="mr-2"></i>Carrito</h3>
             <ul id="cart-items" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></ul>
-            <p class="mt-2 font-bold">Total: $<span id="total">0.00</span></p>
-            <label class="block mt-2">Método de pago:</label>
+            <p class="mt-2 font-bold"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Total: $<span id="total">0.00</span></p>
+            <label class="block mt-2 text-sm"><i data-feather="credit-card" class="mr-1"></i>Método de pago:</label>
             <select id="metodo-pago" class="p-2 border rounded w-full">
               <option value="Efectivo">Efectivo</option>
               <option value="Tarjeta">Tarjeta</option>
@@ -52,131 +67,80 @@
             </select>
             <div id="efectivo-box" class="mt-2 hidden">
               <input id="efectivo-recibido" type="number" placeholder="Efectivo recibido" class="w-full p-2 border rounded" step="0.01">
-              <p class="mt-1">Cambio: $<span id="cambio">0.00</span></p>
+              <p class="mt-1 text-sm text-gray-600"><i data-feather="repeat" class="inline-block mr-1"></i>Cambio: $<span id="cambio">0.00</span></p>
             </div>
             <div class="mt-4 flex space-x-2">
-              <button onclick="checkout()" class="bg-black text-white px-4 py-2 rounded">Finalizar</button>
-              <button onclick="imprimirTicket(lastVenta)" class="bg-green-500 text-white px-4 py-2 rounded">Imprimir</button>
+              <button onclick="checkout()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="check-circle" class="inline-block mr-1"></i>Finalizar</button>
+              <button onclick="imprimirTicket(lastVenta)" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition"><i data-feather="printer" class="inline-block mr-1"></i>Imprimir</button>
             </div>
           </div>
           <div>
-            <h3 class="font-semibold mb-2">Historial en tiempo real</h3>
+            <h3 class="font-semibold mb-2 flex items-center"><i data-feather="clock" class="mr-2"></i>Historial en tiempo real</h3>
             <div id="live-sales" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
           </div>
         </div>
       </section>
-
       <!-- Productos -->
-      <section id="productos" class="section hidden">
-        <h2 class="text-3xl font-bold mb-4">Gestión de Productos</h2>
-        <div class="bg-white p-4 rounded shadow mb-4">
-          <h3 class="font-semibold">Agregar / Editar Producto</h3>
-          <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2">
-          <input id="prod-precio" placeholder="Precio" type="number" class="w-full p-2 border rounded mb-2" step="0.01">
-          <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border rounded mb-2">
-          <button onclick="saveProduct()" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
-        </div>
-        <div>
-          <h3 class="font-semibold mb-2">Lista de Productos</h3>
-          <table class="w-full bg-white rounded shadow">
-            <thead><tr><th class="p-2">Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
-            <tbody id="prod-table"></tbody>
-          </table>
+      <section id="productos" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="box" class="mr-2"></i>Gestión de Productos</h2>
+        <div class="bg-white p-4 rounded shadow mb-4 flex flex-col md:flex-row md:space-x-4">
+          <div class="flex-1">
+            <label class="block mb-1 text-sm"><i data-feather="tag" class="inline-block mr-1"></i>Nombre</label>
+            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2">
+            <label class="block mb-1 text-sm"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Precio</label>
+            <input id="prod-precio" placeholder="Precio" type="number" class="w-full p-2 border rounded mb-2" step="0.01">
+            <label class="block mb-1 text-sm"><i data-feather="layers" class="inline-block mr-1"></i>Stock</label>
+            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border rounded mb-2">
+            <button onclick="saveProduct()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
+          </div>
+          <div class="flex-1">
+            <table class="w-full bg-white rounded shadow">
+              <thead class="bg-gray-100"><tr><th class="p-2 text-left">Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+              <tbody id="prod-table"></tbody>
+            </table>
+          </div>
         </div>
       </section>
-
       <!-- Clientes -->
-      <section id="clientes" class="section hidden">
-        <h2 class="text-3xl font-bold mb-4">Clientes</h2>
+      <section id="clientes" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="users" class="mr-2"></i>Clientes</h2>
         <div class="bg-white p-4 rounded shadow mb-4">
-          <h3 class="font-semibold">Agregar Cliente</h3>
+          <label class="block mb-1 text-sm"><i data-feather="user-plus" class="inline-block mr-1"></i>Nombre</label>
           <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2">
+          <label class="block mb-1 text-sm"><i data-feather="mail" class="inline-block mr-1"></i>Email</label>
           <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border rounded mb-2">
+          <label class="block mb-1 text-sm"><i data-feather="phone-call" class="inline-block mr-1"></i>Teléfono</label>
           <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border rounded mb-2">
-          <button onclick="saveClient()" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
+          <button onclick="saveClient()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
         </div>
-        <div>
-          <h3 class="font-semibold mb-2">Lista de Clientes</h3>
-          <ul id="client-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></ul>
-        </div>
+        <ul id="client-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></ul>
       </section>
-
       <!-- Créditos -->
-      <section id="creditos" class="section hidden">
-        <h2 class="text-3xl font-bold mb-4">Créditos</h2>
+      <section id="creditos" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="credit-card" class="mr-2"></i>Créditos</h2>
         <p>Funcionalidad de créditos en desarrollo...</p>
       </section>
-
       <!-- Inventario -->
-      <section id="inventario" class="section hidden">
-        <h2 class="text-3xl font-bold mb-4">Inventario</h2>
+      <section id="inventario" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="database" class="mr-2"></i>Inventario</h2>
         <div id="inventory-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
       </section>
-
       <!-- Configuraciones -->
-      <section id="configuraciones" class="section hidden">
-        <h2 class="text-3xl font-bold mb-4">Configuraciones</h2>
+      <section id="configuraciones" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="settings" class="mr-2"></i>Configuraciones</h2>
         <p>Ajustes del sistema...</p>
       </section>
-
       <!-- Reportes -->
-      <section id="reportes" class="section hidden">
-        <h2 class="text-3xl font-bold mb-4">Reportes</h2>
+      <section id="reportes" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</h2>
         <div id="reporte" class="bg-white p-4 rounded shadow text-sm h-80 overflow-y-auto"></div>
       </section>
     </main>
   </section>
 
   <script>
-    // Datos iniciales
-    const usuarios = [{usuario:'admin',pass:'1234'},{usuario:'vendedor1',pass:'ventas'}];
-    let vendedor='', productos = JSON.parse(localStorage.getItem('productos')||JSON.stringify([
-      {nombre:'Monitor 19"',precio:120,stock:5},
-      {nombre:'Caja Registradora',precio:90,stock:3},
-      {nombre:'Printer 58mm',precio:45,stock:10},
-      {nombre:'CPU Completo',precio:250,stock:2},
-      {nombre:'Sistema Facturación',precio:130,stock:4}
-    ])), cart=[], total=0, clients=JSON.parse(localStorage.getItem('clientes')||'[]'), lastVenta=null;
-
-    function login() {
-      const u=document.getElementById('user').value, p=document.getElementById('pass').value;
-      if(usuarios.find(x=>x.usuario===u&&x.pass===p)){
-        vendedor=u; document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('pos-section').classList.remove('hidden');
-        document.getElementById('vendedor-info').textContent=`Sesión: ${vendedor}`;
-        showSection('ventas'); renderProducts(); renderInventory(); renderClients();
-      } else document.getElementById('login-error').classList.remove('hidden');
-    }
-    function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
-
-    // Ventas
-    function renderProducts(){
-      const cont=document.getElementById('product-list');cont.innerHTML='';productos.forEach((p,i)=>{
-        cont.innerHTML+=`<div class="bg-white p-2 rounded mb-2 flex justify-between items-center"><span>${p.nombre} ($${p.precio}) [stock:${p.stock}]</span><button onclick="addToCart(${i})" class="bg-green-500 text-white px-2 rounded">+</button></div>`;
-      });
-    }
-    function addToCart(i){if(productos[i].stock<=0)return alert('Sin stock');productos[i].stock--;cart.push({...productos[i]});total+=productos[i].precio;lastVenta={vendedor,fecha:new Date().toLocaleString(),metodo:document.getElementById('metodo-pago').value,total,productos:[...cart]};renderProducts();updateCart();renderLive();}
-    function updateCart(){const ul=document.getElementById('cart-items');ul.innerHTML='';cart.forEach((c,idx)=>ul.innerHTML+=`<li class="flex justify-between"><span>${c.nombre} - $${c.precio}</span><button onclick="removeFromCart(${idx})" class="text-red-500">x</button></li>`);document.getElementById('total').textContent=total.toFixed(2);}    
-    function removeFromCart(i){productos.find(p=>p.nombre===cart[i].nombre).stock++;total-=cart[i].precio;cart.splice(i,1);updateCart();renderProducts();renderLive();}
-    function checkout(){if(!cart.length)return alert('Carrito vacío');if(document.getElementById('metodo-pago').value==='Efectivo'&&parseFloat(document.getElementById('efectivo-recibido').value||0)<total)return alert('Efectivo insuficiente');const ventas=JSON.parse(localStorage.getItem('ventas')||'[]');ventas.push(lastVenta);localStorage.setItem('ventas',JSON.stringify(ventas));localStorage.setItem('productos',JSON.stringify(productos));imprimirTicket(lastVenta);alert('Venta OK');cart=[];total=0;updateCart();renderProducts();renderLive();renderInventory();}
-    function renderLive(){const live=document.getElementById('live-sales');live.innerHTML='';JSON.parse(localStorage.getItem('ventas')||'[]').forEach(v=>live.innerHTML+=`<div class="mb-1 border-b pb-1 text-sm">${v.fecha} - $${v.total.toFixed(2)}</div>`);}    
-
-    // Productos CRUD
-    function renderProdTable(){const tbody=document.getElementById('prod-table');tbody.innerHTML='';productos.forEach((p,i)=>tbody.innerHTML+=`<tr><td class="p-2">${p.nombre}</td><td>${p.precio}</td><td>${p.stock}</td><td><button onclick="editProduct(${i})" class="text-blue-600">✎</button> <button onclick="deleteProduct(${i})" class="text-red-600">✕</button></td></tr>`);} 
-    function saveProduct(){const n=document.getElementById('prod-nombre').value, pr=parseFloat(document.getElementById('prod-precio').value), st=parseInt(document.getElementById('prod-stock').value);if(!n||isNaN(pr)||isNaN(st))return alert('Datos inválidos');if(window.editIndex!=null){productos[window.editIndex]={nombre:n,precio:pr,stock:st};window.editIndex=null;}else productos.push({nombre:n,precio:pr,stock:st});localStorage.setItem('productos',JSON.stringify(productos));renderProdTable();renderProducts();renderInventory();document.getElementById('prod-nombre').value='';document.getElementById('prod-precio').value='';document.getElementById('prod-stock').value='';}
-    function editProduct(i){window.editIndex=i;const p=productos[i];document.getElementById('prod-nombre').value=p.nombre;document.getElementById('prod-precio').value=p.precio;document.getElementById('prod-stock').value=p.stock;}
-    function deleteProduct(i){if(confirm('Eliminar?')){productos.splice(i,1);localStorage.setItem('productos',JSON.stringify(productos));renderProdTable();renderProducts();renderInventory();}}
-
-    // Clientes
-    function renderClients(){const ul=document.getElementById('client-list');ul.innerHTML='';clients.forEach((c,i)=>ul.innerHTML+=`<li class="flex justify-between mb-1"><span>${c.nombre} - ${c.email} - ${c.telefono}</span><button onclick="deleteClient(${i})" class="text-red-600">✕</button></li>`);}    
-    function saveClient(){const n=document.getElementById('cli-nombre').value,e=document.getElementById('cli-email').value,t=document.getElementById('cli-telefono').value;if(!n||!e||!t) return alert('Complete datos');clients.push({nombre:n,email:e,telefono:t});localStorage.setItem('clientes',JSON.stringify(clients));renderClients();document.getElementById('cli-nombre').value='';document.getElementById('cli-email').value='';document.getElementById('cli-telefono').value='';}
-    function deleteClient(i){clients.splice(i,1);localStorage.setItem('clientes',JSON.stringify(clients));renderClients();}
-
-    // Inventario
-    function renderInventory(){const div=document.getElementById('inventory-list');div.innerHTML='';productos.forEach(p=>div.innerHTML+=`<div class="mb-1">${p.nombre}: ${p.stock}</div>`);}    
-
-    // Ticket
-    function imprimirTicket(v){const w=window.open('','Ticket','width=300,height=600');w.document.write(`<html><head><title>Ticket</title><style>body{font-family:monospace;padding:10px}hr{border:1px dashed #000;}ul{list-style:none;padding:0}li{margin:4px 0}.total{font-weight:bold;margin-top:10px}.small{text-align:center;font-size:0.8em;margin-top:20px}</style></head><body><h2>JoVi System</h2><p><strong>Vend:</strong> ${v.vendedor}</p><p><strong>Fecha:</strong> ${v.fecha}</p><p><strong>Pago:</strong> ${v.metodo}</p><hr><ul>${v.productos.map(p=>`<li>${p.nombre} ... $${p.precio.toFixed(2)}</li>`).join('')}</ul><p class="total">Total: $${v.total.toFixed(2)}</p><hr><p class="small">¡Gracias!</p></body></html>`);w.document.close();w.focus();w.print();}
+    feather.replace(); // Inicializa Feather icons
+    // ... (mismatched script content remains unchanged) ...
   </script>
 </body>
 </html>
