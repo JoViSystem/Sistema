@@ -10,86 +10,96 @@
   <style>
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .animate-fadeIn { animation: fadeIn 0.5s ease-in-out; }
-    .critical { background: #fee2e2; }
+    .critical { background: #fef2f2; }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-gray-100 text-gray-800 font-sans">
 
   <!-- LOGIN -->
   <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#00BFFF] to-[#005F9E] animate-fadeIn">
     <i data-feather="monitor" class="w-32 h-32 text-white mb-6 animate-pulse"></i>
-    <h1 class="text-4xl font-extrabold text-white mb-6 drop-shadow-lg">JoVi POS Profesional</h1>
-    <div class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-xl w-96">
-      <input id="user" name="user" autocomplete="off" type="text" class="w-full p-3 border rounded mb-4 focus:ring-[#00BFFF]" placeholder="Usuario" />
-      <input id="pass" name="pass" autocomplete="off" type="password" class="w-full p-3 border rounded mb-4 focus:ring-[#00BFFF]" placeholder="Contraseña" />
-      <button id="login-btn" class="w-full bg-[#00BFFF] text-white py-3 rounded-lg mb-2 hover:bg-[#007ACC]">Iniciar Sesión</button>
-      <button id="forgot-btn" class="text-sm text-gray-600 hover:underline"><i data-feather="help-circle"></i> Olvidé contraseña</button>
-      <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Credenciales incorrectas</p>
+    <h1 class="text-5xl font-extrabold text-white mb-6 drop-shadow-lg">JoVi POS Profesional</h1>
+    <div class="bg-white bg-opacity-90 p-10 rounded-3xl shadow-2xl w-96">
+      <input id="user" autocomplete="off" type="text" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:ring-4 focus:ring-[#00BFFF]" placeholder="Usuario" />
+      <input id="pass" autocomplete="off" type="password" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:ring-4 focus:ring-[#00BFFF]" placeholder="Contraseña" />
+      <button id="login-btn" class="w-full bg-[#00BFFF] text-white py-4 rounded-xl mb-4 hover:bg-[#007ACC] transition">Iniciar Sesión</button>
+      <button id="forgot-btn" class="text-sm text-gray-600 hover:underline flex items-center gap-1">
+        <i data-feather="help-circle"></i> Olvidé contraseña
+      </button>
+      <p id="login-error" class="text-red-500 text-sm mt-4 hidden">Credenciales incorrectas</p>
     </div>
   </section>
 
   <!-- POS -->
   <section id="pos-section" class="hidden animate-fadeIn">
-    <nav class="bg-white shadow sticky top-0 z-10 flex items-center p-4 space-x-4">
-      <i data-feather="monitor" class="w-10 h-10"></i>
-      <button onclick="showSection('ventas')"><i data-feather="shopping-cart"></i> Ventas (F1)</button>
-      <button onclick="showSection('productos')"><i data-feather="box"></i> Productos (F2)</button>
-      <button onclick="showSection('clientes')"><i data-feather="users"></i> Clientes (F3)</button>
-      <button onclick="showSection('creditos')"><i data-feather="credit-card"></i> Créditos (F4)</button>
-      <button onclick="showSection('inventario')"><i data-feather="database"></i> Inventario (F5)</button>
-      <button onclick="showSection('configuraciones')"><i data-feather="settings"></i> Configuraciones (F6)</button>
-      <button onclick="showSection('reportes')"><i data-feather="bar-chart-2"></i> Reportes (F7)</button>
-      <span class="ml-auto">Usuario: <strong id="vendedor-info"></strong></span>
+    <nav class="bg-white shadow-lg sticky top-0 z-20 flex items-center p-6 space-x-8">
+      <i data-feather="monitor" class="w-12 h-12 text-[#00BFFF]"></i>
+      <button onclick="showSection('ventas')" class="text-lg font-semibold hover:text-[#00BFFF]">Ventas (F1)</button>
+      <button onclick="showSection('productos')" class="text-lg font-semibold hover:text-[#00BFFF]">Productos (F2)</button>
+      <button onclick="showSection('clientes')" class="text-lg font-semibold hover:text-[#00BFFF]">Clientes (F3)</button>
+      <button onclick="showSection('creditos')" class="text-lg font-semibold hover:text-[#00BFFF]">Créditos (F4)</button>
+      <button onclick="showSection('inventario')" class="text-lg font-semibold hover:text-[#00BFFF]">Inventario (F5)</button>
+      <button onclick="showSection('configuraciones')" class="text-lg font-semibold hover:text-[#00BFFF]">Configuraciones (F6)</button>
+      <button onclick="showSection('reportes')" class="text-lg font-semibold hover:text-[#00BFFF]">Reportes (F7)</button>
+      <span class="ml-auto text-lg">Usuario: <strong id="vendedor-info" class="text-[#00BFFF]"></strong></span>
     </nav>
-    <main class="p-6 space-y-6">
+    <main class="p-10 space-y-12">
 
       <!-- Ventas -->
-      <section id="ventas" class="section animate-fadeIn">
-        <div class="flex justify-between mb-4">
-          <input id="search-prod" placeholder="Buscar producto" class="border p-2 rounded w-1/3" oninput="renderProducts()" />
-          <input id="select-client" list="clients-list" placeholder="Cliente" class="border p-2 rounded w-1/3" />
+      <section id="ventas" class="section p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
+        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
+          <i data-feather="shopping-cart"></i> Ventas
+        </h2>
+        <div class="flex justify-between mb-6">
+          <input id="search-prod" placeholder="Buscar producto" class="border p-3 rounded-lg w-1/3 focus:ring-2 focus:ring-[#00BFFF]" oninput="renderProducts()" />
+          <input id="select-client" list="clients-list" placeholder="Cliente" class="border p-3 rounded-lg w-1/3 focus:ring-2 focus:ring-[#00BFFF]" />
           <datalist id="clients-list"></datalist>
         </div>
-        <div class="grid md:grid-cols-3 gap-4">
-          <div>
-            <h3 class="font-semibold mb-2">Inventario</h3>
-            <div id="product-list" class="h-64 overflow-auto bg-white p-2 rounded shadow"></div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
+            <h3 class="text-2xl font-semibold mb-4">Inventario</h3>
+            <div id="product-list" class="h-64 overflow-auto"></div>
           </div>
-          <div>
-            <h3 class="font-semibold mb-2">Carrito</h3>
-            <div id="cart-items" class="h-64 overflow-auto bg-white p-2 rounded shadow mb-2"></div>
-            <div class="flex space-x-2 mb-2">
-              <input id="discount" type="number" placeholder="Descuento %" class="border p-2 rounded w-1/2" />
-              <input id="notes" placeholder="Notas" class="border p-2 rounded w-1/2" />
+          <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
+            <h3 class="text-2xl font-semibold mb-4">Carrito</h3>
+            <div id="cart-items" class="h-64 overflow-auto mb-4"></div>
+            <div class="flex space-x-4 mb-4">
+              <input id="discount" type="number" placeholder="Descuento %" class="border p-2 rounded-lg w-1/2" />
+              <input id="notes" placeholder="Notas" class="border p-2 rounded-lg w-1/2" />
             </div>
-            <p class="mb-2">Total: $<span id="total">0.00</span></p>
-            <button onclick="checkout()" class="bg-[#00BFFF] text-white px-4 py-2 rounded hover:bg-[#007ACC]">Finalizar</button>
+            <p class="text-xl mb-4">Total: <span class="font-bold text-2xl text-[#00BFFF]">$<span id="total">0.00</span></span></p>
+            <button onclick="checkout()" class="bg-[#00BFFF] text-white px-6 py-3 rounded-xl hover:bg-[#007ACC] transition">Finalizar Venta</button>
           </div>
-          <div>
-            <h3 class="font-semibold mb-2">Historial en vivo</h3>
-            <div id="live-sales" class="h-64 overflow-auto bg-white p-2 rounded shadow"></div>
+          <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
+            <h3 class="text-2xl font-semibold mb-4">Historial en vivo</h3>
+            <div id="live-sales" class="h-64 overflow-auto"></div>
           </div>
         </div>
       </section>
 
       <!-- Productos -->
-      <section id="productos" class="section hidden animate-fadeIn">
-        <div class="flex justify-between mb-4">
-          <button onclick="exportCSV()" class="bg-green-500 text-white px-3 py-1 rounded">Exportar CSV</button>
-          <input type="file" accept=".csv" onchange="importCSV(event)" />
+      <section id="productos" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
+        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
+          <i data-feather="box"></i> Productos
+        </h2>
+        <div class="flex justify-between mb-6">
+          <button onclick="exportCSV()" class="bg-green-500 text-white px-4 py-2 rounded-lg">Exportar CSV</button>
+          <input type="file" accept=".csv" onchange="importCSV(event)" class="border p-2 rounded-lg" />
         </div>
-        <div class="flex space-x-4">
-          <div class="w-1/2 bg-white p-4 rounded shadow">
-            <input id="prod-name" placeholder="Nombre" class="w-full mb-2 p-2 border rounded" />
-            <input id="prod-code" placeholder="Código" class="w-full mb-2 p-2 border rounded" />
-            <input id="prod-price" type="number" placeholder="Precio" class="w-full mb-2 p-2 border rounded" />
-            <input id="prod-stock" type="number" placeholder="Stock" class="w-full mb-2 p-2 border rounded" />
-            <input id="prod-img" type="file" class="w-full mb-2" />
-            <button onclick="saveProduct()" class="bg-[#00BFFF] text-white px-4 py-2 rounded">Guardar</button>
+        <div class="flex space-x-6">
+          <div class="w-1/2">
+            <div class="bg-gray-50 p-4 rounded-lg mb-6">
+              <input id="prod-name" placeholder="Nombre" class="w-full mb-4 p-3 border rounded-lg" />
+              <input id="prod-code" placeholder="Código" class="w-full mb-4 p-3 border rounded-lg" />
+              <input id="prod-price" type="number" placeholder="Precio" class="w-full mb-4 p-3 border rounded-lg" />
+              <input id="prod-stock" type="number" placeholder="Stock" class="w-full mb-4 p-3 border rounded-lg" />
+              <input id="prod-img" type="file" class="w-full mb-4" />
+              <button onclick="saveProduct()" class="w-full bg-[#00BFFF] text-white py-3 rounded-lg">Guardar Producto</button>
+            </div>
           </div>
-          <div class="w-1/2 bg-white p-4 rounded shadow overflow-auto h-64">
-            <table class="w-full">
-              <thead><tr><th>Nombre</th><th>Código</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+          <div class="w-1/2 overflow-auto h-80">
+            <table class="w-full bg-gray-50 rounded-lg shadow-inner">
+              <thead class="bg-gray-200"><tr><th class="p-3">Nombre</th><th>Código</th><th>Precio</th><th>Stock</th><th>Acción</th></tr></thead>
               <tbody id="prod-table"></tbody>
             </table>
           </div>
@@ -97,47 +107,62 @@
       </section>
 
       <!-- Clientes -->
-      <section id="clientes" class="section hidden animate-fadeIn">
-        <div class="bg-white p-4 rounded shadow mb-4">
-          <input id="cli-name" placeholder="Nombre" class="w-full mb-2 p-2 border rounded" />
-          <input id="cli-email" placeholder="Email" class="w-full mb-2 p-2 border rounded" />
-          <input id="cli-phone" placeholder="Teléfono" class="w-full mb-2 p-2 border rounded" />
-          <input id="cli-address" placeholder="Dirección" class="w-full mb-2 p-2 border rounded" />
-          <input id="cli-credit" type="number" placeholder="Límite Crédito" class="w-full mb-2 p-2 border rounded" />
-          <select id="cli-seg" class="w-full mb-2 p-2 border rounded"><option>VIP</option><option>Minorista</option><option>Mayorista</option></select>
-          <button onclick="saveClient()" class="bg-[#00BFFF] text-white px-4 py-2 rounded">Guardar</button>
+      <section id="clientes" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
+        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
+          <i data-feather="users"></i> Clientes
+        </h2>
+        <div class="bg-gray-50 p-6 rounded-lg mb-6">
+          <div class="grid grid-cols-2 gap-4">
+            <input id="cli-name" placeholder="Nombre" class="p-3 border rounded-lg" />
+            <input id="cli-email" placeholder="Email" class="p-3 border rounded-lg" />
+            <input id="cli-phone" placeholder="Teléfono" class="p-3 border rounded-lg" />
+            <input id="cli-address" placeholder="Dirección" class="p-3 border rounded-lg" />
+            <input id="cli-credit" type="number" placeholder="Límite Crédito" class="p-3 border rounded-lg" />
+            <select id="cli-seg" class="p-3 border rounded-lg"><option>VIP</option><option>Minorista</option><option>Mayorista</option></select>
+          </div>
+          <button onclick="saveClient()" class="mt-6 bg-[#00BFFF] text-white px-6 py-3 rounded-xl">Guardar Cliente</button>
         </div>
-        <ul id="client-list" class="bg-white p-4 rounded shadow h-64 overflow-auto"></ul>
+        <ul id="client-list" class="bg-gray-50 p-4 rounded-lg shadow-inner h-80 overflow-auto"></ul>
       </section>
 
       <!-- Créditos -->
-      <section id="creditos" class="section hidden animate-fadeIn">
-        <div class="bg-white p-4 rounded shadow mb-4">
-          <button onclick="addCredit()" class="bg-[#00BFFF] text-white px-3 py-1 rounded">Nuevo Crédito</button>
-        </div>
-        <div id="credits-list" class="bg-white p-4 rounded shadow h-64 overflow-auto"></div>
+      <section id="creditos" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
+        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
+          <i data-feather="credit-card"></i> Créditos
+        </h2>
+        <button onclick="addCredit()" class="bg-[#00BFFF] text-white px-6 py-2 rounded-lg mb-4">Nuevo Crédito</button>
+        <div id="credits-list" class="bg-gray-50 p-4 rounded-lg shadow-inner h-64 overflow-auto"></div>
       </section>
 
       <!-- Inventario -->
-      <section id="inventario" class="section hidden animate-fadeIn">
-        <button onclick="generateAudit()" class="bg-green-500 text-white px-3 py-1 rounded mb-2">Conteo Cíclico</button>
-        <div id="inventory-list" class="bg-white p-4 rounded shadow h-64 overflow-auto"></div>
+      <section id="inventario" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
+        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
+          <i data-feather="database"></i> Inventario
+        </h2>
+        <button onclick="generateAudit()" class="bg-green-500 text-white px-6 py-2 rounded-lg mb-4">Conteo Cíclico</button>
+        <div id="inventory-list" class="bg-gray-50 p-4 rounded-lg shadow-inner h-64 overflow-auto"></div>
       </section>
 
       <!-- Configuraciones -->
-      <section id="configuraciones" class="section hidden animate-fadeIn">
-        <button onclick="manageUsers()" class="bg-[#00BFFF] text-white px-4 py-2 rounded mb-2">Gestión de Usuarios</button>
-        <button onclick="toggleTheme()" class="bg-gray-800 text-white px-4 py-2 rounded">Dark Mode</button>
+      <section id="configuraciones" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
+        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
+          <i data-feather="settings"></i> Configuraciones
+        </h2>
+        <button onclick="manageUsers()" class="bg-[#00BFFF] text-white px-6 py-2 rounded-lg mb-4">Gestión de Usuarios</button>
+        <button onclick="toggleTheme()" class="bg-gray-800 text-white px-6 py-2 rounded-lg">Dark Mode</button>
       </section>
 
       <!-- Reportes -->
-      <section id="reportes" class="section hidden animate-fadeIn">
-        <div class="flex items-center mb-2">
-          <input type="date" id="report-from" class="border p-2 rounded" />
-          <input type="date" id="report-to" class="border p-2 rounded ml-2" />
-          <button onclick="exportReport()" class="bg-green-500 text-white px-4 py-2 rounded ml-2">Exportar</button>
+      <section id="reportes" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
+        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
+          <i data-feather="bar-chart-2"></i> Reportes
+        </h2>
+        <div class="flex items-center mb-6">
+          <input type="date" id="report-from" class="border p-2 rounded-lg" />
+          <input type="date" id="report-to" class="border p-2 rounded-lg ml-4" />
+          <button onclick="exportReport()" class="bg-green-500 text-white px-6 py-2 rounded-lg ml-4">Exportar</button>
         </div>
-        <div id="report-output" class="bg-white p-4 rounded shadow h-64 overflow-auto"></div>
+        <div id="report-output" class="bg-gray-50 p-4 rounded-lg shadow-inner h-64 overflow-auto"></div>
       </section>
 
     </main>
@@ -146,14 +171,13 @@
   <script>
     feather.replace();
     // Datos iniciales
-    const usuarios=[{usuario:'admin',pass:'12345'}];
-    let productos=JSON.parse(localStorage.getItem('productos')||'[]'),
-        cart=[],
-        total=0,
-        clients=JSON.parse(localStorage.getItem('clientes')||'[]'),
-        lastVenta=null;
+    const usuarios = [{ usuario: 'admin', pass: '12345' }];
+    let productos = JSON.parse(localStorage.getItem('productos') || '[]'),
+        cart = [], total = 0,
+        clients = JSON.parse(localStorage.getItem('clientes') || '[]'),
+        lastVenta = null;
 
-    // Login
+    // Elementos login
     const loginSection = document.getElementById('login-section'),
           posSection   = document.getElementById('pos-section'),
           inputUser    = document.getElementById('user'),
@@ -162,10 +186,10 @@
           loginBtn     = document.getElementById('login-btn'),
           forgotBtn    = document.getElementById('forgot-btn');
 
+    // Función de login
     function doLogin() {
-      const u = inputUser.value.trim(),
-            p = inputPass.value;
-      if (u==='admin' && p==='12345') {
+      const u = inputUser.value.trim(), p = inputPass.value;
+      if (u === 'admin' && p === '12345') {
         loginSection.classList.add('hidden');
         posSection.classList.remove('hidden');
         document.getElementById('vendedor-info').textContent = u;
@@ -175,22 +199,20 @@
         loginError.classList.remove('hidden');
       }
     }
-    loginBtn.addEventListener('click', doLogin);
-    [inputUser,inputPass].forEach(el=>{
-      el.addEventListener('keydown', e => {
-        if (e.key==='Enter') { e.preventDefault(); doLogin(); }
-      });
-    });
-    forgotBtn.addEventListener('click',()=>alert('Contacte al administrador.'));
+    loginBtn.onclick = doLogin;
+    [inputUser, inputPass].forEach(el =>
+      el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doLogin(); } })
+    );
+    forgotBtn.onclick = () => alert('Contacte al administrador.');
 
-    // Navegación
-    function showSection(id){
-      document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+    // Navegación mediante botones y F1-F7
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
     document.addEventListener('keydown', e => {
       if (posSection.classList.contains('hidden')) return;
-      switch(e.key){
+      switch (e.key) {
         case 'F1': e.preventDefault(); showSection('ventas'); break;
         case 'F2': e.preventDefault(); showSection('productos'); break;
         case 'F3': e.preventDefault(); showSection('clientes'); break;
@@ -201,143 +223,143 @@
       }
     });
 
-    // Ventas
-    function renderProducts(){
-      const list=document.getElementById('product-list'),
-            filter=document.getElementById('search-prod').value.toLowerCase();
-      list.innerHTML='';
-      productos.filter(p=>p.nombre.toLowerCase().includes(filter))
-        .forEach((p,i)=>{
-          const div=document.createElement('div');
-          div.className='flex justify-between p-1'+(p.stock<2?' critical':'');
-          div.innerHTML=`<span>${p.nombre} ($${p.precio}) [${p.stock}]</span>
-                         <button onclick="addToCart(${i})">+</button>`;
+    // Funciones Ventas...
+    function renderProducts() {
+      const list = document.getElementById('product-list'),
+            filter = document.getElementById('search-prod').value.toLowerCase();
+      list.innerHTML = '';
+      productos.filter(p => p.nombre.toLowerCase().includes(filter))
+        .forEach((p, i) => {
+          const div = document.createElement('div');
+          div.className = 'flex justify-between p-1' + (p.stock < 2 ? ' critical' : '');
+          div.innerHTML = `<span>${p.nombre} ($${p.precio}) [${p.stock}]</span>
+                           <button onclick="addToCart(${i})">+</button>`;
           list.appendChild(div);
         });
     }
-    function addToCart(i){
-      if(productos[i].stock<=0){ alert('Sin stock'); return; }
+    function addToCart(i) {
+      if (productos[i].stock <= 0) return alert('Sin stock');
       productos[i].stock--;
       cart.push({...productos[i]});
-      total+=productos[i].precio;
-      lastVenta={productos:[...cart],total,total};
+      total += productos[i].precio;
+      lastVenta = { productos: [...cart], total };
       updateCart(); renderProducts(); renderLive(); renderInventory();
-      localStorage.setItem('productos',JSON.stringify(productos));
+      localStorage.setItem('productos', JSON.stringify(productos));
     }
-    function updateCart(){
-      const el=document.getElementById('cart-items');
-      el.innerHTML='';
-      cart.forEach((c,j)=>{
-        el.innerHTML+=`<div class="flex justify-between">
-                         <span>${c.nombre}</span>
-                         <button onclick="removeFromCart(${j})">x</button>
-                       </div>`;
+    function updateCart() {
+      const el = document.getElementById('cart-items');
+      el.innerHTML = '';
+      cart.forEach((c, j) => {
+        el.innerHTML += `<div class="flex justify-between">
+                           <span>${c.nombre}</span>
+                           <button onclick="removeFromCart(${j})">x</button>
+                         </div>`;
       });
-      document.getElementById('total').textContent=total.toFixed(2);
+      document.getElementById('total').textContent = total.toFixed(2);
     }
-    function removeFromCart(j){
-      productos.find(p=>p.nombre===cart[j].nombre).stock++;
-      total-=cart[j].precio;
-      cart.splice(j,1);
+    function removeFromCart(j) {
+      productos.find(p => p.nombre === cart[j].nombre).stock++;
+      total -= cart[j].precio;
+      cart.splice(j, 1);
       updateCart(); renderProducts(); renderLive(); renderInventory();
-      localStorage.setItem('productos',JSON.stringify(productos));
+      localStorage.setItem('productos', JSON.stringify(productos));
     }
-    function checkout(){
-      const ventas=JSON.parse(localStorage.getItem('ventas')||'[]');
-      ventas.push({...lastVenta,vendedor:document.getElementById('vendedor-info').textContent,fecha:new Date().toLocaleString()});
-      localStorage.setItem('ventas',JSON.stringify(ventas));
+    function checkout() {
+      const ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
+      ventas.push({...lastVenta, vendedor: document.getElementById('vendedor-info').textContent, fecha: new Date().toLocaleString() });
+      localStorage.setItem('ventas', JSON.stringify(ventas));
       imprimirTicket(lastVenta);
-      cart=[]; total=0;
+      cart = []; total = 0;
       updateCart(); renderLive(); renderInventory();
     }
-    function renderLive(){
-      const el=document.getElementById('live-sales'),
-            data=JSON.parse(localStorage.getItem('ventas')||'[]');
-      el.innerHTML='';
-      data.forEach(v=>el.innerHTML+=`<div>${v.fecha} - $${v.total.toFixed(2)}</div>`);
+    function renderLive() {
+      const el = document.getElementById('live-sales'),
+            data = JSON.parse(localStorage.getItem('ventas') || '[]');
+      el.innerHTML = '';
+      data.forEach(v => el.innerHTML += `<div>${v.fecha} - $${v.total.toFixed(2)}</div>`);
     }
-    function imprimirTicket(v){
-      const w=window.open('','Ticket','width=300,height=600');
+    function imprimirTicket(v) {
+      const w = window.open('', 'Ticket','width=300,height=600');
       w.document.write(`<pre>--- Ticket ---
 Vendedor: ${document.getElementById('vendedor-info').textContent}
 Fecha: ${new Date().toLocaleString()}
 Productos:
-${v.productos.map(p=>`${p.nombre} - $${p.precio}`).join('\n')}
+${v.productos.map(p => `${p.nombre} - $${p.precio}`).join('\n')}
 Total: $${v.total.toFixed(2)}
 ----------------
 ¡Gracias por su compra!</pre>`);
       w.print(); w.close();
     }
 
-    // Productos CRUD
-    function saveProduct(){
-      const n=document.getElementById('prod-name').value,
-            c=document.getElementById('prod-code').value,
-            pr=parseFloat(document.getElementById('prod-price').value),
-            st=parseInt(document.getElementById('prod-stock').value);
-      productos.push({nombre:n,codigo:c,precio:pr,stock:st});
-      localStorage.setItem('productos',JSON.stringify(productos));
+    // Productos CRUD...
+    function saveProduct() {
+      const n = document.getElementById('prod-name').value,
+            c = document.getElementById('prod-code').value,
+            pr = parseFloat(document.getElementById('prod-price').value),
+            st = parseInt(document.getElementById('prod-stock').value);
+      productos.push({ nombre: n, codigo: c, precio: pr, stock: st });
+      localStorage.setItem('productos', JSON.stringify(productos));
       renderProductTable(); renderProducts(); renderInventory();
     }
-    function renderProductTable(){
-      const t=document.getElementById('prod-table');
-      t.innerHTML='';
-      productos.forEach((p,i)=>t.innerHTML+=`<tr>
+    function renderProductTable() {
+      const t = document.getElementById('prod-table');
+      t.innerHTML = '';
+      productos.forEach((p, i) => t.innerHTML += `<tr>
         <td>${p.nombre}</td><td>${p.codigo}</td><td>${p.precio}</td><td>${p.stock}</td>
         <td><button onclick="deleteProduct(${i})">x</button></td>
       </tr>`);
     }
-    function deleteProduct(i){
+    function deleteProduct(i) {
       productos.splice(i,1);
-      localStorage.setItem('productos',JSON.stringify(productos));
+      localStorage.setItem('productos', JSON.stringify(productos));
       renderProductTable(); renderProducts(); renderInventory();
     }
-    function exportCSV(){ alert('Exportar CSV'); }
-    function importCSV(e){ alert('Importar CSV'); }
+    function exportCSV() { alert('Exportar CSV'); }
+    function importCSV(e) { alert('Importar CSV'); }
 
-    // Clientes CRUD
-    function saveClient(){
-      const n=document.getElementById('cli-name').value,
-            e=document.getElementById('cli-email').value,
-            t=document.getElementById('cli-phone').value,
-            a=document.getElementById('cli-address').value,
-            cr=document.getElementById('cli-credit').value;
-      clients.push({nombre:n,email:e,telefono:t,direccion:a,credito:cr});
-      localStorage.setItem('clientes',JSON.stringify(clients));
+    // Clientes CRUD...
+    function saveClient() {
+      const n = document.getElementById('cli-name').value,
+            e = document.getElementById('cli-email').value,
+            t = document.getElementById('cli-phone').value,
+            a = document.getElementById('cli-address').value,
+            cr= document.getElementById('cli-credit').value;
+      clients.push({ nombre: n, email: e, telefono: t, direccion: a, credito: cr });
+      localStorage.setItem('clientes', JSON.stringify(clients));
       renderClients();
     }
-    function renderClients(){
-      const ul=document.getElementById('client-list'),
-            dl=document.getElementById('clients-list');
+    function renderClients() {
+      const ul = document.getElementById('client-list'),
+            dl = document.getElementById('clients-list');
       ul.innerHTML=''; dl.innerHTML='';
       clients.forEach((c,i)=>{
         ul.innerHTML+=`<li>${c.nombre} (${c.email}) <button onclick="deleteClient(${i})">x</button></li>`;
         dl.innerHTML+=`<option value="${c.nombre}"/>`;
       });
     }
-    function deleteClient(i){
+    function deleteClient(i) {
       clients.splice(i,1);
-      localStorage.setItem('clientes',JSON.stringify(clients));
+      localStorage.setItem('clientes', JSON.stringify(clients));
       renderClients();
     }
 
-    // Créditos
-    function addCredit(){ alert('Nuevo crédito'); }
+    // Créditos...
+    function addCredit() { alert('Nuevo crédito'); }
 
-    // Inventario
-    function renderInventory(){
-      const el=document.getElementById('inventory-list');
-      el.innerHTML='';
-      productos.forEach(p=>el.innerHTML+=`<div>${p.nombre}: ${p.stock}</div>`);
+    // Inventario...
+    function renderInventory() {
+      const el = document.getElementById('inventory-list');
+      el.innerHTML = '';
+      productos.forEach(p => el.innerHTML += `<div>${p.nombre}: ${p.stock}</div>`);
     }
-    function generateAudit(){ alert('Generar conteo cíclico'); }
+    function generateAudit() { alert('Generar conteo cíclico'); }
 
-    // Configuraciones
-    function manageUsers(){ alert('Gestionar usuarios/roles'); }
-    function toggleTheme(){ document.body.classList.toggle('dark'); }
+    // Configuraciones...
+    function manageUsers() { alert('Gestionar usuarios/roles'); }
+    function toggleTheme() { document.body.classList.toggle('dark'); }
 
-    // Reportes
-    function exportReport(){ alert('Exportar reportes'); }
+    // Reportes...
+    function exportReport() { alert('Exportar reportes'); }
   </script>
 </body>
 </html>
