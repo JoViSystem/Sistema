@@ -3,103 +3,155 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JoVi POS Profesional</title>
+  <title>JoVi POS Avanzado</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Feather Icons CDN -->
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .animate-fadeIn { animation: fadeIn 0.5s ease-in-out; }
-    .critical { background: #fef2f2; }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="bg-gray-50 text-gray-800 font-sans">
 
   <!-- LOGIN -->
   <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#00BFFF] to-[#005F9E] animate-fadeIn">
-    <i data-feather="monitor" class="w-32 h-32 text-white mb-6 animate-pulse"></i>
-    <h1 class="text-5xl font-extrabold text-white mb-6 drop-shadow-lg">JoVi POS Profesional</h1>
-    <div class="bg-white bg-opacity-90 p-10 rounded-3xl shadow-2xl w-96">
-      <input id="user" autocomplete="off" type="text" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:ring-4 focus:ring-[#00BFFF]" placeholder="Usuario" />
-      <input id="pass" autocomplete="off" type="password" class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:ring-4 focus:ring-[#00BFFF]" placeholder="Contraseña" />
-      <button id="login-btn" class="w-full bg-[#00BFFF] text-white py-4 rounded-xl mb-4 hover:bg-[#007ACC] transition">Iniciar Sesión</button>
-      <button id="forgot-btn" class="text-sm text-gray-600 hover:underline flex items-center gap-1">
-        <i data-feather="help-circle"></i> Olvidé contraseña
+    <!-- Logo: computadora -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 mb-6 text-white animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17h4.5m-6-5.25h7.5M12 2a10 10 0 0 1 10 10v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4a10 10 0 0 1 10-10z" />
+    </svg>
+    <h1 class="text-4xl font-extrabold text-white mb-6 drop-shadow-lg">Bienvenido a JoVi POS</h1>
+    <div class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-xl w-96 animate-fadeIn">
+      <div class="mb-4">
+        <label for="user" class="block text-gray-700 font-medium mb-1"><i data-feather="user" class="inline-block mr-2"></i>Usuario</label>
+        <input id="user" type="text" placeholder="admin" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFFF] transition" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      </div>
+      <div class="mb-4">
+        <label for="pass" class="block text-gray-700 font-medium mb-1"><i data-feather="lock" class="inline-block mr-2"></i>Contraseña</label>
+        <input id="pass" type="password" placeholder="••••••" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00BFFF] transition" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      </div>
+      <button id="btnLogin" class="w-full bg-[#00BFFF] text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-[#007ACC] transition-colors duration-300 flex justify-center items-center">
+        <i data-feather="log-in" class="inline-block mr-2"></i>Iniciar Sesión
       </button>
-      <p id="login-error" class="text-red-500 text-sm mt-4 hidden">Credenciales incorrectas</p>
+      <p id="login-error" class="text-red-500 text-sm mt-3 hidden">Usuario o contraseña incorrecta</p>
+      <p class="mt-3 text-right">
+        <a href="#" id="forgot-password" class="text-[#00BFFF] hover:underline text-sm">¿Olvidaste la contraseña?</a>
+      </p>
     </div>
   </section>
 
-  <!-- POS -->
+  <!-- POS SISTEMA -->
   <section id="pos-section" class="hidden animate-fadeIn">
-    <nav class="bg-white shadow-lg sticky top-0 z-20 flex items-center p-6 space-x-8">
-      <i data-feather="monitor" class="w-12 h-12 text-[#00BFFF]"></i>
-      <button onclick="showSection('ventas')" class="text-lg font-semibold hover:text-[#00BFFF]">Ventas (F1)</button>
-      <button onclick="showSection('productos')" class="text-lg font-semibold hover:text-[#00BFFF]">Productos (F2)</button>
-      <button onclick="showSection('clientes')" class="text-lg font-semibold hover:text-[#00BFFF]">Clientes (F3)</button>
-      <button onclick="showSection('creditos')" class="text-lg font-semibold hover:text-[#00BFFF]">Créditos (F4)</button>
-      <button onclick="showSection('inventario')" class="text-lg font-semibold hover:text-[#00BFFF]">Inventario (F5)</button>
-      <button onclick="showSection('configuraciones')" class="text-lg font-semibold hover:text-[#00BFFF]">Configuraciones (F6)</button>
-      <button onclick="showSection('reportes')" class="text-lg font-semibold hover:text-[#00BFFF]">Reportes (F7)</button>
-      <span class="ml-auto text-lg">Usuario: <strong id="vendedor-info" class="text-[#00BFFF]"></strong></span>
+
+    <!-- NAV HORIZONTAL -->
+    <nav class="bg-white shadow-md p-4 flex space-x-6 justify-center items-center sticky top-0 z-10 select-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mr-4 text-[#00BFFF] animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17h4.5m-6-5.25h7.5M12 2a10 10 0 0 1 10 10v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4a10 10 0 0 1 10-10z" />
+      </svg>
+      <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition" title="F1 - Ventas"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</button>
+      <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition" title="F2 - Productos"><i data-feather="box" class="mr-2"></i>Productos</button>
+      <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition" title="F3 - Clientes"><i data-feather="users" class="mr-2"></i>Clientes</button>
+      <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition" title="F4 - Créditos"><i data-feather="credit-card" class="mr-2"></i>Créditos</button>
+      <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition" title="F5 - Inventario"><i data-feather="database" class="mr-2"></i>Inventario</button>
+      <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition" title="F6 - Configuraciones"><i data-feather="settings" class="mr-2"></i>Configuraciones</button>
+      <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-lg hover:bg-gray-100 transition" title="F7 - Reportes"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</button>
+      <span class="ml-auto text-sm text-gray-500 flex items-center"><i data-feather="user-check" class="inline-block mr-1"></i><strong id="vendedor-info"></strong></span>
     </nav>
-    <main class="p-10 space-y-12">
+
+    <main class="p-8 space-y-8">
 
       <!-- Ventas -->
-      <section id="ventas" class="section p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
-        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
-          <i data-feather="shopping-cart"></i> Ventas
-        </h2>
-        <div class="flex justify-between mb-6">
-          <input id="search-prod" placeholder="Buscar producto" class="border p-3 rounded-lg w-1/3 focus:ring-2 focus:ring-[#00BFFF]" oninput="renderProducts()" />
-          <input id="select-client" list="clients-list" placeholder="Cliente" class="border p-3 rounded-lg w-1/3 focus:ring-2 focus:ring-[#00BFFF]" />
-          <datalist id="clients-list"></datalist>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-            <h3 class="text-2xl font-semibold mb-4">Inventario</h3>
-            <div id="product-list" class="h-64 overflow-auto"></div>
+      <section id="ventas" class="section animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="shopping-cart" class="mr-2"></i>Ventas</h2>
+
+        <div class="grid md:grid-cols-4 gap-6">
+
+          <!-- Panel Productos -->
+          <div>
+            <label for="busqueda-producto" class="block font-semibold mb-1">Buscar producto:</label>
+            <input id="busqueda-producto" type="text" placeholder="Escribe para buscar..." class="w-full p-2 border rounded mb-2" oninput="buscarProductos()" autocomplete="off" />
+            <div id="lista-resultados" class="bg-white border rounded max-h-48 overflow-y-auto"></div>
+
+            <h3 class="font-semibold mt-4 mb-2">Botones rápidos:</h3>
+            <div id="botones-rapidos" class="flex flex-wrap gap-2"></div>
           </div>
-          <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-            <h3 class="text-2xl font-semibold mb-4">Carrito</h3>
-            <div id="cart-items" class="h-64 overflow-auto mb-4"></div>
-            <div class="flex space-x-4 mb-4">
-              <input id="discount" type="number" placeholder="Descuento %" class="border p-2 rounded-lg w-1/2" />
-              <input id="notes" placeholder="Notas" class="border p-2 rounded-lg w-1/2" />
+
+          <!-- Carrito -->
+          <div class="col-span-2 bg-white p-4 rounded shadow max-h-[480px] overflow-y-auto">
+            <h3 class="font-semibold mb-2">Carrito</h3>
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="p-1">Producto</th>
+                  <th class="p-1 w-20">Cant.</th>
+                  <th class="p-1 w-24">Precio</th>
+                  <th class="p-1 w-24">Subtotal</th>
+                  <th class="p-1 w-12">Desc %</th>
+                  <th class="p-1 w-10">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody id="carrito-items"></tbody>
+            </table>
+            <p class="mt-2 font-bold text-right">Total: $<span id="total-venta">0.00</span></p>
+
+            <div class="mt-4">
+              <label class="block mb-1 font-semibold">Descuento global %:</label>
+              <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-24 p-1 border rounded" oninput="aplicarDescuentoGlobal()" />
             </div>
-            <p class="text-xl mb-4">Total: <span class="font-bold text-2xl text-[#00BFFF]">$<span id="total">0.00</span></span></p>
-            <button onclick="checkout()" class="bg-[#00BFFF] text-white px-6 py-3 rounded-xl hover:bg-[#007ACC] transition">Finalizar Venta</button>
           </div>
-          <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-            <h3 class="text-2xl font-semibold mb-4">Historial en vivo</h3>
-            <div id="live-sales" class="h-64 overflow-auto"></div>
+
+          <!-- Pago y caja chica -->
+          <div>
+            <h3 class="font-semibold mb-2">Pago</h3>
+            <label>Método de pago:</label>
+            <select id="metodo-pago" class="w-full p-2 border rounded mb-4" onchange="cambiarMetodoPago()">
+              <option value="Efectivo">Efectivo</option>
+              <option value="Tarjeta">Tarjeta</option>
+              <option value="Transferencia">Transferencia</option>
+            </select>
+
+            <div id="efectivo-section">
+              <label>Efectivo recibido:</label>
+              <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-2 border rounded mb-2" oninput="calcularCambio()" />
+              <p>Cambio: $<span id="cambio">0.00</span></p>
+            </div>
+
+            <button onclick="finalizarVenta()" class="mt-6 w-full bg-[#00BFFF] text-white py-3 rounded hover:bg-[#007ACC] transition flex justify-center items-center">
+              <i data-feather="check-circle" class="mr-2"></i>Finalizar Venta
+            </button>
+
+            <h3 class="font-semibold mt-10 mb-2">Caja Chica</h3>
+            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-full p-2 border rounded mb-2" />
+            <select id="tipo-caja" class="w-full p-2 border rounded mb-2">
+              <option value="entrada">Entrada</option>
+              <option value="salida">Salida</option>
+            </select>
+            <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-2 rounded hover:bg-gray-900 transition flex justify-center items-center">
+              <i data-feather="plus-circle" class="mr-2"></i>Registrar Movimiento
+            </button>
+            <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border rounded p-2 bg-white text-sm"></ul>
           </div>
+
         </div>
       </section>
 
       <!-- Productos -->
-      <section id="productos" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
-        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
-          <i data-feather="box"></i> Productos
-        </h2>
-        <div class="flex justify-between mb-6">
-          <button onclick="exportCSV()" class="bg-green-500 text-white px-4 py-2 rounded-lg">Exportar CSV</button>
-          <input type="file" accept=".csv" onchange="importCSV(event)" class="border p-2 rounded-lg" />
-        </div>
-        <div class="flex space-x-6">
-          <div class="w-1/2">
-            <div class="bg-gray-50 p-4 rounded-lg mb-6">
-              <input id="prod-name" placeholder="Nombre" class="w-full mb-4 p-3 border rounded-lg" />
-              <input id="prod-code" placeholder="Código" class="w-full mb-4 p-3 border rounded-lg" />
-              <input id="prod-price" type="number" placeholder="Precio" class="w-full mb-4 p-3 border rounded-lg" />
-              <input id="prod-stock" type="number" placeholder="Stock" class="w-full mb-4 p-3 border rounded-lg" />
-              <input id="prod-img" type="file" class="w-full mb-4" />
-              <button onclick="saveProduct()" class="w-full bg-[#00BFFF] text-white py-3 rounded-lg">Guardar Producto</button>
-            </div>
+      <section id="productos" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="box" class="mr-2"></i>Gestión de Productos</h2>
+        <div class="bg-white p-4 rounded shadow mb-4 flex flex-col md:flex-row md:space-x-4">
+          <div class="flex-1">
+            <label class="block mb-1 text-sm"><i data-feather="tag" class="inline-block mr-1"></i>Nombre</label>
+            <input id="prod-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <label class="block mb-1 text-sm"><i data-feather="dollar-sign" class="inline-block mr-1"></i>Precio</label>
+            <input id="prod-precio" placeholder="Precio" type="number" class="w-full p-2 border rounded mb-2" step="0.01" />
+            <label class="block mb-1 text-sm"><i data-feather="layers" class="inline-block mr-1"></i>Stock</label>
+            <input id="prod-stock" placeholder="Stock" type="number" class="w-full p-2 border rounded mb-2" />
+            <button onclick="saveProduct()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
           </div>
-          <div class="w-1/2 overflow-auto h-80">
-            <table class="w-full bg-gray-50 rounded-lg shadow-inner">
-              <thead class="bg-gray-200"><tr><th class="p-3">Nombre</th><th>Código</th><th>Precio</th><th>Stock</th><th>Acción</th></tr></thead>
+          <div class="flex-1">
+            <table class="w-full bg-white rounded shadow">
+              <thead class="bg-gray-100">
+                <tr><th class="p-2 text-left">Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr>
+              </thead>
               <tbody id="prod-table"></tbody>
             </table>
           </div>
@@ -107,259 +159,448 @@
       </section>
 
       <!-- Clientes -->
-      <section id="clientes" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
-        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
-          <i data-feather="users"></i> Clientes
-        </h2>
-        <div class="bg-gray-50 p-6 rounded-lg mb-6">
-          <div class="grid grid-cols-2 gap-4">
-            <input id="cli-name" placeholder="Nombre" class="p-3 border rounded-lg" />
-            <input id="cli-email" placeholder="Email" class="p-3 border rounded-lg" />
-            <input id="cli-phone" placeholder="Teléfono" class="p-3 border rounded-lg" />
-            <input id="cli-address" placeholder="Dirección" class="p-3 border rounded-lg" />
-            <input id="cli-credit" type="number" placeholder="Límite Crédito" class="p-3 border rounded-lg" />
-            <select id="cli-seg" class="p-3 border rounded-lg"><option>VIP</option><option>Minorista</option><option>Mayorista</option></select>
-          </div>
-          <button onclick="saveClient()" class="mt-6 bg-[#00BFFF] text-white px-6 py-3 rounded-xl">Guardar Cliente</button>
+      <section id="clientes" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="users" class="mr-2"></i>Clientes</h2>
+        <div class="bg-white p-4 rounded shadow mb-4">
+          <label class="block mb-1 text-sm"><i data-feather="user-plus" class="inline-block mr-1"></i>Nombre</label>
+          <input id="cli-nombre" placeholder="Nombre" class="w-full p-2 border rounded mb-2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          <label class="block mb-1 text-sm"><i data-feather="mail" class="inline-block mr-1"></i>Email</label>
+          <input id="cli-email" placeholder="Email" type="email" class="w-full p-2 border rounded mb-2" />
+          <label class="block mb-1 text-sm"><i data-feather="phone-call" class="inline-block mr-1"></i>Teléfono</label>
+          <input id="cli-telefono" placeholder="Teléfono" class="w-full p-2 border rounded mb-2" />
+          <button onclick="saveClient()" class="bg-[#00BFFF] text-white px-4 py-2 rounded-lg shadow hover:bg-[#007ACC] transition"><i data-feather="save" class="inline-block mr-1"></i>Guardar</button>
         </div>
-        <ul id="client-list" class="bg-gray-50 p-4 rounded-lg shadow-inner h-80 overflow-auto"></ul>
+        <ul id="client-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></ul>
       </section>
 
       <!-- Créditos -->
-      <section id="creditos" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
-        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
-          <i data-feather="credit-card"></i> Créditos
-        </h2>
-        <button onclick="addCredit()" class="bg-[#00BFFF] text-white px-6 py-2 rounded-lg mb-4">Nuevo Crédito</button>
-        <div id="credits-list" class="bg-gray-50 p-4 rounded-lg shadow-inner h-64 overflow-auto"></div>
+      <section id="creditos" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="credit-card" class="mr-2"></i>Créditos</h2>
+        <p class="text-gray-600">Funcionalidad de créditos en desarrollo...</p>
       </section>
 
       <!-- Inventario -->
-      <section id="inventario" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
-        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
-          <i data-feather="database"></i> Inventario
-        </h2>
-        <button onclick="generateAudit()" class="bg-green-500 text-white px-6 py-2 rounded-lg mb-4">Conteo Cíclico</button>
-        <div id="inventory-list" class="bg-gray-50 p-4 rounded-lg shadow-inner h-64 overflow-auto"></div>
+      <section id="inventario" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="database" class="mr-2"></i>Inventario</h2>
+        <div id="inventory-list" class="bg-white p-4 rounded shadow h-80 overflow-y-auto"></div>
       </section>
 
       <!-- Configuraciones -->
-      <section id="configuraciones" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
-        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
-          <i data-feather="settings"></i> Configuraciones
-        </h2>
-        <button onclick="manageUsers()" class="bg-[#00BFFF] text-white px-6 py-2 rounded-lg mb-4">Gestión de Usuarios</button>
-        <button onclick="toggleTheme()" class="bg-gray-800 text-white px-6 py-2 rounded-lg">Dark Mode</button>
+      <section id="configuraciones" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="settings" class="mr-2"></i>Configuraciones</h2>
+        <p class="text-gray-600">Ajustes del sistema en desarrollo...</p>
       </section>
 
       <!-- Reportes -->
-      <section id="reportes" class="section hidden p-8 bg-white rounded-2xl shadow-lg animate-fadeIn">
-        <h2 class="text-4xl font-bold mb-6 text-[#00BFFF] flex items-center gap-2">
-          <i data-feather="bar-chart-2"></i> Reportes
-        </h2>
-        <div class="flex items-center mb-6">
-          <input type="date" id="report-from" class="border p-2 rounded-lg" />
-          <input type="date" id="report-to" class="border p-2 rounded-lg ml-4" />
-          <button onclick="exportReport()" class="bg-green-500 text-white px-6 py-2 rounded-lg ml-4">Exportar</button>
+      <section id="reportes" class="section hidden animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-4 flex items-center"><i data-feather="bar-chart-2" class="mr-2"></i>Reportes</h2>
+        <div id="reporte" class="bg-white p-4 rounded shadow text-sm h-80 overflow-y-auto">
+          <p class="text-gray-600">Aquí se mostrarán los reportes próximamente...</p>
         </div>
-        <div id="report-output" class="bg-gray-50 p-4 rounded-lg shadow-inner h-64 overflow-auto"></div>
       </section>
 
     </main>
+
   </section>
 
   <script>
     feather.replace();
-    // Datos iniciales
-    const usuarios = [{ usuario: 'admin', pass: '12345' }];
-    let productos = JSON.parse(localStorage.getItem('productos') || '[]'),
-        cart = [], total = 0,
-        clients = JSON.parse(localStorage.getItem('clientes') || '[]'),
-        lastVenta = null;
 
-    // Elementos login
-    const loginSection = document.getElementById('login-section'),
-          posSection   = document.getElementById('pos-section'),
-          inputUser    = document.getElementById('user'),
-          inputPass    = document.getElementById('pass'),
-          loginError   = document.getElementById('login-error'),
-          loginBtn     = document.getElementById('login-btn'),
-          forgotBtn    = document.getElementById('forgot-btn');
+    // Variables para usuarios válidos
+    const USUARIO_VALIDO = "admin";
+    const CONTRASENA_VALIDA = "12345";
 
-    // Función de login
-    function doLogin() {
-      const u = inputUser.value.trim(), p = inputPass.value;
-      if (u === 'admin' && p === '12345') {
-        loginSection.classList.add('hidden');
-        posSection.classList.remove('hidden');
-        document.getElementById('vendedor-info').textContent = u;
-        showSection('ventas');
-        renderProducts(); renderClients(); renderInventory(); renderProductTable(); renderLive();
+    // Login
+    const loginSection = document.getElementById("login-section");
+    const posSection = document.getElementById("pos-section");
+    const loginError = document.getElementById("login-error");
+    const vendedorInfo = document.getElementById("vendedor-info");
+    const inputUser = document.getElementById("user");
+    const inputPass = document.getElementById("pass");
+    const btnLogin = document.getElementById("btnLogin");
+    const forgotPassLink = document.getElementById("forgot-password");
+
+    btnLogin.onclick = () => {
+      const user = inputUser.value.trim();
+      const pass = inputPass.value;
+      if (user === USUARIO_VALIDO && pass === CONTRASENA_VALIDA) {
+        loginError.classList.add("hidden");
+        loginSection.classList.add("hidden");
+        posSection.classList.remove("hidden");
+        vendedorInfo.textContent = user;
+        showSection("ventas");
       } else {
-        loginError.classList.remove('hidden');
+        loginError.classList.remove("hidden");
       }
-    }
-    loginBtn.onclick = doLogin;
-    [inputUser, inputPass].forEach(el =>
-      el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doLogin(); } })
-    );
-    forgotBtn.onclick = () => alert('Contacte al administrador.');
+    };
 
-    // Navegación mediante botones y F1-F7
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
-    }
-    document.addEventListener('keydown', e => {
-      if (posSection.classList.contains('hidden')) return;
-      switch (e.key) {
-        case 'F1': e.preventDefault(); showSection('ventas'); break;
-        case 'F2': e.preventDefault(); showSection('productos'); break;
-        case 'F3': e.preventDefault(); showSection('clientes'); break;
-        case 'F4': e.preventDefault(); showSection('creditos'); break;
-        case 'F5': e.preventDefault(); showSection('inventario'); break;
-        case 'F6': e.preventDefault(); showSection('configuraciones'); break;
-        case 'F7': e.preventDefault(); showSection('reportes'); break;
-      }
+    // Permitir enter para login
+    [inputUser, inputPass].forEach(input => {
+      input.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") btnLogin.click();
+      });
     });
 
-    // Funciones Ventas...
-    function renderProducts() {
-      const list = document.getElementById('product-list'),
-            filter = document.getElementById('search-prod').value.toLowerCase();
-      list.innerHTML = '';
-      productos.filter(p => p.nombre.toLowerCase().includes(filter))
-        .forEach((p, i) => {
-          const div = document.createElement('div');
-          div.className = 'flex justify-between p-1' + (p.stock < 2 ? ' critical' : '');
-          div.innerHTML = `<span>${p.nombre} ($${p.precio}) [${p.stock}]</span>
-                           <button onclick="addToCart(${i})">+</button>`;
-          list.appendChild(div);
-        });
-    }
-    function addToCart(i) {
-      if (productos[i].stock <= 0) return alert('Sin stock');
-      productos[i].stock--;
-      cart.push({...productos[i]});
-      total += productos[i].precio;
-      lastVenta = { productos: [...cart], total };
-      updateCart(); renderProducts(); renderLive(); renderInventory();
-      localStorage.setItem('productos', JSON.stringify(productos));
-    }
-    function updateCart() {
-      const el = document.getElementById('cart-items');
-      el.innerHTML = '';
-      cart.forEach((c, j) => {
-        el.innerHTML += `<div class="flex justify-between">
-                           <span>${c.nombre}</span>
-                           <button onclick="removeFromCart(${j})">x</button>
-                         </div>`;
+    forgotPassLink.onclick = (e) => {
+      e.preventDefault();
+      alert("Para recuperar tu contraseña contacta al administrador.");
+    };
+
+    // Navegación entre secciones
+    function showSection(id) {
+      document.querySelectorAll("main section").forEach(sec => {
+        sec.classList.add("hidden");
       });
-      document.getElementById('total').textContent = total.toFixed(2);
-    }
-    function removeFromCart(j) {
-      productos.find(p => p.nombre === cart[j].nombre).stock++;
-      total -= cart[j].precio;
-      cart.splice(j, 1);
-      updateCart(); renderProducts(); renderLive(); renderInventory();
-      localStorage.setItem('productos', JSON.stringify(productos));
-    }
-    function checkout() {
-      const ventas = JSON.parse(localStorage.getItem('ventas') || '[]');
-      ventas.push({...lastVenta, vendedor: document.getElementById('vendedor-info').textContent, fecha: new Date().toLocaleString() });
-      localStorage.setItem('ventas', JSON.stringify(ventas));
-      imprimirTicket(lastVenta);
-      cart = []; total = 0;
-      updateCart(); renderLive(); renderInventory();
-    }
-    function renderLive() {
-      const el = document.getElementById('live-sales'),
-            data = JSON.parse(localStorage.getItem('ventas') || '[]');
-      el.innerHTML = '';
-      data.forEach(v => el.innerHTML += `<div>${v.fecha} - $${v.total.toFixed(2)}</div>`);
-    }
-    function imprimirTicket(v) {
-      const w = window.open('', 'Ticket','width=300,height=600');
-      w.document.write(`<pre>--- Ticket ---
-Vendedor: ${document.getElementById('vendedor-info').textContent}
-Fecha: ${new Date().toLocaleString()}
-Productos:
-${v.productos.map(p => `${p.nombre} - $${p.precio}`).join('\n')}
-Total: $${v.total.toFixed(2)}
-----------------
-¡Gracias por su compra!</pre>`);
-      w.print(); w.close();
+      const sec = document.getElementById(id);
+      if (sec) sec.classList.remove("hidden");
     }
 
-    // Productos CRUD...
+    // Atajos de teclado F1-F7 para cambiar secciones
+    window.addEventListener("keydown", (e) => {
+      if (posSection.classList.contains("hidden")) return; // solo si estamos en POS
+
+      if (e.key === "F1") { e.preventDefault(); showSection("ventas"); }
+      else if (e.key === "F2") { e.preventDefault(); showSection("productos"); }
+      else if (e.key === "F3") { e.preventDefault(); showSection("clientes"); }
+      else if (e.key === "F4") { e.preventDefault(); showSection("creditos"); }
+      else if (e.key === "F5") { e.preventDefault(); showSection("inventario"); }
+      else if (e.key === "F6") { e.preventDefault(); showSection("configuraciones"); }
+      else if (e.key === "F7") { e.preventDefault(); showSection("reportes"); }
+    });
+
+    // --- Datos simulados de productos frecuentes ---
+    const productos = [
+      { id: 1, nombre: "Monitor 19\"", precio: 120.00, stock: 12 },
+      { id: 2, nombre: "Caja Registradora", precio: 90.00, stock: 5 },
+      { id: 3, nombre: "Printer 58mm", precio: 45.00, stock: 20 },
+      { id: 4, nombre: "CPU Completo", precio: 250.00, stock: 7 },
+      { id: 5, nombre: "Sistema de Facturación", precio: 130.00, stock: 15 }
+    ];
+
+    let carrito = [];
+    let movimientosCaja = [];
+    let descuentoGlobal = 0;
+
+    // --- Ventas ---
+    function initBotonesRapidos() {
+      const contenedor = document.getElementById("botones-rapidos");
+      contenedor.innerHTML = "";
+      productos.forEach(p => {
+        const btn = document.createElement("button");
+        btn.textContent = p.nombre;
+        btn.className = "bg-[#00BFFF] text-white rounded px-3 py-1 hover:bg-[#007ACC] transition";
+        btn.onclick = () => agregarProductoAlCarrito(p);
+        contenedor.appendChild(btn);
+      });
+    }
+
+    function agregarProductoAlCarrito(producto) {
+      let item = carrito.find(i => i.id === producto.id);
+      if (item) {
+        item.cantidad++;
+      } else {
+        carrito.push({ ...producto, cantidad: 1, descuento: 0 });
+      }
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      const tbody = document.getElementById("carrito-items");
+      tbody.innerHTML = "";
+      let total = 0;
+
+      carrito.forEach((item, idx) => {
+        const subtotal = (item.precio * item.cantidad) * (1 - item.descuento / 100);
+        total += subtotal;
+
+        const tr = document.createElement("tr");
+
+        // Producto
+        const tdNombre = document.createElement("td");
+        tdNombre.textContent = item.nombre;
+        tdNombre.className = "p-1";
+        tr.appendChild(tdNombre);
+
+        // Cantidad editable
+        const tdCantidad = document.createElement("td");
+        const inputCantidad = document.createElement("input");
+        inputCantidad.type = "number";
+        inputCantidad.min = "1";
+        inputCantidad.value = item.cantidad;
+        inputCantidad.className = "w-14 p-1 border rounded";
+        inputCantidad.onchange = (e) => {
+          const val = parseInt(e.target.value);
+          if (val < 1) e.target.value = item.cantidad;
+          else {
+            item.cantidad = val;
+            actualizarCarrito();
+          }
+        };
+        tdCantidad.appendChild(inputCantidad);
+        tr.appendChild(tdCantidad);
+
+        // Precio
+        const tdPrecio = document.createElement("td");
+        tdPrecio.textContent = `$${item.precio.toFixed(2)}`;
+        tdPrecio.className = "p-1 text-right";
+        tr.appendChild(tdPrecio);
+
+        // Subtotal
+        const tdSubtotal = document.createElement("td");
+        tdSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        tdSubtotal.className = "p-1 text-right font-semibold";
+        tr.appendChild(tdSubtotal);
+
+        // Descuento %
+        const tdDescuento = document.createElement("td");
+        const inputDesc = document.createElement("input");
+        inputDesc.type = "number";
+        inputDesc.min = "0";
+        inputDesc.max = "100";
+        inputDesc.value = item.descuento;
+        inputDesc.className = "w-14 p-1 border rounded";
+        inputDesc.onchange = (e) => {
+          let val = parseFloat(e.target.value);
+          if (val < 0) val = 0;
+          if (val > 100) val = 100;
+          item.descuento = val;
+          actualizarCarrito();
+        };
+        tdDescuento.appendChild(inputDesc);
+        tr.appendChild(tdDescuento);
+
+        // Eliminar
+        const tdEliminar = document.createElement("td");
+        const btnEliminar = document.createElement("button");
+        btnEliminar.innerHTML = '<i data-feather="trash-2"></i>';
+        btnEliminar.className = "text-red-600 hover:text-red-800";
+        btnEliminar.onclick = () => {
+          carrito.splice(idx, 1);
+          actualizarCarrito();
+        };
+        tdEliminar.appendChild(btnEliminar);
+        tr.appendChild(tdEliminar);
+
+        tbody.appendChild(tr);
+      });
+
+      // Descuento global
+      total = total * (1 - descuentoGlobal / 100);
+      document.getElementById("total-venta").textContent = total.toFixed(2);
+
+      feather.replace();
+    }
+
+    function buscarProductos() {
+      const texto = document.getElementById("busqueda-producto").value.toLowerCase();
+      const listaResultados = document.getElementById("lista-resultados");
+      listaResultados.innerHTML = "";
+      if (texto.length === 0) return;
+
+      const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(texto));
+      filtrados.forEach(p => {
+        const div = document.createElement("div");
+        div.textContent = `${p.nombre} - $${p.precio.toFixed(2)}`;
+        div.className = "cursor-pointer hover:bg-blue-100 p-1";
+        div.onclick = () => {
+          agregarProductoAlCarrito(p);
+          document.getElementById("busqueda-producto").value = "";
+          listaResultados.innerHTML = "";
+        };
+        listaResultados.appendChild(div);
+      });
+    }
+
+    function aplicarDescuentoGlobal() {
+      let val = parseFloat(document.getElementById("descuento-global").value);
+      if (isNaN(val) || val < 0) val = 0;
+      if (val > 100) val = 100;
+      descuentoGlobal = val;
+      actualizarCarrito();
+    }
+
+    function cambiarMetodoPago() {
+      const metodo = document.getElementById("metodo-pago").value;
+      const efectivoSection = document.getElementById("efectivo-section");
+      if (metodo === "Efectivo") {
+        efectivoSection.style.display = "block";
+      } else {
+        efectivoSection.style.display = "none";
+        document.getElementById("efectivo-recibido").value = "";
+        document.getElementById("cambio").textContent = "0.00";
+      }
+    }
+
+    function calcularCambio() {
+      const efectivo = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
+      const total = parseFloat(document.getElementById("total-venta").textContent) || 0;
+      const cambio = efectivo - total;
+      document.getElementById("cambio").textContent = cambio > 0 ? cambio.toFixed(2) : "0.00";
+    }
+
+    function finalizarVenta() {
+      if (carrito.length === 0) {
+        alert("El carrito está vacío.");
+        return;
+      }
+      let total = parseFloat(document.getElementById("total-venta").textContent);
+      alert(`✅ Venta finalizada.\nTotal: $${total.toFixed(2)}`);
+      carrito = [];
+      actualizarCarrito();
+      document.getElementById("efectivo-recibido").value = "";
+      document.getElementById("cambio").textContent = "0.00";
+      document.getElementById("descuento-global").value = 0;
+      descuentoGlobal = 0;
+    }
+
+    // Caja chica
+    function agregarCajaChica() {
+      const montoInput = document.getElementById("monto-caja");
+      const tipo = document.getElementById("tipo-caja").value;
+      let monto = parseFloat(montoInput.value);
+      if (isNaN(monto) || monto <= 0) {
+        alert("Ingrese un monto válido para la caja chica.");
+        return;
+      }
+      movimientosCaja.push({ monto, tipo, fecha: new Date() });
+      montoInput.value = "";
+      mostrarMovimientosCaja();
+    }
+
+    function mostrarMovimientosCaja() {
+      const lista = document.getElementById("movimientos-caja");
+      lista.innerHTML = "";
+      movimientosCaja.forEach(mov => {
+        const li = document.createElement("li");
+        const fecha = mov.fecha.toLocaleString();
+        li.textContent = `${mov.tipo.toUpperCase()} - $${mov.monto.toFixed(2)} (${fecha})`;
+        li.className = mov.tipo === "entrada" ? "text-green-600" : "text-red-600";
+        lista.appendChild(li);
+      });
+    }
+
+    // --- Gestión de productos ---
+    let editandoProductoId = null;
+
     function saveProduct() {
-      const n = document.getElementById('prod-name').value,
-            c = document.getElementById('prod-code').value,
-            pr = parseFloat(document.getElementById('prod-price').value),
-            st = parseInt(document.getElementById('prod-stock').value);
-      productos.push({ nombre: n, codigo: c, precio: pr, stock: st });
-      localStorage.setItem('productos', JSON.stringify(productos));
-      renderProductTable(); renderProducts(); renderInventory();
-    }
-    function renderProductTable() {
-      const t = document.getElementById('prod-table');
-      t.innerHTML = '';
-      productos.forEach((p, i) => t.innerHTML += `<tr>
-        <td>${p.nombre}</td><td>${p.codigo}</td><td>${p.precio}</td><td>${p.stock}</td>
-        <td><button onclick="deleteProduct(${i})">x</button></td>
-      </tr>`);
-    }
-    function deleteProduct(i) {
-      productos.splice(i,1);
-      localStorage.setItem('productos', JSON.stringify(productos));
-      renderProductTable(); renderProducts(); renderInventory();
-    }
-    function exportCSV() { alert('Exportar CSV'); }
-    function importCSV(e) { alert('Importar CSV'); }
+      const nombre = document.getElementById("prod-nombre").value.trim();
+      const precio = parseFloat(document.getElementById("prod-precio").value);
+      const stock = parseInt(document.getElementById("prod-stock").value);
 
-    // Clientes CRUD...
-    function saveClient() {
-      const n = document.getElementById('cli-name').value,
-            e = document.getElementById('cli-email').value,
-            t = document.getElementById('cli-phone').value,
-            a = document.getElementById('cli-address').value,
-            cr= document.getElementById('cli-credit').value;
-      clients.push({ nombre: n, email: e, telefono: t, direccion: a, credito: cr });
-      localStorage.setItem('clientes', JSON.stringify(clients));
-      renderClients();
+      if (!nombre || isNaN(precio) || isNaN(stock)) {
+        alert("Complete todos los campos correctamente.");
+        return;
+      }
+
+      if (editandoProductoId === null) {
+        // Nuevo producto
+        const nuevoId = productos.length ? Math.max(...productos.map(p => p.id)) + 1 : 1;
+        productos.push({ id: nuevoId, nombre, precio, stock });
+      } else {
+        // Editar producto
+        const prod = productos.find(p => p.id === editandoProductoId);
+        if (prod) {
+          prod.nombre = nombre;
+          prod.precio = precio;
+          prod.stock = stock;
+        }
+        editandoProductoId = null;
+      }
+
+      limpiarFormularioProducto();
+      renderizarProductos();
+      initBotonesRapidos();
     }
-    function renderClients() {
-      const ul = document.getElementById('client-list'),
-            dl = document.getElementById('clients-list');
-      ul.innerHTML=''; dl.innerHTML='';
-      clients.forEach((c,i)=>{
-        ul.innerHTML+=`<li>${c.nombre} (${c.email}) <button onclick="deleteClient(${i})">x</button></li>`;
-        dl.innerHTML+=`<option value="${c.nombre}"/>`;
+
+    function limpiarFormularioProducto() {
+      document.getElementById("prod-nombre").value = "";
+      document.getElementById("prod-precio").value = "";
+      document.getElementById("prod-stock").value = "";
+      editandoProductoId = null;
+    }
+
+    function renderizarProductos() {
+      const tbody = document.getElementById("prod-table");
+      tbody.innerHTML = "";
+      productos.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.className = "border-b";
+
+        tr.innerHTML = `
+          <td class="p-2">${p.nombre}</td>
+          <td class="p-2 text-right">$${p.precio.toFixed(2)}</td>
+          <td class="p-2 text-right">${p.stock}</td>
+          <td class="p-2 text-center space-x-2">
+            <button onclick="editarProducto(${p.id})" class="text-blue-600 hover:text-blue-900" title="Editar"><i data-feather="edit-2"></i></button>
+            <button onclick="eliminarProducto(${p.id})" class="text-red-600 hover:text-red-900" title="Eliminar"><i data-feather="trash-2"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      feather.replace();
+    }
+
+    function editarProducto(id) {
+      const prod = productos.find(p => p.id === id);
+      if (!prod) return;
+      editandoProductoId = id;
+      document.getElementById("prod-nombre").value = prod.nombre;
+      document.getElementById("prod-precio").value = prod.precio;
+      document.getElementById("prod-stock").value = prod.stock;
+      showSection("productos");
+    }
+
+    function eliminarProducto(id) {
+      if (!confirm("¿Eliminar este producto?")) return;
+      const index = productos.findIndex(p => p.id === id);
+      if (index >= 0) {
+        productos.splice(index, 1);
+        renderizarProductos();
+        initBotonesRapidos();
+      }
+    }
+
+    // --- Gestión de clientes ---
+    const clientes = [];
+    function saveClient() {
+      const nombre = document.getElementById("cli-nombre").value.trim();
+      const email = document.getElementById("cli-email").value.trim();
+      const telefono = document.getElementById("cli-telefono").value.trim();
+
+      if (!nombre || !email) {
+        alert("Nombre y email son obligatorios.");
+        return;
+      }
+      clientes.push({ nombre, email, telefono });
+      renderizarClientes();
+      limpiarFormularioCliente();
+    }
+
+    function renderizarClientes() {
+      const lista = document.getElementById("client-list");
+      lista.innerHTML = "";
+      clientes.forEach((c, i) => {
+        const li = document.createElement("li");
+        li.className = "border-b p-2";
+        li.innerHTML = `<strong>${c.nombre}</strong><br/><small>${c.email} | ${c.telefono || "No teléfono"}</small>`;
+        lista.appendChild(li);
       });
     }
-    function deleteClient(i) {
-      clients.splice(i,1);
-      localStorage.setItem('clientes', JSON.stringify(clients));
-      renderClients();
+
+    function limpiarFormularioCliente() {
+      document.getElementById("cli-nombre").value = "";
+      document.getElementById("cli-email").value = "";
+      document.getElementById("cli-telefono").value = "";
     }
 
-    // Créditos...
-    function addCredit() { alert('Nuevo crédito'); }
-
-    // Inventario...
-    function renderInventory() {
-      const el = document.getElementById('inventory-list');
-      el.innerHTML = '';
-      productos.forEach(p => el.innerHTML += `<div>${p.nombre}: ${p.stock}</div>`);
-    }
-    function generateAudit() { alert('Generar conteo cíclico'); }
-
-    // Configuraciones...
-    function manageUsers() { alert('Gestionar usuarios/roles'); }
-    function toggleTheme() { document.body.classList.toggle('dark'); }
-
-    // Reportes...
-    function exportReport() { alert('Exportar reportes'); }
+    // Inicialización al cargar
+    window.onload = () => {
+      initBotonesRapidos();
+      renderizarProductos();
+      renderizarClientes();
+      cambiarMetodoPago();
+    };
   </script>
+
 </body>
 </html>
