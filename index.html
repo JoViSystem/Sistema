@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JoVi System POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-black font-sans">
+
+  <!-- Encabezado -->
+  <header class="bg-[#00BFFF] text-white p-6 shadow-lg">
+    <h1 class="text-4xl font-extrabold text-center">JoVi System</h1>
+    <p class="text-center text-lg">Más que un sistema, tu aliado digital</p>
+  </header>
+
+  <!-- Sección Punto de Venta -->
+  <section id="punto-venta" class="min-h-screen bg-white p-6 md:p-10">
+    <h2 class="text-3xl font-bold text-center text-black mb-6">🛒 Punto de Venta</h2>
+
+    <!-- Catálogo de productos -->
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Monitor 19\"', 120)">
+        <h3 class="text-xl font-semibold">Monitor 19"</h3>
+        <p class="text-gray-700">Precio: $120</p>
+      </div>
+      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Caja Registradora', 90)">
+        <h3 class="text-xl font-semibold">Caja Registradora</h3>
+        <p class="text-gray-700">Precio: $90</p>
+      </div>
+      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Printer 58mm', 45)">
+        <h3 class="text-xl font-semibold">Printer 58mm</h3>
+        <p class="text-gray-700">Precio: $45</p>
+      </div>
+      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('CPU Completo', 250)">
+        <h3 class="text-xl font-semibold">CPU Completo</h3>
+        <p class="text-gray-700">Precio: $250</p>
+      </div>
+      <div class="bg-blue-100 p-4 rounded shadow cursor-pointer" onclick="addToCart('Sistema de Facturación', 130)">
+        <h3 class="text-xl font-semibold">Sistema de Facturación</h3>
+        <p class="text-gray-700">Precio: $130</p>
+      </div>
+    </div>
+
+    <!-- Carrito -->
+    <div class="mt-10">
+      <h3 class="text-2xl font-bold text-black mb-2">🧾 Carrito de compras</h3>
+      <ul id="cart-items" class="bg-gray-100 p-4 rounded shadow mb-4 text-black"></ul>
+      <p class="text-xl font-semibold text-black">Total: $<span id="total">0</span></p>
+      <button onclick="checkout()" class="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">Finalizar Venta</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#00BFFF] text-white p-4 text-center">
+    © 2025 JoVi System. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(product, price) {
+      cart.push({ product, price });
+      total += price;
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = "flex justify-between py-1";
+        li.innerHTML = `${item.product} - $${item.price} <button onclick="removeFromCart(${index})" class="text-red-500 hover:underline">Eliminar</button>`;
+        cartItems.appendChild(li);
+      });
+      document.getElementById('total').textContent = total.toFixed(2);
+    }
+
+    function removeFromCart(index) {
+      total -= cart[index].price;
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert("El carrito está vacío.");
+        return;
+      }
+      alert("✅ Venta realizada con éxito.\nTotal: $" + total.toFixed(2));
+      cart = [];
+      total = 0;
+      updateCart();
+    }
+  </script>
+</body>
+</html>
