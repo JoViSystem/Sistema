@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JoVi POS Avanzado y Moderno</title>
+    <title>JoVi POS Avanzado y Dinámico</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5KwQ/uRxpzx/LCPQcbhZdVByXBNj2ifvCAgFOhlycKbMxxkchpSMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Colores y fuentes base */
         body {
@@ -17,79 +17,22 @@
             background-size: 60px 60px;
             background-attachment: fixed;
             transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-            font-size: 0.875rem; /* Tamaño de fuente base ligeramente más pequeño */
         }
 
-        /* Ajustes de tamaño para hacer todo más compacto */
-        h1 { font-size: 2.25rem; } /* text-4xl */
-        h2 { font-size: 1.875rem; margin-bottom: 1rem; } /* text-3xl */
-        h3 { font-size: 1.125rem; margin-bottom: 0.75rem; } /* text-xl */
-        button { font-size: 0.95rem; padding: 0.55rem 1.1rem; } /* Ajuste de botones */
-        input, select, textarea { font-size: 0.875rem; padding: 0.45rem; } /* Ajuste de inputs */
-        label { font-size: 0.875rem; margin-bottom: 0.25rem; } /* Ajuste de etiquetas */
-        .text-lg { font-size: 0.95rem; }
-        .text-xl { font-size: 1.05rem; }
-        .text-2xl { font-size: 1.25rem; }
-        .p-8 { padding: 1.25rem; }
-        .p-6 { padding: 0.9rem; }
-        .p-4 { padding: 0.65rem; }
-        .p-3 { padding: 0.4rem; }
-        .mb-8 { margin-bottom: 1.25rem; }
-        .mb-6 { margin-bottom: 1rem; }
-        .mb-4 { margin-bottom: 0.65rem; }
-        .mb-3 { margin-bottom: 0.5rem; }
-        .space-x-3 > * + * { margin-left: 0.6rem; }
-        .space-x-4 > * + * { margin-left: 0.8rem; }
-        .max-w-md { max-width: 26rem; } /* Ancho máximo del formulario de login un poco más reducido */
-        .w-full { width: 100%; }
-
-        /* Estilos específicos para Login Section */
-        #login-section {
-            background: linear-gradient(135deg, #2B3D50 0%, #1A2530 100%); /* Fondo degradado */
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            justify-content: center; /* Centrar contenido */
-            align-items: center; /* Centrar contenido */
-            flex-direction: row; /* Para poner la PC y el formulario en fila */
-            gap: 4rem; /* Espacio entre PC y formulario */
+        /* Ocultar secciones por defecto */
+        .section {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
 
-        /* Representación de la PC */
-        #login-section::before {
-            content: '';
-            position: absolute;
-            top: 20%;
-            left: 10%;
-            width: 300px;
-            height: 200px;
-            background-color: #3B82F6; /* Color azul para la PC */
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1);
-            transform: rotate(-10deg);
-            z-index: 1;
-            /* Pantalla - Aquí usaremos una sombra para simular la pantalla encendida o el contenido */
-            box-shadow: 0 0 50px 20px rgba(60, 180, 255, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.1);
-        }
-
-        #login-section::after {
-            content: '';
-            position: absolute;
-            top: calc(20% + 180px); /* Posición del teclado */
-            left: calc(10% + 50px);
-            width: 200px;
-            height: 20px;
-            background-color: #2D3748; /* Color oscuro para el teclado */
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transform: rotate(-10deg);
-            z-index: 1;
-        }
-
-        #login-section .login-form-container {
-            background-color: rgba(30, 41, 59, 0.85); /* Fondo más oscuro y semi-transparente */
-            border: 1px solid #334155; /* Borde más sutil */
-            z-index: 2; /* Asegurarse de que esté sobre la PC */
+        /* Clase para mostrar la sección activa con animación */
+        .section.is-active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fade-in 0.3s ease-in-out forwards;
         }
 
         /* Animaciones */
@@ -138,10 +81,10 @@
         .animate-wiggle {
             animation: wiggle 1s ease-in-out infinite;
         }
-
+        
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); } /* Menos rebote */
+            50% { transform: translateY(-10px); }
         }
         .animate-bounce {
             animation: bounce 1s infinite ease-in-out;
@@ -152,7 +95,7 @@
             transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, color 0.15s ease-in-out, transform 0.1s ease-out;
         }
         .interactive-element:hover {
-            transform: translateY(-1px); /* Pequeño levantamiento en hover */
+            transform: translateY(-2px); /* Pequeño levantamiento en hover */
         }
         .interactive-element:active {
             transform: translateY(0); /* Vuelve a la posición normal al hacer clic */
@@ -178,11 +121,6 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #68D391; /* emerald-300 */
         }
-
-        /* Estilo para los botones de las secciones en la navegación */
-        nav button {
-            padding: 0.4rem 0.9rem; /* Más pequeño para caber más */
-        }
     </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -191,210 +129,211 @@
 </head>
 <body class="bg-gray-900 text-gray-200 font-inter">
 
-    <section id="login-section" class="min-h-screen">
-        <div class="login-form-container p-8 rounded-2xl shadow-xl w-full max-w-md animate-fade-in">
-            <h1 class="text-4xl font-extrabold text-white mb-6 tracking-tight text-center flex items-center justify-center">
-                <i data-feather="lock" class="mr-3 text-blue-400 w-8 h-8 animate-pulse"></i>Acceso al Sistema
-            </h1>
-            <div class="mb-4">
-                <label for="user" class="block text-gray-300 font-medium mb-1 text-lg flex items-center">
-                    <i data-feather="user" class="mr-2 text-blue-300 w-5 h-5"></i>Usuario
+    <section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-gray-200">
+        <i class="fas fa-store text-8xl mb-6 text-emerald-400 animate-pulse"></i>
+        <h1 class="text-5xl font-extrabold text-white mb-8 tracking-tight">JoVi POS</h1>
+        <div class="bg-gray-800 p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-700 animate-fade-in">
+            <div class="mb-5">
+                <label for="user" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
+                    <i data-feather="user" class="mr-3 text-emerald-400"></i>Usuario
                 </label>
-                <input id="user" type="text" placeholder="admin" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 interactive-element text-base" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                <input id="user" type="text" placeholder="admin" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
             </div>
-            <div class="mb-6">
-                <label for="pass" class="block text-gray-300 font-medium mb-1 text-lg flex items-center">
-                    <i data-feather="key" class="mr-2 text-blue-300 w-5 h-5"></i>Contraseña
+            <div class="mb-7">
+                <label for="pass" class="block text-gray-300 font-medium mb-2 text-lg flex items-center">
+                    <i data-feather="lock" class="mr-3 text-emerald-400"></i>Contraseña
                 </label>
-                <input id="pass" type="password" placeholder="••••••" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 interactive-element text-base" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                <input id="pass" type="password" placeholder="••••••" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 interactive-element text-lg" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" />
             </div>
-            <button id="btnLogin" class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold text-xl hover:bg-blue-600 active:bg-blue-700 interactive-element flex justify-center items-center shadow-md">
-                <i data-feather="log-in" class="mr-2 w-5 h-5"></i>Iniciar Sesión
+            <button id="btnLogin" class="w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
+                <i data-feather="log-in" class="mr-3 w-6 h-6"></i>Acceder
             </button>
-            <p id="login-error" class="text-red-400 text-sm mt-4 hidden text-center">Usuario o contraseña incorrecta</p>
-            <p class="mt-4 text-right">
-                <a href="#" id="forgot-password" class="text-blue-400 text-sm hover:underline">¿Olvidaste la contraseña?</a>
+            <p id="login-error" class="text-red-400 text-sm mt-5 hidden text-center">Usuario o contraseña incorrecta</p>
+            <p class="mt-6 text-right">
+                <a href="#" id="forgot-password" class="text-emerald-400 text-sm hover:underline">¿Olvidaste la contraseña?</a>
             </p>
         </div>
     </section>
 
     <section id="pos-section" class="hidden min-h-screen flex flex-col">
 
-        <nav class="bg-gray-800 shadow-lg py-3 px-4 flex items-center sticky top-0 z-20 select-none border-b border-gray-700">
-            <div class="flex items-center space-x-3">
-                <i class="fas fa-cash-register text-2xl text-emerald-400"></i>
-                <span class="text-xl font-bold text-white tracking-tight">JoVi POS</span>
+        <nav class="bg-gray-800 shadow-lg p-4 flex items-center sticky top-0 z-20 select-none border-b border-gray-700">
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-cash-register text-3xl text-emerald-400"></i>
+                <span class="text-2xl font-bold text-white tracking-tight">JoVi POS</span>
             </div>
-            <div class="flex-grow flex justify-center space-x-2 mx-6">
-                <button onclick="showSection('ventas')" class="flex items-center py-2 px-4 rounded-md text-gray-200 hover:bg-gray-700 interactive-element text-sm" title="F1 - Ventas">
-                    <i data-feather="shopping-cart" class="mr-1.5 w-4 h-4"></i><span class="hidden sm:inline">Ventas</span>
+            <div class="flex-grow flex justify-center space-x-3 mx-8">
+                <button onclick="showSection('ventas')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F1 - Ventas">
+                    <i data-feather="shopping-cart" class="mr-2"></i><span class="hidden sm:inline">Ventas</span>
                 </button>
-                <button onclick="showSection('productos')" class="flex items-center py-2 px-4 rounded-md text-gray-200 hover:bg-gray-700 interactive-element text-sm" title="F2 - Productos">
-                    <i data-feather="package" class="mr-1.5 w-4 h-4"></i><span class="hidden sm:inline">Productos</span>
+                <button onclick="showSection('productos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F2 - Productos">
+                    <i data-feather="package" class="mr-2"></i><span class="hidden sm:inline">Productos</span>
                 </button>
-                <button onclick="showSection('clientes')" class="flex items-center py-2 px-4 rounded-md text-gray-200 hover:bg-gray-700 interactive-element text-sm" title="F3 - Clientes">
-                    <i data-feather="users" class="mr-1.5 w-4 h-4"></i><span class="hidden sm:inline">Clientes</span>
+                <button onclick="showSection('clientes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F3 - Clientes">
+                    <i data-feather="users" class="mr-2"></i><span class="hidden sm:inline">Clientes</span>
                 </button>
-                <button onclick="showSection('creditos')" class="flex items-center py-2 px-4 rounded-md text-gray-200 hover:bg-gray-700 interactive-element text-sm" title="F4 - Créditos">
-                    <i data-feather="credit-card" class="mr-1.5 w-4 h-4"></i><span class="hidden sm:inline">Créditos</span>
+                <button onclick="showSection('creditos')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F4 - Créditos">
+                    <i data-feather="credit-card" class="mr-2"></i><span class="hidden sm:inline">Créditos</span>
                 </button>
-                <button onclick="showSection('inventario')" class="flex items-center py-2 px-4 rounded-md text-gray-200 hover:bg-gray-700 interactive-element text-sm" title="F5 - Inventario">
-                    <i data-feather="list" class="mr-1.5 w-4 h-4"></i><span class="hidden sm:inline">Inventario</span>
+                <button onclick="showSection('inventario')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F5 - Inventario">
+                    <i data-feather="list" class="mr-2"></i><span class="hidden sm:inline">Inventario</span>
                 </button>
-                <button onclick="showSection('configuraciones')" class="flex items-center py-2 px-4 rounded-md text-gray-200 hover:bg-gray-700 interactive-element text-sm" title="F6 - Configuraciones">
-                    <i data-feather="settings" class="mr-1.5 w-4 h-4"></i><span class="hidden sm:inline">Config.</span>
+                <button onclick="showSection('configuraciones')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F6 - Configuraciones">
+                    <i data-feather="settings" class="mr-2"></i><span class="hidden sm:inline">Config.</span>
                 </button>
-                <button onclick="showSection('reportes')" class="flex items-center py-2 px-4 rounded-md text-gray-200 hover:bg-gray-700 interactive-element text-sm" title="F7 - Reportes">
-                    <i data-feather="bar-chart-2" class="mr-1.5 w-4 h-4"></i><span class="hidden sm:inline">Reportes</span>
+                <button onclick="showSection('reportes')" class="flex items-center py-2.5 px-5 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-lg" title="F7 - Reportes">
+                    <i data-feather="bar-chart-2" class="mr-2"></i><span class="hidden sm:inline">Reportes</span>
                 </button>
             </div>
-            <span class="ml-auto text-sm text-gray-400 flex items-center p-1.5 rounded-md bg-gray-700">
-                <i data-feather="user-check" class="inline-block mr-1.5 text-emerald-400 w-4 h-4"></i><span class="hidden sm:inline">Vendedor:</span> <strong id="vendedor-info" class="text-white ml-0.5"></strong>
+            <span class="ml-auto text-base text-gray-400 flex items-center p-2 rounded-lg bg-gray-700">
+                <i data-feather="user-check" class="inline-block mr-2 text-emerald-400 w-5 h-5"></i><span class="hidden sm:inline">Vendedor:</span> <strong id="vendedor-info" class="text-white ml-1"></strong>
             </span>
         </nav>
 
-        <main class="p-6 flex-grow">
+        <main class="p-8 flex-grow">
 
-            <div id="busqueda-container" class="hidden mb-6 max-w-3xl mx-auto animate-fade-in">
-                <label for="busqueda-producto" class="block text-3xl font-extrabold mb-3 text-center text-emerald-400 flex items-center justify-center">
-                    <i data-feather="search" class="mr-3 w-8 h-8 animate-wiggle"></i>Buscar producto
+            <div id="busqueda-container" class="hidden mb-8 max-w-4xl mx-auto animate-fade-in">
+                <label for="busqueda-producto" class="block text-4xl font-extrabold mb-4 text-center text-emerald-400 flex items-center justify-center">
+                    <i data-feather="search" class="mr-4 w-10 h-10 animate-wiggle"></i>Buscar producto
                 </label>
                 <div class="relative">
-                    <input id="busqueda-producto" type="text" placeholder="Escribe para buscar por nombre o código..." class="w-full p-4 pl-12 border-3 border-emerald-500 rounded-xl shadow-lg text-xl bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" oninput="buscarProductos()" autocomplete="off" />
-                    <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                    <input id="busqueda-producto" type="text" placeholder="Escribe para buscar por nombre o código..." class="w-full p-5 pl-14 border-4 border-emerald-500 rounded-xl shadow-lg text-2xl bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" oninput="buscarProductos()" autocomplete="off" />
+                    <i data-feather="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6"></i>
                 </div>
-                <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded-lg max-h-48 overflow-y-auto mt-2 shadow-md z-10 relative"></div>
+                <div id="lista-resultados" class="bg-gray-700 border border-gray-600 rounded-lg max-h-56 overflow-y-auto mt-3 shadow-md z-10 relative"></div>
             </div>
 
             <section id="ventas" class="section">
-                <h2 class="text-2xl font-bold mb-5 flex items-center text-emerald-400">
-                    <i data-feather="shopping-cart" class="mr-2.5 w-6 h-6 animate-bounce"></i>Gestión de Ventas
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="shopping-cart" class="mr-3 w-8 h-8 animate-bounce"></i>Gestión de Ventas
                 </h2>
 
-                <div class="grid lg:grid-cols-3 gap-6">
+                <div class="grid lg:grid-cols-3 gap-8">
 
-                    <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 animate-slide-in-left">
-                        <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="zap" class="mr-1.5 text-yellow-400 w-5 h-5"></i>Productos Rápidos</h3>
-                        <div id="botones-rapidos" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 animate-slide-in-left">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="zap" class="mr-2 text-yellow-400"></i>Productos Rápidos</h3>
+                        <div id="botones-rapidos" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                             </div>
                     </div>
 
-                    <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 lg:col-span-2 animate-slide-in-bottom">
-                        <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="list" class="mr-1.5 text-blue-400 w-5 h-5"></i>Carrito de Compras</h3>
-                        <div class="overflow-x-auto max-h-[450px] custom-scrollbar">
-                            <table class="w-full text-left border-collapse text-gray-200 text-sm">
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 lg:col-span-2 animate-slide-in-bottom">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="list" class="mr-2 text-blue-400"></i>Carrito de Compras</h3>
+                        <div class="overflow-x-auto max-h-[500px] custom-scrollbar">
+                            <table class="w-full text-left border-collapse text-gray-200">
                                 <thead class="bg-gray-700">
                                     <tr>
-                                        <th class="p-2.5 text-xs font-medium flex items-center"><i data-feather="tag" class="mr-1.5 text-gray-400 w-4 h-4"></i>Producto</th>
-                                        <th class="p-2.5 text-xs font-medium w-20 flex items-center justify-center"><i data-feather="hash" class="mr-1.5 text-gray-400 w-4 h-4"></i>Cant.</th>
-                                        <th class="p-2.5 text-xs font-medium w-24 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-1.5 text-gray-400 w-4 h-4"></i>Precio Unitario</th>
-                                        <th class="p-2.5 text-xs font-medium w-24 text-right flex items-center justify-end"><i data-feather="arrow-right" class="mr-1.5 text-gray-400 w-4 h-4"></i>Subtotal</th>
-                                        <th class="p-2.5 text-xs font-medium w-16 text-center flex items-center justify-center"><i data-feather="percent" class="mr-1.5 text-gray-400 w-4 h-4"></i>Desc.</th>
-                                        <th class="p-2.5 text-xs font-medium w-12 text-center"><i data-feather="x" class="text-gray-400 w-4 h-4"></i></th>
+                                        <th class="p-3 text-sm font-medium flex items-center"><i data-feather="tag" class="mr-2 text-gray-400"></i>Producto</th>
+                                        <th class="p-3 text-sm font-medium w-24 flex items-center justify-center"><i data-feather="hash" class="mr-2 text-gray-400"></i>Cant.</th>
+                                        <th class="p-3 text-sm font-medium w-28 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-2 text-gray-400"></i>Precio Unitario</th>
+                                        <th class="p-3 text-sm font-medium w-28 text-right flex items-center justify-end"><i data-feather="arrow-right" class="mr-2 text-gray-400"></i>Subtotal</th>
+                                        <th class="p-3 text-sm font-medium w-20 text-center flex items-center justify-center"><i data-feather="percent" class="mr-2 text-gray-400"></i>Desc.</th>
+                                        <th class="p-3 text-sm font-medium w-16 text-center"><i data-feather="x" class="text-gray-400"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody id="carrito-items">
                                     </tbody>
                             </table>
                         </div>
-
-                        <div class="mt-5 border-t border-gray-700 pt-3 flex flex-col items-end">
-                            <div class="flex items-center mb-2.5">
-                                <label class="font-semibold text-gray-300 text-base mr-3 flex items-center"><i data-feather="minus-circle" class="mr-1.5 text-red-400 w-5 h-5"></i>Descuento Global (%):</label>
-                                <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-24 p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm text-center" oninput="aplicarDescuentoGlobal()" />
+                        
+                        <div class="mt-6 border-t border-gray-700 pt-4 flex flex-col items-end">
+                            <div class="flex items-center mb-3">
+                                <label class="font-semibold text-gray-300 text-lg mr-4 flex items-center"><i data-feather="minus-circle" class="mr-2 text-red-400"></i>Descuento Global (%):</label>
+                                <input id="descuento-global" type="number" min="0" max="100" value="0" class="w-28 p-2 border border-gray-600 rounded bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-lg text-center" oninput="aplicarDescuentoGlobal()" />
                             </div>
-                            <p class="text-2xl font-extrabold text-white flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 animate-pulse w-6 h-6"></i>Total: <span class="text-emerald-400">$<span id="total-venta">0.00</span></span></p>
+                            <p class="text-3xl font-extrabold text-white flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 animate-pulse"></i>Total: <span class="text-emerald-400">$<span id="total-venta">0.00</span></span></p>
                         </div>
                     </div>
 
-                    <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700 animate-slide-in-right">
-                        <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-1.5 text-green-400 w-5 h-5"></i>Opciones de Pago</h3>
-                        <label class="block mb-2 text-gray-300 text-sm flex items-center"><i data-feather="credit-card" class="mr-1.5 text-blue-300 w-4 h-4"></i>Método de Pago:</label>
-                        <select id="metodo-pago" class="w-full p-2.5 border border-gray-600 rounded-lg mb-3 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm" onchange="cambiarMetodoPago()">
-                            <option value="Efectivo">Efectivo</option>
-                            <option value="Tarjeta">Tarjeta</option>
-                            <option value="Transferencia">Transferencia</option>
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 animate-slide-in-right">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-green-400"></i>Opciones de Pago</h3>
+                        <label class="block mb-2 text-gray-300 text-base flex items-center"><i data-feather="credit-card" class="mr-2 text-blue-300"></i>Método de Pago:</label>
+                        <select id="metodo-pago" class="w-full p-3 border border-gray-600 rounded-lg mb-4 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" onchange="cambiarMetodoPago()">
+                            <option value="Efectivo"><i data-feather="dollar-sign" class="mr-2"></i>Efectivo</option>
+                            <option value="Tarjeta"><i data-feather="credit-card" class="mr-2"></i>Tarjeta</option>
+                            <option value="Transferencia"><i data-feather="send" class="mr-2"></i>Transferencia</option>
                         </select>
 
-                        <div id="efectivo-section" class="mb-3">
-                            <label class="block mb-1.5 text-gray-300 text-sm flex items-center"><i data-feather="arrow-down-left" class="mr-1.5 text-yellow-300 w-4 h-4"></i>Efectivo Recibido:</label>
-                            <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-2.5 border border-gray-600 rounded-lg mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm" oninput="calcularCambio()" />
-                            <p class="text-gray-300 text-sm flex items-center"><i data-feather="arrow-up-right" class="mr-1.5 text-green-300 w-4 h-4"></i>Cambio: <span class="font-bold text-emerald-400">$<span id="cambio">0.00</span></span></p>
+                        <div id="efectivo-section" class="mb-4">
+                            <label class="block mb-2 text-gray-300 text-base flex items-center"><i data-feather="arrow-down-left" class="mr-2 text-yellow-300"></i>Efectivo Recibido:</label>
+                            <input id="efectivo-recibido" type="number" step="0.01" min="0" class="w-full p-3 border border-gray-600 rounded-lg mb-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" oninput="calcularCambio()" />
+                            <p class="text-gray-300 text-base flex items-center"><i data-feather="arrow-up-right" class="mr-2 text-green-300"></i>Cambio: <span class="font-bold text-emerald-400">$<span id="cambio">0.00</span></span></p>
                         </div>
 
-                        <button onclick="finalizarVenta()" class="mt-5 w-full bg-emerald-500 text-gray-900 py-3.5 rounded-lg font-semibold text-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
-                            <i data-feather="check-circle" class="mr-2.5 w-5 h-5"></i>Finalizar Venta
+                        <button onclick="finalizarVenta()" class="mt-6 w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex justify-center items-center shadow-md">
+                            <i data-feather="check-circle" class="mr-3 w-6 h-6"></i>Finalizar Venta
                         </button>
 
-                        <h3 class="font-semibold text-lg mt-8 mb-3 text-gray-300 flex items-center"><i data-feather="archive" class="mr-1.5 text-indigo-400 w-5 h-5"></i>Caja Chica</h3>
-                        <div class="flex space-x-2 mb-2.5">
-                            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-1/2 p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm" />
-                            <select id="tipo-caja" class="w-1/2 p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm">
+                        <h3 class="font-semibold text-xl mt-10 mb-4 text-gray-300 flex items-center"><i data-feather="archive" class="mr-2 text-indigo-400"></i>Caja Chica</h3>
+                        <div class="flex space-x-2 mb-3">
+                            <input id="monto-caja" type="number" step="0.01" placeholder="Monto" class="w-1/2 p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base" />
+                            <select id="tipo-caja" class="w-1/2 p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-base">
                                 <option value="entrada">Entrada</option>
                                 <option value="salida">Salida</option>
                             </select>
                         </div>
-                        <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-2.5 rounded-lg hover:bg-gray-600 active:bg-gray-500 interactive-element flex justify-center items-center text-sm">
-                            <i data-feather="plus-circle" class="mr-2.5 w-4 h-4"></i>Registrar Movimiento
+                        <button onclick="agregarCajaChica()" class="w-full bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-600 active:bg-gray-500 interactive-element flex justify-center items-center text-base">
+                            <i data-feather="plus-circle" class="mr-3 w-5 h-5"></i>Registrar Movimiento
                         </button>
-                        <ul id="movimientos-caja" class="mt-3.5 max-h-36 overflow-y-auto border border-gray-600 rounded-lg p-2.5 bg-gray-800 text-xs text-gray-300 custom-scrollbar"></ul>
+                        <ul id="movimientos-caja" class="mt-4 max-h-40 overflow-y-auto border border-gray-600 rounded-lg p-3 bg-gray-800 text-sm text-gray-300 custom-scrollbar"></ul>
                     </div>
 
                 </div>
             </section>
 
             <section id="productos" class="section">
-                <h2 class="text-2xl font-bold mb-5 flex items-center text-emerald-400">
-                    <i data-feather="package" class="mr-2.5 w-6 h-6 animate-pulse"></i>Gestión de Productos
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="package" class="mr-3 w-8 h-8 animate-pulse"></i>Gestión de Productos
                 </h2>
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-6 animate-slide-in-bottom">
-                    <div class="space-y-3">
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Nombre del Producto</label>
-                        <input id="prod-nombre" placeholder="Ej: Camisa algodón" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8 animate-slide-in-bottom">
+                    <div class="space-y-4">
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Producto</label>
+                        <input id="prod-nombre" placeholder="Ej: Camisa algodón" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i class="fas fa-barcode mr-2 text-emerald-400 w-5 h-5"></i>Código del Producto</label>
+                        <input id="prod-codigo" placeholder="Ej: CAMS001" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="folder" class="mr-2 text-emerald-400 w-5 h-5"></i>Categoría</label>
+                        <input id="prod-categoria" placeholder="Ej: Ropa, Electrónica" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
 
-                        <label class="block text-sm text-gray-300 flex items-center"><i class="fas fa-barcode mr-1.5 text-emerald-400 w-4 h-4"></i>Código del Producto</label>
-                        <input id="prod-codigo" placeholder="Ej: CAMS001" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="truck" class="mr-2 text-emerald-400 w-5 h-5"></i>Proveedor</label>
+                        <input id="prod-proveedor" placeholder="Ej: Distribuidora XYZ" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
 
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="folder" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Categoría</label>
-                        <input id="prod-categoria" placeholder="Ej: Ropa, Electrónica" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="ruler" class="mr-2 text-emerald-400 w-5 h-5"></i>Unidad de Medida</label>
+                        <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Costo ($)</label>
+                        <input id="prod-precio-costo" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-2 text-emerald-400 w-5 h-5"></i>Precio de Venta ($)</label>
+                        <input id="prod-precio-venta" placeholder="0.00" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="box" class="mr-2 text-emerald-400 w-5 h-5"></i>Stock Disponible</label>
+                        <input id="prod-stock" placeholder="0" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
 
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="truck" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Proveedor</label>
-                        <input id="prod-proveedor" placeholder="Ej: Distribuidora XYZ" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="alert-triangle" class="mr-2 text-emerald-400 w-5 h-5"></i>Stock Mínimo para Alerta</label>
+                        <input id="prod-stock-minimo" placeholder="5" type="number" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
 
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="maximize" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Unidad de Medida</label> <input id="prod-unidad" placeholder="Ej: Pieza, Kg, Litro" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="dollar-sign" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Precio de Costo ($)</label>
-                        <input id="prod-precio-costo" placeholder="0.00" type="number" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
-
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="tag" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Precio de Venta ($)</label>
-                        <input id="prod-precio-venta" placeholder="0.00" type="number" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" step="0.01" min="0" />
-
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="box" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Stock Disponible</label>
-                        <input id="prod-stock" placeholder="0" type="number" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
-
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="alert-triangle" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Stock Mínimo para Alerta</label>
-                        <input id="prod-stock-minimo" placeholder="5" type="number" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" min="0" />
-
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="file-text" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Descripción</label>
-                        <textarea id="prod-descripcion" placeholder="Detalles adicionales del producto..." rows="2" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element resize-y"></textarea>
-
-                        <button onclick="saveProduct()" class="bg-emerald-500 text-gray-900 px-5 py-2.5 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-base mt-4">
-                            <i data-feather="save" class="mr-2.5 w-4 h-4"></i>Guardar Producto
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="file-text" class="mr-2 text-emerald-400 w-5 h-5"></i>Descripción</label>
+                        <textarea id="prod-descripcion" placeholder="Detalles adicionales del producto..." rows="3" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element resize-y"></textarea>
+                        
+                        <button onclick="saveProduct()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
+                            <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Producto
                         </button>
                     </div>
-                    <div class="overflow-auto max-h-[580px] custom-scrollbar">
-                        <table class="w-full bg-gray-800 rounded-lg shadow text-sm">
+                    <div class="overflow-auto max-h-[700px] custom-scrollbar"> 
+                        <table class="w-full bg-gray-800 rounded-lg shadow text-base">
                             <thead class="bg-gray-700 text-gray-200 sticky top-0">
                                 <tr>
-                                    <th class="p-2.5 text-left flex items-center"><i data-feather="tag" class="mr-1.5 text-gray-300 w-4 h-4"></i>Nombre</th>
-                                    <th class="p-2.5 text-left flex items-center"><i class="fas fa-barcode mr-1.5 text-gray-300 w-4 h-4"></i>Código</th>
-                                    <th class="p-2.5 text-left flex items-center"><i data-feather="folder" class="mr-1.5 text-gray-300 w-4 h-4"></i>Categoría</th>
-                                    <th class="p-2.5 text-left flex items-center"><i data-feather="truck" class="mr-1.5 text-gray-300 w-4 h-4"></i>Proveedor</th>
-                                    <th class="p-2.5 text-left flex items-center"><i data-feather="maximize" class="mr-1.5 text-gray-300 w-4 h-4"></i>Unidad</th> <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-1.5 text-gray-300 w-4 h-4"></i>Costo</th>
-                                    <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="tag" class="mr-1.5 text-gray-300 w-4 h-4"></i>Venta</th>
-                                    <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="box" class="mr-1.5 text-gray-300 w-4 h-4"></i>Stock</th>
-                                    <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-1.5 text-gray-300 w-4 h-4"></i>Min.</th>
-                                    <th class="p-2.5 text-center"><i data-feather="settings" class="text-gray-300 w-4 h-4"></i>Acciones</th>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="tag" class="mr-2 text-gray-300"></i>Nombre</th>
+                                    <th class="p-3 text-left flex items-center"><i class="fas fa-barcode mr-2 text-gray-300"></i>Código</th>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="folder" class="mr-2 text-gray-300"></i>Categoría</th>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="truck" class="mr-2 text-gray-300"></i>Proveedor</th>
+                                    <th class="p-3 text-left flex items-center"><i data-feather="ruler" class="mr-2 text-gray-300"></i>Unidad</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-2 text-gray-300"></i>Costo</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="tag" class="mr-2 text-gray-300"></i>Venta</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="box" class="mr-2 text-gray-300"></i>Stock</th>
+                                    <th class="p-3 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-2 text-gray-300"></i>Min.</th>
+                                    <th class="p-3 text-center"><i data-feather="settings" class="text-gray-300"></i>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="prod-table" class="text-gray-300">
@@ -405,62 +344,65 @@
             </section>
 
             <section id="clientes" class="section">
-                <h2 class="text-2xl font-bold mb-5 flex items-center text-emerald-400">
-                    <i data-feather="users" class="mr-2.5 w-6 h-6 animate-pulse"></i>Gestión de Clientes
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="users" class="mr-3 w-8 h-8 animate-pulse"></i>Gestión de Clientes
                 </h2>
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-6 animate-slide-in-bottom">
-                    <div class="space-y-3">
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="user-plus" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Nombre del Cliente</label>
-                        <input id="cli-nombre" placeholder="Ej: Juan Pérez" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="mail" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Email</label>
-                        <input id="cli-email" placeholder="ejemplo@correo.com" type="email" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-
-                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="phone-call" class="mr-1.5 text-emerald-400 w-4 h-4"></i>Teléfono</label>
-                        <input id="cli-telefono" placeholder="Ej: +123 456 7890" class="w-full p-2.5 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
-
-                        <button onclick="saveClient()" class="bg-emerald-500 text-gray-900 px-5 py-2.5 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-base mt-4">
-                            <i data-feather="save" class="mr-2.5 w-4 h-4"></i>Guardar Cliente
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 grid md:grid-cols-2 gap-8 animate-slide-in-bottom">
+                    <div class="space-y-4">
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="user-plus" class="mr-2 text-emerald-400 w-5 h-5"></i>Nombre del Cliente</label>
+                        <input id="cli-nombre" placeholder="Ej: Juan Pérez" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="mail" class="mr-2 text-emerald-400 w-5 h-5"></i>Email</label>
+                        <input id="cli-email" placeholder="ejemplo@correo.com" type="email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        
+                        <label class="block text-sm text-gray-300 flex items-center"><i data-feather="phone-call" class="mr-2 text-emerald-400 w-5 h-5"></i>Teléfono</label>
+                        <input id="cli-telefono" placeholder="Ej: +123 456 7890" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
+                        
+                        <button onclick="saveClient()" class="bg-emerald-500 text-gray-900 px-6 py-3 rounded-lg shadow-md hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex items-center justify-center text-lg mt-6">
+                            <i data-feather="save" class="mr-3 w-5 h-5"></i>Guardar Cliente
                         </button>
                     </div>
-                    <div class="overflow-auto max-h-[480px] custom-scrollbar">
-                        <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="clipboard" class="mr-1.5 text-purple-400 w-5 h-5"></i>Listado de Clientes</h3> <ul id="client-list" class="bg-gray-800 rounded-lg text-gray-300 divide-y divide-gray-700 text-sm">
+                    <div class="overflow-auto max-h-[520px] custom-scrollbar">
+                        <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="clipboard" class="mr-2 text-purple-400"></i>Listado de Clientes</h3>
+                        <ul id="client-list" class="bg-gray-800 rounded-lg text-gray-300 divide-y divide-gray-700">
                             </ul>
                     </div>
                 </div>
             </section>
 
             <section id="creditos" class="section">
-                <h2 class="text-2xl font-bold mb-5 flex items-center text-emerald-400">
-                    <i data-feather="credit-card" class="mr-2.5 w-6 h-6 animate-pulse"></i>Gestión de Créditos
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="credit-card" class="mr-3 w-8 h-8 animate-pulse"></i>Gestión de Créditos
                 </h2>
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
-                    <p class="text-gray-400 text-base flex items-center mb-3">
-                        <i data-feather="info" class="mr-2.5 text-blue-400 w-5 h-5"></i>La funcionalidad de gestión de créditos estará disponible en futuras actualizaciones.
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                    <p class="text-gray-400 text-lg flex items-center mb-4">
+                        <i data-feather="info" class="mr-3 text-blue-400 w-6 h-6"></i>La funcionalidad de gestión de créditos estará disponible en futuras actualizaciones.
                     </p>
-                    <div class="mt-5 text-gray-500 space-y-2.5 text-sm">
-                        <p class="flex items-center"><i data-feather="clipboard" class="mr-2.5 w-4 h-4 text-gray-500"></i>Aquí se podrán registrar pagos a cuenta, saldos pendientes y el historial crediticio de los clientes.</p> <p class="flex items-center"><i data-feather="dollar-sign" class="mr-2.5 w-4 h-4 text-gray-500"></i>Permitirá llevar un control detallado de las deudas y abonos.</p>
-                        <p class="flex items-center"><i data-feather="clock" class="mr-2.5 w-4 h-4 text-gray-500"></i>Registra la fecha y hora de cada movimiento de crédito.</p>
+                    <div class="mt-6 text-gray-500 space-y-3">
+                        <p class="flex items-center"><i data-feather="clipboard-list" class="mr-3 w-5 h-5 text-gray-500"></i>Aquí se podrán registrar pagos a cuenta, saldos pendientes y el historial crediticio de los clientes.</p>
+                        <p class="flex items-center"><i data-feather="dollar-sign" class="mr-3 w-5 h-5 text-gray-500"></i>Permitirá llevar un control detallado de las deudas y abonos.</p>
+                        <p class="flex items-center"><i data-feather="clock" class="mr-3 w-5 h-5 text-gray-500"></i>Registra la fecha y hora de cada movimiento de crédito.</p>
                     </div>
                 </div>
             </section>
 
             <section id="inventario" class="section">
-                <h2 class="text-2xl font-bold mb-5 flex items-center text-emerald-400">
-                    <i data-feather="database" class="mr-2.5 w-6 h-6 animate-pulse"></i>Reporte de Inventario
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="database" class="mr-3 w-8 h-8 animate-pulse"></i>Reporte de Inventario
                 </h2>
-                <div id="inventory-list-container" class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 h-[calc(100vh-250px)] overflow-y-auto text-gray-300 custom-scrollbar animate-fade-in">
-                    <h3 class="font-semibold text-lg mb-3 text-gray-300 flex items-center"><i data-feather="box" class="mr-1.5 text-orange-400 w-5 h-5"></i>Stock Actual de Productos</h3>
-                    <table class="w-full bg-gray-800 rounded-lg text-sm">
+                <div id="inventory-list-container" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 h-96 overflow-y-auto text-gray-300 custom-scrollbar animate-fade-in">
+                    <h3 class="font-semibold text-xl mb-4 text-gray-300 flex items-center"><i data-feather="box" class="mr-2 text-orange-400"></i>Stock Actual de Productos</h3>
+                    <table class="w-full bg-gray-800 rounded-lg text-base">
                         <thead class="bg-gray-700 text-gray-200 sticky top-0">
                             <tr>
-                                <th class="p-2.5 text-left flex items-center"><i data-feather="tag" class="mr-1.5 text-gray-300 w-4 h-4"></i>Nombre</th>
-                                <th class="p-2.5 text-left flex items-center"><i class="fas fa-barcode mr-1.5 text-gray-300 w-4 h-4"></i>Código</th>
-                                <th class="p-2.5 text-left flex items-center"><i data-feather="folder" class="mr-1.5 text-gray-300 w-4 h-4"></i>Categoría</th>
-                                <th class="p-2.5 text-left flex items-center"><i data-feather="truck" class="mr-1.5 text-gray-300 w-4 h-4"></i>Proveedor</th>
-                                <th class="p-2.5 text-left flex items-center"><i data-feather="maximize" class="mr-1.5 text-gray-300 w-4 h-4"></i>Unidad</th> <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="box" class="mr-1.5 text-gray-300 w-4 h-4"></i>Stock</th>
-                                <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-1.5 text-gray-300 w-4 h-4"></i>Stock Mínimo</th>
-                                <th class="p-2.5 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-1.5 text-gray-300 w-4 h-4"></i>Precio Venta</th>
+                                <th class="p-3 text-left flex items-center"><i data-feather="tag" class="mr-2 text-gray-300"></i>Nombre</th>
+                                <th class="p-3 text-left flex items-center"><i class="fas fa-barcode mr-2 text-gray-300"></i>Código</th>
+                                <th class="p-3 text-left flex items-center"><i data-feather="folder" class="mr-2 text-gray-300"></i>Categoría</th>
+                                <th class="p-3 text-left flex items-center"><i data-feather="truck" class="mr-2 text-gray-300"></i>Proveedor</th>
+                                <th class="p-3 text-left flex items-center"><i data-feather="ruler" class="mr-2 text-gray-300"></i>Unidad</th>
+                                <th class="p-3 text-right flex items-center justify-end"><i data-feather="box" class="mr-2 text-gray-300"></i>Stock</th>
+                                <th class="p-3 text-right flex items-center justify-end"><i data-feather="alert-triangle" class="mr-2 text-gray-300"></i>Stock Mínimo</th>
+                                <th class="p-3 text-right flex items-center justify-end"><i data-feather="dollar-sign" class="mr-2 text-gray-300"></i>Precio Venta</th>
                             </tr>
                         </thead>
                         <tbody id="inventory-table" class="text-gray-300">
@@ -470,33 +412,33 @@
             </section>
 
             <section id="configuraciones" class="section">
-                <h2 class="text-2xl font-bold mb-5 flex items-center text-emerald-400">
-                    <i data-feather="settings" class="mr-2.5 w-6 h-6 animate-pulse"></i>Configuraciones del Sistema
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="settings" class="mr-3 w-8 h-8 animate-pulse"></i>Configuraciones del Sistema
                 </h2>
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
-                    <p class="text-gray-400 text-base flex items-center mb-3">
-                        <i data-feather="tool" class="mr-2.5 text-yellow-400 w-5 h-5"></i>Los ajustes y configuraciones del sistema estarán disponibles aquí.
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                    <p class="text-gray-400 text-lg flex items-center mb-4">
+                        <i data-feather="tool" class="mr-3 text-yellow-400 w-6 h-6"></i>Los ajustes y configuraciones del sistema estarán disponibles aquí.
                     </p>
-                    <div class="mt-5 text-gray-500 space-y-2.5 text-sm">
-                        <p class="flex items-center"><i data-feather="sliders" class="mr-2.5 w-4 h-4 text-gray-500"></i>Opciones para personalizar el comportamiento del POS.</p>
-                        <p class="flex items-center"><i data-feather="users" class="mr-2.5 w-4 h-4 text-gray-500"></i>Gestión de usuarios y permisos (próximamente).</p>
-                        <p class="flex items-center"><i data-feather="upload-cloud" class="mr-2.5 w-4 h-4"></i>Opciones de importación/exportación de datos.</p>
+                    <div class="mt-6 text-gray-500 space-y-3">
+                        <p class="flex items-center"><i data-feather="sliders" class="mr-3 w-5 h-5 text-gray-500"></i>Opciones para personalizar el comportamiento del POS.</p>
+                        <p class="flex items-center"><i data-feather="users" class="mr-3 w-5 h-5 text-gray-500"></i>Gestión de usuarios y permisos (próximamente).</p>
+                        <p class="flex items-center"><i data-feather="upload-cloud" class="mr-3 w-5 h-5"></i>Opciones de importación/exportación de datos.</p>
                     </div>
                 </div>
             </section>
 
             <section id="reportes" class="section">
-                <h2 class="text-2xl font-bold mb-5 flex items-center text-emerald-400">
-                    <i data-feather="bar-chart-2" class="mr-2.5 w-6 h-6 animate-pulse"></i>Reportes y Estadísticas
+                <h2 class="text-3xl font-bold mb-6 flex items-center text-emerald-400">
+                    <i data-feather="bar-chart-2" class="mr-3 w-8 h-8 animate-pulse"></i>Reportes y Estadísticas
                 </h2>
-                <div id="reporte-content" class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 text-sm h-[calc(100vh-250px)] overflow-y-auto text-gray-300 custom-scrollbar animate-fade-in">
-                    <p class="text-gray-400 text-base flex items-center mb-3">
-                        <i data-feather="trending-up" class="mr-2.5 text-green-400 w-5 h-5"></i>Esta sección proporcionará informes detallados sobre ventas, inventario y movimientos financieros.
+                <div id="reporte-content" class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 text-sm h-96 overflow-y-auto text-gray-300 custom-scrollbar animate-fade-in">
+                    <p class="text-gray-400 text-lg flex items-center mb-4">
+                        <i data-feather="trending-up" class="mr-3 text-green-400 w-6 h-6"></i>Esta sección proporcionará informes detallados sobre ventas, inventario y movimientos financieros.
                     </p>
-                    <div class="mt-5 text-gray-500 space-y-2.5 text-sm">
-                        <p class="flex items-center"><i data-feather="dollar-sign" class="mr-2.5 w-4 h-4 text-gray-500"></i>Visualiza tus ganancias y tendencias de venta.</p>
-                        <p class="flex items-center"><i data-feather="file-text" class="mr-2.5 w-4 h-4 text-gray-500"></i>Genera informes personalizados para tu contabilidad.</p>
-                        <p class="flex items-center"><i data-feather="pie-chart" class="mr-2.5 w-4 h-4"></i>Gráficos y resúmenes visuales de tu rendimiento.</p>
+                    <div class="mt-6 text-gray-500 space-y-3">
+                        <p class="flex items-center"><i data-feather="dollar-sign" class="mr-3 w-5 h-5 text-gray-500"></i>Visualiza tus ganancias y tendencias de venta.</p>
+                        <p class="flex items-center"><i data-feather="file-text" class="mr-3 w-5 h-5 text-gray-500"></i>Genera informes personalizados para tu contabilidad.</p>
+                        <p class="flex items-center"><i data-feather="pie-chart" class="mr-3 w-5 h-5"></i>Gráficos y resúmenes visuales de tu rendimiento.</p>
                     </div>
                 </div>
             </section>
@@ -526,7 +468,7 @@
         let descuentoGlobal = 0;
         let movimientosCaja = JSON.parse(localStorage.getItem("movimientosCaja")) || [];
 
-        // --- Funciones del Sistema (ahora en el ámbito global para que los onclick las encuentren) ---
+        // --- Funciones del Sistema (en el ámbito global) ---
 
         function showSection(id) {
             sections.forEach(sec => {
@@ -551,7 +493,7 @@
                 showSection("ventas");
                 inputUser.value = "";
                 inputPass.value = "";
-                feather.replace(); // Recargar iconos después del login
+                feather.replace();
             } else {
                 loginError.classList.remove("hidden");
             }
@@ -572,7 +514,7 @@
             }
             resultados.forEach(p => {
                 const div = document.createElement("div");
-                div.className = "p-2 cursor-pointer hover:bg-emerald-600 hover:text-white rounded-sm text-sm interactive-element";
+                div.className = "p-3 cursor-pointer hover:bg-emerald-600 hover:text-white rounded-md text-base interactive-element";
                 div.textContent = `${p.nombre} (${p.codigo}) - $${p.precioVenta.toFixed(2)}`;
                 div.onclick = () => agregarAlCarrito(p.codigo);
                 lista.appendChild(div);
@@ -610,7 +552,7 @@
             tbody.innerHTML = "";
             let total = 0;
             if (carrito.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="p-3 text-center text-gray-500"><i data-feather="shopping-bag" class="inline-block mr-2 text-gray-400 w-4 h-4"></i>El carrito está vacío. Agrega productos.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500"><i data-feather="shopping-bag" class="inline-block mr-2 text-gray-400"></i>El carrito está vacío. Agrega productos.</td></tr>';
             }
 
             carrito.forEach((item, idx) => {
@@ -619,17 +561,17 @@
                 const tr = document.createElement("tr");
                 tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
                 tr.innerHTML = `
-                    <td class="p-2.5 text-sm">${item.nombre}</td>
-                    <td class="p-2.5 w-20">
-                        <input type="number" min="1" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-1.5 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm" />
+                    <td class="p-3">${item.nombre}</td>
+                    <td class="p-3 w-24">
+                        <input type="number" min="1" value="${item.cantidad}" data-idx="${idx}" class="cantidad-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element" />
                     </td>
-                    <td class="p-2.5 w-24 text-right text-sm">$${item.precio.toFixed(2)}</td>
-                    <td class="p-2.5 w-24 text-right text-sm">$${subtotal.toFixed(2)}</td>
-                    <td class="p-2.5 w-16">
-                        <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-1.5 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-sm text-center" />
+                    <td class="p-3 w-28 text-right">$${item.precio.toFixed(2)}</td>
+                    <td class="p-3 w-28 text-right">$${subtotal.toFixed(2)}</td>
+                    <td class="p-3 w-20">
+                        <input type="number" min="0" max="100" value="${item.descuento}" data-idx-desc="${idx}" class="descuento-input w-full border border-gray-600 rounded p-2 bg-gray-700 text-white focus:ring-2 focus:ring-emerald-500 interactive-element text-center" />
                     </td>
-                    <td class="p-2.5 w-12 text-center">
-                        <button class="text-red-500 hover:text-red-600 text-base font-bold interactive-element" data-idx-del="${idx}" title="Eliminar"><i data-feather="trash-2" class="w-4 h-4"></i></button>
+                    <td class="p-3 w-16 text-center">
+                        <button class="text-red-500 hover:text-red-600 text-xl font-bold interactive-element" data-idx-del="${idx}" title="Eliminar"><i data-feather="trash-2" class="w-5 h-5"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -663,7 +605,7 @@
             });
             tbody.querySelectorAll("[data-idx-del]").forEach(el => {
                 el.addEventListener("click", e => {
-                    const i = parseInt(e.currentTarget.dataset.idxDel); // Usar currentTarget para el botón
+                    const i = parseInt(e.target.dataset.idxDel);
                     carrito.splice(i, 1);
                     actualizarCarrito();
                 });
@@ -676,15 +618,15 @@
             container.innerHTML = "";
             const productosLimit = productos.slice(0, 8);
             if (productosLimit.length === 0) {
-                container.innerHTML = '<p class="col-span-full text-gray-500 text-center text-sm"><i data-feather="info" class="inline-block mr-1.5 text-gray-400 w-4 h-4"></i>No hay productos para mostrar.</p>';
+                container.innerHTML = '<p class="col-span-full text-gray-500 text-center"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay productos para mostrar en los botones rápidos.</p>';
                 return;
             }
             productosLimit.forEach(p => {
                 const button = document.createElement("button");
-                button.className = "bg-gray-700 text-gray-100 py-2.5 px-1.5 rounded-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex flex-col items-center justify-center text-xs text-center shadow-md";
+                button.className = "bg-gray-700 text-gray-100 py-3 px-2 rounded-lg hover:bg-emerald-600 active:bg-emerald-700 interactive-element flex flex-col items-center justify-center text-sm text-center shadow-md";
                 button.onclick = () => agregarAlCarrito(p.codigo);
                 button.innerHTML = `
-                    <i data-feather="plus-square" class="mb-0.5 w-4 h-4 text-emerald-300"></i>
+                    <i data-feather="plus-square" class="mb-1 w-5 h-5 text-emerald-300"></i>
                     <span class="font-medium">${p.nombre}</span>
                     <span class="text-xs text-gray-400">$${p.precioVenta.toFixed(2)}</span>
                 `;
@@ -703,7 +645,7 @@
             const metodo = document.getElementById("metodo-pago").value;
             document.getElementById("efectivo-section").style.display = metodo === "Efectivo" ? "block" : "none";
             calcularCambio();
-            feather.replace(); // Por si los iconos en las opciones de select no se renderizan (aunque aquí no hay iconos)
+            feather.replace(); // Por si los iconos en las opciones de select no se renderizan
         }
 
         function calcularCambio() {
@@ -722,7 +664,7 @@
             const totalVenta = parseFloat(document.getElementById("total-venta").textContent);
             const metodoPago = document.getElementById("metodo-pago").value;
             let mensaje = `Venta finalizada. Total: $${totalVenta.toFixed(2)}\nMétodo de Pago: ${metodoPago}`;
-
+            
             if (metodoPago === "Efectivo") {
                 const efectivoRecibido = parseFloat(document.getElementById("efectivo-recibido").value) || 0;
                 const cambioCalculado = parseFloat(document.getElementById("cambio").textContent) || 0;
@@ -733,7 +675,7 @@
             }
 
             alert(mensaje);
-
+            
             carrito.forEach(itemCarrito => {
                 const productoIndex = productos.findIndex(p => p.codigo === itemCarrito.codigo);
                 if (productoIndex !== -1) {
@@ -767,17 +709,17 @@
         function mostrarMovimientosCaja() {
             listaMovimientos.innerHTML = "";
             if (movimientosCaja.length === 0) {
-                listaMovimientos.innerHTML = '<li class="p-2.5 text-center text-gray-500 text-xs"><i data-feather="info" class="inline-block mr-1.5 text-gray-400 w-3 h-3"></i>No hay movimientos registrados.</li>';
+                listaMovimientos.innerHTML = '<li class="p-3 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay movimientos registrados.</li>';
             }
             movimientosCaja.forEach((m) => {
                 const li = document.createElement("li");
-                li.classList.add("py-1.5", "px-2", "border-b", "border-gray-700", "last:border-b-0", "flex", "justify-between", "items-center");
+                li.classList.add("py-2", "px-3", "border-b", "border-gray-700", "last:border-b-0", "flex", "justify-between", "items-center");
                 li.innerHTML = `
-                    <span class="${m.tipo === 'entrada' ? 'text-emerald-400' : 'text-red-400'} font-medium text-xs">
-                        ${m.tipo === "entrada" ? '<i data-feather="arrow-up-circle" class="inline-block mr-1 w-3 h-3"></i>' : '<i data-feather="arrow-down-circle" class="inline-block mr-1 w-3 h-3"></i>'}
+                    <span class="${m.tipo === 'entrada' ? 'text-emerald-400' : 'text-red-400'} font-medium">
+                        ${m.tipo === "entrada" ? '<i data-feather="arrow-up-circle" class="inline-block mr-1 w-4 h-4"></i>' : '<i data-feather="arrow-down-circle" class="inline-block mr-1 w-4 h-4"></i>'}
                         ${m.tipo === "entrada" ? "Entrada" : "Salida"}
                     </span>
-                    <span class="font-bold text-xs">$${m.monto.toFixed(2)}</span>
+                    <span class="font-bold">$${m.monto.toFixed(2)}</span>
                     <span class="text-xs text-gray-500">${m.fecha.split(',')[0]}</span>
                 `;
                 listaMovimientos.appendChild(li);
@@ -803,26 +745,23 @@
             }
 
             let isNewProduct = true;
-            // Buscar si ya existe un producto con el mismo código para editarlo
-            let existingProductIndex = productos.findIndex(p => p.codigo === codigo);
+            productos = productos.map(p => {
+                if(p.codigo === codigo) {
+                    p.nombre = nombre;
+                    p.categoria = categoria;
+                    p.proveedor = proveedor;
+                    p.unidad = unidad;
+                    p.precioCosto = precioCosto;
+                    p.precioVenta = precioVenta;
+                    p.stock = stock;
+                    p.stockMinimo = stockMinimo;
+                    p.descripcion = descripcion;
+                    isNewProduct = false;
+                }
+                return p;
+            });
 
-            if (existingProductIndex !== -1) {
-                // Actualizar producto existente
-                productos[existingProductIndex] = {
-                    ...productos[existingProductIndex], // Mantener propiedades no editables si las hubiera
-                    nombre,
-                    categoria,
-                    proveedor,
-                    unidad,
-                    precioCosto,
-                    precioVenta,
-                    stock,
-                    stockMinimo,
-                    descripcion
-                };
-                isNewProduct = false;
-            } else {
-                // Añadir nuevo producto
+            if(isNewProduct) {
                 productos.push({nombre, codigo, categoria, proveedor, unidad, precioCosto, precioVenta, stock, stockMinimo, descripcion});
             }
 
@@ -844,32 +783,30 @@
             document.getElementById("prod-stock").value = "";
             document.getElementById("prod-stock-minimo").value = "";
             document.getElementById("prod-descripcion").value = "";
-            document.getElementById("prod-codigo").readOnly = false; // Habilitar de nuevo el campo de código
-            document.getElementById("prod-codigo").classList.remove("bg-gray-600", "cursor-not-allowed");
         }
         function renderProductos() {
             const tbody = document.getElementById("prod-table");
             tbody.innerHTML = "";
             if (productos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="10" class="p-3 text-center text-gray-500 text-sm"><i data-feather="info" class="inline-block mr-1.5 text-gray-400 w-4 h-4"></i>No hay productos registrados.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" class="p-4 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay productos registrados.</td></tr>';
                 return;
             }
             productos.forEach((p, i) => {
                 const tr = document.createElement("tr");
                 tr.classList.add("border-b", "border-gray-700", "hover:bg-gray-700", "interactive-element");
                 tr.innerHTML = `
-                    <td class="p-2.5 text-sm">${p.nombre}</td>
-                    <td class="p-2.5 text-sm">${p.codigo}</td>
-                    <td class="p-2.5 text-sm">${p.categoria || 'N/A'}</td>
-                    <td class="p-2.5 text-sm">${p.proveedor || 'N/A'}</td>
-                    <td class="p-2.5 text-sm">${p.unidad || 'N/A'}</td>
-                    <td class="p-2.5 text-right text-sm">$${p.precioCosto.toFixed(2)}</td>
-                    <td class="p-2.5 text-right text-sm">$${p.precioVenta.toFixed(2)}</td>
-                    <td class="p-2.5 text-right text-sm">${p.stock}</td>
-                    <td class="p-2.5 text-right text-sm">${p.stockMinimo}</td>
-                    <td class="p-2.5 text-center">
-                        <button class="text-blue-400 hover:text-blue-500 mr-1.5 interactive-element" onclick="editProduct('${p.codigo}')" title="Editar"><i data-feather="edit" class="w-4 h-4"></i></button>
-                        <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteProduct('${p.codigo}')" title="Eliminar"><i data-feather="trash-2" class="w-4 h-4"></i></button>
+                    <td class="p-3">${p.nombre}</td>
+                    <td class="p-3">${p.codigo}</td>
+                    <td class="p-3">${p.categoria || 'N/A'}</td>
+                    <td class="p-3">${p.proveedor || 'N/A'}</td>
+                    <td class="p-3">${p.unidad || 'N/A'}</td>
+                    <td class="p-3 text-right">$${p.precioCosto.toFixed(2)}</td>
+                    <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
+                    <td class="p-3 text-right">${p.stock}</td>
+                    <td class="p-3 text-right">${p.stockMinimo}</td>
+                    <td class="p-3 text-center">
+                        <button class="text-blue-400 hover:text-blue-500 mr-2 interactive-element" onclick="editProduct(${i})" title="Editar"><i data-feather="edit"></i></button>
+                        <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteProduct(${i})" title="Eliminar"><i data-feather="trash-2"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -877,10 +814,8 @@
             feather.replace();
         }
 
-        function editProduct(codigo) {
-            const product = productos.find(p => p.codigo === codigo);
-            if (!product) return;
-
+        function editProduct(index) {
+            const product = productos[index];
             document.getElementById("prod-nombre").value = product.nombre;
             document.getElementById("prod-codigo").value = product.codigo;
             document.getElementById("prod-categoria").value = product.categoria || '';
@@ -891,15 +826,18 @@
             document.getElementById("prod-stock").value = product.stock;
             document.getElementById("prod-stock-minimo").value = product.stockMinimo;
             document.getElementById("prod-descripcion").value = product.descripcion || '';
-            // Deshabilitar el campo de código para evitar que se cambie al editar
-            document.getElementById("prod-codigo").readOnly = true;
-            document.getElementById("prod-codigo").classList.add("bg-gray-600", "cursor-not-allowed");
-            alert("Editando producto. El código no puede ser modificado.");
+            
+            // Elimina el producto de la lista temporalmente para que `saveProduct` lo actualice
+            // Esta no es la forma más robusta para "editar", pero funciona para este alcance.
+            // Una mejor implementación sería tener un ID oculto en el formulario para saber si es edición o nuevo.
+            productos.splice(index, 1);
+            localStorage.setItem("productos", JSON.stringify(productos)); // Guarda el estado sin el producto editado temporalmente
+            renderProductos(); // Vuelve a renderizar la tabla sin el producto editado para evitar duplicados visuales al guardar
         }
 
-        function deleteProduct(codigo) {
+        function deleteProduct(index) {
             if(confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-                productos = productos.filter(p => p.codigo !== codigo);
+                productos.splice(index, 1);
                 localStorage.setItem("productos", JSON.stringify(productos));
                 renderProductos();
                 renderInventoryList();
@@ -912,7 +850,9 @@
             const email = document.getElementById("cli-email").value.trim();
             const telefono = document.getElementById("cli-telefono").value.trim();
             if(!nombre) return alert("El nombre del cliente es obligatorio.");
-
+            
+            // En un sistema real, aquí buscarías si ya existe por un ID o algún identificador único
+            // Para simplificar, aquí siempre añade un nuevo cliente
             clientes.push({nombre, email, telefono});
             localStorage.setItem("clientes", JSON.stringify(clientes));
             renderClientes();
@@ -925,19 +865,19 @@
             const list = document.getElementById("client-list");
             list.innerHTML = "";
             if (clientes.length === 0) {
-                list.innerHTML = '<li class="p-3 text-center text-gray-500 text-sm"><i data-feather="info" class="inline-block mr-1.5 text-gray-400 w-4 h-4"></i>No hay clientes registrados.</li>';
+                list.innerHTML = '<li class="p-4 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay clientes registrados.</li>';
                 return;
             }
             clientes.forEach((c, i) => {
                 const li = document.createElement("li");
-                li.className = "p-2.5 flex justify-between items-center hover:bg-gray-700 interactive-element";
+                li.className = "p-3 flex justify-between items-center hover:bg-gray-700 interactive-element";
                 li.innerHTML = `
                     <div>
-                        <p class="font-semibold text-base text-white flex items-center"><i data-feather="user" class="mr-1.5 w-4 h-4 text-emerald-300"></i>${c.nombre}</p>
-                        ${c.email ? `<p class="text-xs text-gray-400 flex items-center mt-0.5"><i data-feather="mail" class="mr-1.5 w-3 h-3"></i>${c.email}</p>` : ''}
-                        ${c.telefono ? `<p class="text-xs text-gray-400 flex items-center mt-0.5"><i data-feather="phone" class="mr-1.5 w-3 h-3"></i>${c.telefono}</p>` : ''}
+                        <p class="font-semibold text-lg text-white flex items-center"><i data-feather="user" class="mr-2 w-5 h-5 text-emerald-300"></i>${c.nombre}</p>
+                        ${c.email ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="mail" class="mr-2 w-4 h-4"></i>${c.email}</p>` : ''}
+                        ${c.telefono ? `<p class="text-sm text-gray-400 flex items-center mt-1"><i data-feather="phone" class="mr-2 w-4 h-4"></i>${c.telefono}</p>` : ''}
                     </div>
-                    <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteClient(${i})" title="Eliminar Cliente"><i data-feather="trash-2" class="w-4 h-4"></i></button>
+                    <button class="text-red-500 hover:text-red-600 interactive-element" onclick="deleteClient(${i})" title="Eliminar Cliente"><i data-feather="trash-2"></i></button>
                 `;
                 list.appendChild(li);
             });
@@ -956,7 +896,7 @@
             const tbody = document.getElementById("inventory-table");
             tbody.innerHTML = "";
             if (productos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="p-3 text-center text-gray-500 text-sm"><i data-feather="info" class="inline-block mr-1.5 text-gray-400 w-4 h-4"></i>No hay productos en inventario.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500"><i data-feather="info" class="inline-block mr-2 text-gray-400"></i>No hay productos en inventario.</td></tr>';
                 return;
             }
             productos.forEach(p => {
@@ -964,14 +904,14 @@
                 tr.classList.add("border-b", "border-gray-700", "last:border-b-0");
                 const stockColorClass = p.stock <= p.stockMinimo ? 'text-red-400 font-bold' : '';
                 tr.innerHTML = `
-                    <td class="p-2.5 text-sm">${p.nombre}</td>
-                    <td class="p-2.5 text-sm">${p.codigo}</td>
-                    <td class="p-2.5 text-sm">${p.categoria || 'N/A'}</td>
-                    <td class="p-2.5 text-sm">${p.proveedor || 'N/A'}</td>
-                    <td class="p-2.5 text-sm">${p.unidad || 'N/A'}</td>
-                    <td class="p-2.5 text-right text-sm ${stockColorClass}">${p.stock}</td>
-                    <td class="p-2.5 text-right text-sm">${p.stockMinimo}</td>
-                    <td class="p-2.5 text-right text-sm">$${p.precioVenta.toFixed(2)}</td>
+                    <td class="p-3">${p.nombre}</td>
+                    <td class="p-3">${p.codigo}</td>
+                    <td class="p-3">${p.categoria || 'N/A'}</td>
+                    <td class="p-3">${p.proveedor || 'N/A'}</td>
+                    <td class="p-3">${p.unidad || 'N/A'}</td>
+                    <td class="p-3 text-right ${stockColorClass}">${p.stock}</td>
+                    <td class="p-3 text-right">${p.stockMinimo}</td>
+                    <td class="p-3 text-right">$${p.precioVenta.toFixed(2)}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -980,7 +920,7 @@
 
         // --- Funciones de Inicialización (se mantienen dentro de DOMContentLoaded) ---
         document.addEventListener('DOMContentLoaded', (event) => {
-            feather.replace(); // Inicializar Feather Icons al cargar la página
+            feather.replace();
 
             // Atajo Enter para login
             [inputUser, inputPass].forEach(input => {
@@ -1021,7 +961,6 @@
             });
 
             // Llamar a las funciones de renderizado iniciales
-            actualizarCarrito(); // Asegura que el carrito se renderice correctamente al inicio
             renderProductos();
             renderClientes();
             mostrarMovimientosCaja();
