@@ -8,113 +8,185 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #1A202C; color: #E2E8F0; }
-        .section { display: none; }
-        .section.is-active { display: block; animation: fadeIn 0.25s ease; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-        .interactive-element { transition: all 0.15s ease; }
-        .interactive-element:hover { transform: translateY(-1px); }
-        .interactive-element:active { transform: translateY(0); }
-        .custom-scrollbar::-webkit-scrollbar { width:7px; height:7px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background:#2D3748; border-radius:4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background:#48BB78; border-radius:4px; }
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:50; display:flex; align-items:center; justify-content:center; }
-        .modal-box { background:#2D3748; border:1px solid #4A5568; border-radius:1rem; padding:2rem; max-width:600px; width:90%; max-height:90vh; overflow-y:auto; }
-        .badge-red { background:#FEB2B2; color:#742A2A; padding:2px 8px; border-radius:9999px; font-size:0.75rem; font-weight:600; }
-        .badge-green { background:#9AE6B4; color:#1C4532; padding:2px 8px; border-radius:9999px; font-size:0.75rem; font-weight:600; }
-        .badge-yellow { background:#FAF089; color:#744210; padding:2px 8px; border-radius:9999px; font-size:0.75rem; font-weight:600; }
-        .badge-blue { background:#BEE3F8; color:#2A4365; padding:2px 8px; border-radius:9999px; font-size:0.75rem; font-weight:600; }
-        .nav-btn.active { background:#2F855A; color:white; }
-        input:focus, select:focus, textarea:focus { outline:none; box-shadow:0 0 0 2px rgba(72,187,120,0.5); }
-        .ticket-print { display:none; }
-        @media print { body > *:not(#ticket-print-area) { display:none !important; } #ticket-print-area { display:block !important; font-family: monospace; font-size:12px; max-width:300px; margin:0 auto; } }
+        :root{--bg:#0D1117;--bg2:#161B22;--card:#1C2333;--inp:#0D1117;--bdr:#30363D;--bdr2:#444C56;--txt:#F0F6FC;--txt2:#8B949E;--ac:#10B981;--acd:#059669;--acg:rgba(16,185,129,.15);--bl:#3B82F6;--pu:#8B5CF6;--or:#F59E0B;--re:#EF4444;--pk:#EC4899}
+        *{box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+        body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,rgba(16,185,129,.05) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(59,130,246,.04) 0%,transparent 50%)}
+        body>*{position:relative;z-index:1}
+        .section{display:none}
+        .section.is-active{display:block;animation:fadeIn .3s cubic-bezier(.4,0,.2,1)}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        /* Cards */
+        .card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;transition:border-color .2s}
+        .card:hover{border-color:var(--bdr2)}
+        /* KPI cards */
+        .kpi{background:linear-gradient(135deg,var(--card) 0%,rgba(28,35,51,.8) 100%);border:1px solid var(--bdr);border-radius:16px;padding:1.25rem;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+        .kpi::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;opacity:.12;transform:translate(20px,-20px)}
+        .kpi:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,.3)}
+        .kpi-g::before{background:var(--ac)}.kpi-b::before{background:var(--bl)}.kpi-o::before{background:var(--or)}.kpi-r::before{background:var(--re)}
+        /* Nav */
+        nav{background:rgba(22,27,34,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--bdr)}
+        .nav-btn{display:flex;align-items:center;padding:.4rem .7rem;border-radius:8px;color:var(--txt2);font-size:.8rem;font-weight:500;transition:all .15s;white-space:nowrap;cursor:pointer;background:none;border:none}
+        .nav-btn:hover{background:rgba(255,255,255,.06);color:var(--txt)}
+        .nav-btn.active{background:linear-gradient(135deg,var(--ac),var(--acd));color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.35)}
+        .nav-btn svg{width:14px;height:14px;margin-right:5px}
+        /* Inputs */
+        input,select,textarea{background:var(--inp);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-family:'Inter',sans-serif;font-size:.875rem;transition:border-color .15s,box-shadow .15s}
+        input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--acg)}
+        input::placeholder,textarea::placeholder{color:var(--txt2)}
+        select option{background:var(--bg2)}
+        /* Buttons */
+        .btn-p{background:linear-gradient(135deg,var(--ac),var(--acd));color:#fff;font-weight:600;border-radius:8px;border:none;padding:.5rem 1rem;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(16,185,129,.3)}
+        .btn-p:hover{box-shadow:0 4px 16px rgba(16,185,129,.45);transform:translateY(-1px)}
+        .btn-p:active{transform:translateY(0)}
+        .btn-s{background:rgba(255,255,255,.05);color:var(--txt2);border:1px solid var(--bdr);border-radius:8px;padding:.5rem 1rem;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:all .15s}
+        .btn-s:hover{background:rgba(255,255,255,.08);color:var(--txt);border-color:var(--bdr2)}
+        .btn-b{background:linear-gradient(135deg,#3B82F6,#2563EB);color:#fff;font-weight:600;border-radius:8px;border:none;padding:.5rem 1rem;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(59,130,246,.3)}
+        .btn-b:hover{box-shadow:0 4px 16px rgba(59,130,246,.45);transform:translateY(-1px)}
+        .btn-d{background:rgba(239,68,68,.12);color:var(--re);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.5rem 1rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+        .btn-d:hover{background:rgba(239,68,68,.2)}
+        .btn-i{background:transparent;border:none;cursor:pointer;padding:4px;border-radius:6px;transition:all .15s;display:inline-flex;align-items:center;justify-content:center}
+        .btn-i:hover{background:rgba(255,255,255,.08)}
+        /* Interactive */
+        .interactive-element{transition:all .15s;cursor:pointer}
+        .interactive-element:hover{transform:translateY(-1px)}
+        .interactive-element:active{transform:translateY(0)}
+        /* Tables */
+        table{border-collapse:separate;border-spacing:0;width:100%}
+        thead th{background:rgba(255,255,255,.03);border-bottom:1px solid var(--bdr);padding:10px 12px;font-size:.72rem;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em}
+        tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s}
+        tbody tr:hover{background:rgba(255,255,255,.03)}
+        tbody td{padding:10px 12px;font-size:.85rem;color:var(--txt)}
+        /* Badges */
+        .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:9999px;font-size:.7rem;font-weight:600}
+        .badge-green{background:rgba(16,185,129,.15);color:#34D399;border:1px solid rgba(16,185,129,.3)}
+        .badge-red{background:rgba(239,68,68,.15);color:#FC8181;border:1px solid rgba(239,68,68,.3)}
+        .badge-yellow{background:rgba(245,158,11,.15);color:#FCD34D;border:1px solid rgba(245,158,11,.3)}
+        .badge-blue{background:rgba(59,130,246,.15);color:#93C5FD;border:1px solid rgba(59,130,246,.3)}
+        .badge-purple{background:rgba(139,92,246,.15);color:#C4B5FD;border:1px solid rgba(139,92,246,.3)}
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar{width:5px;height:5px}
+        .custom-scrollbar::-webkit-scrollbar-track{background:transparent}
+        .custom-scrollbar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:9999px}
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover{background:var(--ac)}
+        /* Modals */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:50;display:flex;align-items:center;justify-content:center}
+        .modal-box{background:var(--bg2);border:1px solid var(--bdr2);border-radius:16px;padding:1.75rem;max-width:640px;width:94%;max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.5)}
+        /* Config tabs */
+        .cfg-tab{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;cursor:pointer;color:var(--txt2);font-size:.85rem;font-weight:500;transition:all .15s;border:1px solid transparent}
+        .cfg-tab:hover{background:rgba(255,255,255,.05);color:var(--txt)}
+        .cfg-tab.active{background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(16,185,129,.08));color:var(--ac);border-color:rgba(16,185,129,.25)}
+        .cfg-tab svg{width:15px;height:15px;flex-shrink:0}
+        .cfg-panel{display:none}
+        .cfg-panel.active{display:block;animation:fadeIn .2s ease}
+        /* Misc */
+        .lbl{display:block;font-size:.72rem;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+        .ifield{width:100%;padding:9px 12px;border:1px solid var(--bdr);border-radius:8px;background:var(--inp);color:var(--txt);font-size:.875rem}
+        .ifield:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--acg);outline:none}
+        .divider{border:none;border-top:1px solid var(--bdr);margin:1rem 0}
+        .s-title{font-size:1.25rem;font-weight:700;color:var(--txt);display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+        .s-title svg{color:var(--ac)}
+        /* Toggle */
+        .tgl{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+        .tgl input{opacity:0;width:0;height:0;position:absolute}
+        .tgl-track{width:40px;height:22px;background:rgba(255,255,255,.1);border-radius:11px;transition:background .2s;border:1px solid var(--bdr)}
+        .tgl input:checked+.tgl-track{background:var(--ac);border-color:var(--ac)}
+        .tgl-thumb{position:absolute;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+        .tgl input:checked~.tgl-thumb{transform:translateX(18px)}
+        /* Login */
+        .login-card{background:linear-gradient(135deg,var(--card) 0%,var(--bg2) 100%);border:1px solid var(--bdr);border-radius:20px;padding:2.5rem}
+        /* Toast */
+        .toast-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999}
+        #toast-msg{display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;font-size:.85rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:toastIn .3s ease;backdrop-filter:blur(8px)}
+        @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+        .quick-btn{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:10px;padding:10px 8px;cursor:pointer;text-align:center;transition:all .15s}
+        .quick-btn:hover{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.4);transform:translateY(-2px);box-shadow:0 4px 12px rgba(16,185,129,.15)}
+        .text-g{background:linear-gradient(135deg,var(--ac),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        @media print{body>*:not(#ticket-print-area){display:none !important}#ticket-print-area{display:block !important;font-family:monospace;font-size:12px;max-width:300px;margin:0 auto}}
     </style>
 </head>
-<body class="bg-gray-900 text-gray-200">
+<body style="background:var(--bg)">
 
 <!-- ===== LOGIN ===== -->
-<section id="login-section" class="min-h-screen flex flex-col justify-center items-center bg-gray-900">
-    <i class="fas fa-store text-7xl mb-5 text-emerald-400"></i>
-    <h1 class="text-5xl font-extrabold text-white mb-8 tracking-tight">JoVi POS <span class="text-emerald-400 text-2xl font-semibold">Pro</span></h1>
-    <div class="bg-gray-800 p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-700">
-        <div class="mb-5">
-            <label class="block text-gray-300 font-medium mb-2 flex items-center"><i data-feather="user" class="mr-2 text-emerald-400 w-4 h-4"></i>Usuario</label>
-            <input id="user" type="text" placeholder="admin" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white text-lg interactive-element" autocomplete="off" />
+<section id="login-section" class="min-h-screen flex flex-col justify-center items-center" style="background:radial-gradient(ellipse at 50% 0%,rgba(16,185,129,.08) 0%,transparent 60%),var(--bg)">
+    <div class="login-card w-full max-w-sm shadow-2xl">
+        <div class="flex flex-col items-center mb-8">
+            <div style="width:72px;height:72px;background:linear-gradient(135deg,#10B981,#059669);border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(16,185,129,.4);margin-bottom:1rem">
+                <i class="fas fa-store text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">JoVi <span class="text-g">POS Pro</span></h1>
+            <p class="text-sm mt-1" style="color:var(--txt2)">Punto de Venta Profesional</p>
         </div>
-        <div class="mb-7">
-            <label class="block text-gray-300 font-medium mb-2 flex items-center"><i data-feather="lock" class="mr-2 text-emerald-400 w-4 h-4"></i>Contraseña</label>
-            <input id="pass" type="password" placeholder="••••••" class="w-full p-4 border border-gray-600 rounded-lg bg-gray-700 text-white text-lg interactive-element" autocomplete="new-password" />
+        <div class="space-y-4">
+            <div>
+                <label class="lbl">Usuario</label>
+                <div class="relative">
+                    <i data-feather="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style="color:var(--txt2)"></i>
+                    <input id="user" type="text" placeholder="admin" class="ifield pl-10" autocomplete="off" />
+                </div>
+            </div>
+            <div>
+                <label class="lbl">Contraseña</label>
+                <div class="relative">
+                    <i data-feather="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style="color:var(--txt2)"></i>
+                    <input id="pass" type="password" placeholder="••••••" class="ifield pl-10" autocomplete="new-password" />
+                </div>
+            </div>
+            <button id="btnLogin" class="btn-p w-full py-3 text-base mt-2">
+                <i data-feather="log-in" class="w-4 h-4"></i>Iniciar Sesión
+            </button>
+            <p id="login-error" class="hidden text-center text-sm" style="color:#FC8181">Usuario o contraseña incorrecta</p>
         </div>
-        <button id="btnLogin" class="w-full bg-emerald-500 text-gray-900 py-4 rounded-lg font-semibold text-xl hover:bg-emerald-600 interactive-element flex justify-center items-center shadow-md">
-            <i data-feather="log-in" class="mr-3 w-5 h-5"></i>Acceder
-        </button>
-        <p id="login-error" class="text-red-400 text-sm mt-4 hidden text-center">Usuario o contraseña incorrecta</p>
+        <p class="text-center mt-6 text-xs" style="color:var(--txt2)">JoVi POS Pro v2.0</p>
     </div>
+</section>
 </section>
 
 <!-- ===== POS PRINCIPAL ===== -->
 <section id="pos-section" class="hidden min-h-screen flex flex-col">
-    <nav class="bg-gray-800 shadow-lg px-4 py-3 flex items-center sticky top-0 z-20 border-b border-gray-700">
-        <div class="flex items-center space-x-3 mr-4">
-            <i class="fas fa-cash-register text-2xl text-emerald-400"></i>
-            <span class="text-xl font-bold text-white" id="nav-biz-name">JoVi POS</span>
+    <nav class="px-4 py-2.5 flex items-center sticky top-0 z-20 gap-2">
+        <div class="flex items-center gap-2 mr-2">
+            <div style="width:30px;height:30px;background:linear-gradient(135deg,#10B981,#059669);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <i class="fas fa-store text-white" style="font-size:11px"></i>
+            </div>
+            <span class="font-bold text-white text-sm hidden lg:block" id="nav-biz-name">JoVi POS</span>
         </div>
-        <div class="flex flex-wrap gap-1 flex-grow">
-            <button onclick="showSection('dashboard')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="dashboard">
-                <i data-feather="grid" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Dashboard</span>
-            </button>
-            <button onclick="showSection('ventas')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="ventas">
-                <i data-feather="shopping-cart" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Ventas</span>
-            </button>
-            <button onclick="showSection('historial')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="historial">
-                <i data-feather="clock" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Historial</span>
-            </button>
-            <button onclick="showSection('productos')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="productos">
-                <i data-feather="package" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Productos</span>
-            </button>
-            <button onclick="showSection('clientes')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="clientes">
-                <i data-feather="users" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Clientes</span>
-            </button>
-            <button onclick="showSection('creditos')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="creditos">
-                <i data-feather="credit-card" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Créditos</span>
-            </button>
-            <button onclick="showSection('proveedores')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="proveedores">
-                <i data-feather="truck" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Proveedores</span>
-            </button>
-            <button onclick="showSection('compras')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="compras">
-                <i data-feather="download" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Compras</span>
-            </button>
-            <button onclick="showSection('inventario')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="inventario">
-                <i data-feather="layers" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Inventario</span>
-            </button>
-            <button onclick="showSection('reportes')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="reportes">
-                <i data-feather="bar-chart-2" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Reportes</span>
-            </button>
-            <button onclick="showSection('configuraciones')" class="nav-btn flex items-center py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-700 interactive-element text-sm" data-section="configuraciones">
-                <i data-feather="settings" class="mr-1 w-4 h-4"></i><span class="hidden md:inline">Config</span>
-            </button>
+        <div class="flex flex-wrap gap-1 flex-grow min-w-0">
+            <button onclick="showSection('dashboard')" class="nav-btn" data-section="dashboard"><i data-feather="grid"></i><span class="hidden sm:inline">Dashboard</span></button>
+            <button onclick="showSection('ventas')" class="nav-btn" data-section="ventas"><i data-feather="shopping-cart"></i><span class="hidden sm:inline">Ventas</span></button>
+            <button onclick="showSection('historial')" class="nav-btn" data-section="historial"><i data-feather="clock"></i><span class="hidden sm:inline">Historial</span></button>
+            <button onclick="showSection('productos')" class="nav-btn" data-section="productos"><i data-feather="package"></i><span class="hidden sm:inline">Productos</span></button>
+            <button onclick="showSection('clientes')" class="nav-btn" data-section="clientes"><i data-feather="users"></i><span class="hidden sm:inline">Clientes</span></button>
+            <button onclick="showSection('creditos')" class="nav-btn" data-section="creditos"><i data-feather="credit-card"></i><span class="hidden sm:inline">Créditos</span></button>
+            <button onclick="showSection('proveedores')" class="nav-btn" data-section="proveedores"><i data-feather="truck"></i><span class="hidden sm:inline">Proveedores</span></button>
+            <button onclick="showSection('compras')" class="nav-btn" data-section="compras"><i data-feather="download"></i><span class="hidden sm:inline">Compras</span></button>
+            <button onclick="showSection('inventario')" class="nav-btn" data-section="inventario"><i data-feather="layers"></i><span class="hidden sm:inline">Inventario</span></button>
+            <button onclick="showSection('reportes')" class="nav-btn" data-section="reportes"><i data-feather="bar-chart-2"></i><span class="hidden sm:inline">Reportes</span></button>
+            <button onclick="showSection('configuraciones')" class="nav-btn" data-section="configuraciones"><i data-feather="settings"></i><span class="hidden sm:inline">Config</span></button>
         </div>
-        <div class="flex items-center gap-3 ml-2">
-            <span id="alert-stock-badge" class="hidden bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full cursor-pointer" onclick="showSection('inventario')" title="Productos con stock bajo">⚠ Stock</span>
-            <span class="text-sm text-gray-400 flex items-center bg-gray-700 p-2 rounded-lg">
-                <i data-feather="user-check" class="mr-2 text-emerald-400 w-4 h-4"></i><strong id="vendedor-info" class="text-white"></strong>
-            </span>
-            <button onclick="cerrarSesion()" class="text-gray-400 hover:text-red-400 interactive-element p-2 rounded-lg hover:bg-gray-700" title="Cerrar sesión">
-                <i data-feather="log-out" class="w-4 h-4"></i>
-            </button>
+        <div class="flex items-center gap-2 ml-1 flex-shrink-0">
+            <span id="alert-stock-badge" class="hidden badge badge-red cursor-pointer text-xs px-2 py-1" onclick="showSection('inventario')" title="Stock bajo">⚠ Stock</span>
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg" style="background:rgba(255,255,255,.05);border:1px solid var(--bdr)">
+                <div style="width:24px;height:24px;background:linear-gradient(135deg,#3B82F6,#8B5CF6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff" id="user-avatar">A</div>
+                <strong id="vendedor-info" class="text-white text-xs"></strong>
+            </div>
+            <button onclick="cerrarSesion()" class="btn-i" title="Cerrar sesión" style="color:var(--txt2)"><i data-feather="log-out" class="w-4 h-4"></i></button>
         </div>
     </nav>
-    <main class="p-6 flex-grow">
+    <main class="p-5 flex-grow">
 
 <!-- ===== DASHBOARD ===== -->
 <section id="dashboard" class="section">
-    <h2 class="text-2xl font-bold mb-6 flex items-center text-emerald-400"><i data-feather="grid" class="mr-3 w-7 h-7"></i>Dashboard</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div class="bg-gray-800 rounded-xl p-5 border border-gray-700">
-            <p class="text-gray-400 text-sm mb-1 flex items-center"><i data-feather="dollar-sign" class="mr-1 w-4 h-4 text-emerald-400"></i>Ventas Hoy</p>
-            <p class="text-3xl font-extrabold text-white" id="kpi-ventas-hoy">$0.00</p>
+    <div class="s-title"><i data-feather="grid"></i>Dashboard</div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="kpi kpi-g">
+            <div class="flex items-center justify-between mb-3">
+                <span style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">Ventas Hoy</span>
+                <div style="width:30px;height:30px;background:rgba(16,185,129,.15);border-radius:8px;display:flex;align-items:center;justify-content:center"><i data-feather="dollar-sign" style="width:14px;height:14px;color:#10B981"></i></div>
+            </div>
+            <p class="text-2xl font-extrabold text-white" id="kpi-ventas-hoy">$0.00</p>
             <p class="text-xs text-gray-500 mt-1" id="kpi-ventas-hoy-cant">0 transacciones</p>
         </div>
         <div class="bg-gray-800 rounded-xl p-5 border border-gray-700">
